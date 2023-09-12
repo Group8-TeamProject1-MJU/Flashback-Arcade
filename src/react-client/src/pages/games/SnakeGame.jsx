@@ -36,17 +36,17 @@ class SnakeGame extends Component {
   };
 
   handleKeyDown = (event) => {
-    switch (event.key) {
-      case 'ArrowUp':
+    switch (event.code) {
+      case 'KeyW':
         this.setState({ direction: UP });
         break;
-      case 'ArrowDown':
+      case 'KeyS':
         this.setState({ direction: DOWN });
         break;
-      case 'ArrowLeft':
+      case 'KeyA':
         this.setState({ direction: LEFT });
         break;
-      case 'ArrowRight':
+      case 'KeyD':
         this.setState({ direction: RIGHT });
         break;
       default:
