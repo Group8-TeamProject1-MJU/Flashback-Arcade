@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Chatting from '../../components/Chatting';
 
 const ROWS = 10;
 const COLS = 10;
@@ -129,10 +128,6 @@ class SnakeGame extends Component {
             );
           })}
         </div>
-        <Chatting></Chatting>
-        <style>
-          
-        </style>
       </div>
     );
   }
