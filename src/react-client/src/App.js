@@ -1,5 +1,4 @@
 import AppRoutes from './utils/AppRoutes';
-import './App.css';
 import MainLayout from './layouts/main/MainLayout';
 import { Route, Routes } from "react-router-dom";
 
