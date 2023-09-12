@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom"
 import NavBar from "./NavBar"
 import Footer from './Footer';
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import Iframe from 'react-iframe'
 
 export default function MainLayout() {
     return (
@@ -11,7 +12,23 @@ export default function MainLayout() {
 
                 <div className='min-vh-100'>
                     <Container fluid="md">
-                        <Outlet />
+                        <Row>
+                            <Col>
+                                <Outlet />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="text-center">
+                                <Iframe
+                                    url="https://localhost:7105"
+                                    width="640px"
+                                    height="320px"
+                                    id=""
+                                    className="mx-auto border-0"
+                                    style=""
+                                />
+                            </Col>
+                        </Row>
                     </Container>
                 </div>
 
