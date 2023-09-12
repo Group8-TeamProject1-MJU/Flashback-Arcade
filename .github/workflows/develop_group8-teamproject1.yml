@@ -6,14 +6,14 @@ name: Build and deploy ASP.Net Core app to Azure Web App - group8-teamproject1
 on:
   push:
     branches:
-      - release
+      - publish
     paths:
       - '.github/workflows/**'
       - 'src/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - release
+      - publish
   workflow_dispatch:
 
 jobs:

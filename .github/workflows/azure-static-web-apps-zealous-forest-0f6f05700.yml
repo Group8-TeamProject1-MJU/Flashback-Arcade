@@ -3,14 +3,14 @@ name: Build and deploy
 on:
   push:
     branches:
-      - release
+      - publish
     paths:
       - '.github/workflows/**'
       - 'src/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - release
+      - publish
   workflow_dispatch:
 
 jobs:
