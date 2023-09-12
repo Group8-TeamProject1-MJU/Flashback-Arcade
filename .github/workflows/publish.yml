@@ -69,7 +69,7 @@ jobs:
         with:
           app-name: 'jeheecheon'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EF6292953FCB4785A075CC6348A124D2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_872D02ACA97C49B2A9154E3A1BE1E8BD }}
           package: .
 
   react_build_and_deploy:
