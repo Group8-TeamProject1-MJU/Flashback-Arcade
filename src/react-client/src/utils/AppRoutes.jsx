@@ -6,8 +6,6 @@ import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
 import SnakeGame from '../pages/games/SnakeGame';
 
-
-
 const AppRoutes = [
   {
     index: true,
@@ -24,10 +22,12 @@ const AppRoutes = [
   {
     path: '/games/gayeong',
     element: <Gayeong />
-  },  {
+  },  
+  {
     path: '/games/jiwon',
     element: <Jiwon />
-  },  {
+  },
+  {
     path: '/games/jehee',
     element: <Jehee />
   },
