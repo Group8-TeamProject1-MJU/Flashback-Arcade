@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <Navbar expand='md' className="bg-dark-subtle m-0">
       <Container fluid>
-        <Navbar.Brand as={Link} to="/">Navbar Offcanvas</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">ㅁㄴㅇㅁㄴ</Navbar.Brand>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-md`}
@@ -20,7 +20,11 @@ const NavBar = () => {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/posts">Posts</Nav.Link>
+              <Nav.Link as={Link} to="/games/Jehee">Jehee</Nav.Link>
+              <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
+              <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
+              <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>
+
               <NavDropdown
                 title="Dropdown"
                 id={`offcanvasNavbarDropdown-expand-md`}
