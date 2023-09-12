@@ -4,6 +4,7 @@ import Gayeong from '../pages/games/Gayeong';
 import Yongchan from '../pages/games/Yongchan';
 import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
+import SnakeGame from '../pages/games/SnakeGame';
 
 
 
@@ -11,6 +12,10 @@ const AppRoutes = [
   {
     index: true,
     element: <Home />
+  },
+  {
+    path: '/games/snakegame',
+    element: <SnakeGame />
   },
   {
     path: '/games/yongchan',
