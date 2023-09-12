@@ -67,7 +67,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'jeheecheon'
+          app-name: 'group8-teamproject1'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_872D02ACA97C49B2A9154E3A1BE1E8BD }}
           package: .
