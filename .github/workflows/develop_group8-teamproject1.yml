@@ -6,12 +6,21 @@ name: Build and deploy ASP.Net Core app to Azure Web App - group8-teamproject1
 on:
   push:
     branches:
-      - develop
+      - release
+    paths:
+      - '.github/workflows/**'
+      - 'src/**'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - release
   workflow_dispatch:
 
 jobs:
-  build:
+  server_build:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: windows-latest
+    name: Server_Build
 
     steps:
       - uses: actions/checkout@v2
@@ -34,15 +43,16 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
+  server_deploy:
     runs-on: windows-latest
-    needs: build
+    needs: server_build
+    name: Server_Deploy
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact from build
         uses: actions/download-artifact@v2
         with:
           name: .net-app
