@@ -31,13 +31,19 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Restore
+        working-directory: ./src
+        run: dotnet restore
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Build
+        working-directory: ./src
+        run: dotnet build --no-restore -c Release
 
-      - name: Upload artifact for deployment job
+      - name: Publish
+        working-directory: ./src
+        run: dotnet publish --no-build -c Release --property:PublishDir=${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
@@ -61,9 +67,9 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'group8-teamproject1'
+          app-name: 'jeheecheon'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_872D02ACA97C49B2A9154E3A1BE1E8BD }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EF6292953FCB4785A075CC6348A124D2 }}
           package: .
 
   react_build_and_deploy:
