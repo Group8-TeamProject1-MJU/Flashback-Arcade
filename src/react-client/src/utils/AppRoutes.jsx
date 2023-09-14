@@ -12,43 +12,53 @@ import Test from '../pages/test'
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Home />,
+    isPrivate: true
   },
   {
     path: '/account/signin',
-    element: <Signin />
+    element: <Signin />,
+    isPrivate: false
   },
   {
     path: '/account/signup',
-    element: <Signup />
+    element: <Signup />,
+    isPrivate: false
   },
   {
     path: '/games/snakegame',
-    element: <SnakeGame />
+    element: <SnakeGame />,
+    isPrivate: false
   },
   {
     path: '/games/yongchan',
-    element: <Yongchan />
+    element: <Yongchan />,
+    isPrivate: false
   },
   {
     path: '/games/gayeong',
-    element: <Gayeong />
+    element: <Gayeong />,
+    isPrivate: false
   },  
   {
     path: '/games/jiwon',
-    element: <Jiwon />
+    element: <Jiwon />,
+    isPrivate: false
   },
   {
     path: '/games/jehee',
-    element: <Jehee />
+    element: <Jehee />,
+    isPrivate: true
   },
   {
-    path: '/Test',
-    element: <Test />
+    path: '/test',
+    element: <Test />,
+    isPrivate: true
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFound />,
+    isPrivate: false
   }
 ];
 

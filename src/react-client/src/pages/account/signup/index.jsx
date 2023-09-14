@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
-import AppRoutes from '../../../utils/AppRoutes'
 
 export default function Signup() {
     let navigate = useNavigate();
@@ -67,10 +66,7 @@ export default function Signup() {
 
                 var succeeded = responseFromServer.Succeeded;
                 if (succeeded)
-                    navigate(AppRoutes.find(r => {
-                        if (r.path !== undefined && r.path.includes("signin"))
-                            return r.path;
-                    }).path);
+                    navigate("/account/signin");
                 else
                     setMsgsFromServer(responseFromServer.Errors);
             })

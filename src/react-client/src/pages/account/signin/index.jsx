@@ -2,8 +2,10 @@ import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ENDPOINTS from '../../../configs/api-endpoints'
 import { UserContext } from '../../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signin() {
+    const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
     const [formData, setFormData] = useState({
@@ -41,8 +43,10 @@ export default function Signin() {
                 var succeeded = responseFromServer.Succeeded;
                 if (succeeded) {
                     setUser({
+                        isAuthenticated: true,
                         username: formData.id
                     });
+                    navigate("/");
                 }
             })
             .catch(error => console.log(error));

@@ -4,6 +4,7 @@ export const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState({
+        isAuthenticated: false,
         username: ""
     });
 
