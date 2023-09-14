@@ -21,7 +21,7 @@ export default function MainLayout() {
                         <Row>
                             <Col className="text-center">
                                 <Iframe
-                                    url={`${API_BASE_URL}/jeheecheon`}
+                                    url={`${API_BASE_URL}/reactchat/jeheecheon`}
                                     width="640px"
                                     height="320px"
                                     id=""
