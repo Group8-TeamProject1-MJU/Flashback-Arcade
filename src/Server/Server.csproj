@@ -11,5 +11,22 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.11" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+  </ItemGroup>
 
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>.\Data\BlogDb.db</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-shm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>.\Data\BlogDb.db-shm</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-wal">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>.\Data\BlogDb.db-wal</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
 </Project>

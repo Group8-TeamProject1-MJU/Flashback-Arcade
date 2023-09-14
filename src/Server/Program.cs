@@ -1,7 +1,10 @@
-using ChatServer.Hubs;
+using Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Server.Hubs;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,15 @@ builder.Services.AddAuthentication(o => {
     .AddCookie(o => {
         o.LoginPath = "/api/account/login";
     });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<IdentityDbContext>();
+
+builder.Services.AddDbContext<IdentityDbContext>(option => {
+    option.UseSqlite(builder.Configuration.GetConnectionString("BlogDbConnectionString")!);
+});
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -72,16 +84,16 @@ app.Use(async (context, next) => {
 // /reactchat 채팅 페이지 iframe으로만 접근되도록 하는 middleware
 // cloud에서는 정상적으로 되지 않아 주석 처리
 app.Use(async (context, next) => {
-//     string url = context.Request.Path;
+    //     string url = context.Request.Path;
 
-//     if (url.Contains("/reactchat")) {
-//         string referer = context.Request.Headers["Referer"]!;
-//         if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
-//             // context.Response.StatusCode = StatusCodes.Status403Forbidden;
-//             // await context.Response.WriteAsync("Access denied.");
-//             context.Response.Redirect("/");
-//         }
-//     }
+    //     if (url.Contains("/reactchat")) {
+    //         string referer = context.Request.Headers["Referer"]!;
+    //         if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
+    //             // context.Response.StatusCode = StatusCodes.Status403Forbidden;
+    //             // await context.Response.WriteAsync("Access denied.");
+    //             context.Response.Redirect("/");
+    //         }
+    //     }
     await next();
 });
 
