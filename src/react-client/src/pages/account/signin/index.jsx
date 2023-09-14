@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ENDPOINTS from '../../../configs/api-endpoints'
 
-export default function Login() {
+export default function Signin() {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -59,7 +59,7 @@ export default function Login() {
                                     />
                                 </Form.Group>
 
-                                <Form.Group controlId="formBasicPassword">
+                                <Form.Group className='mt-3' controlId="formBasicPassword">
                                     <Form.Label>비밀번호</Form.Label>
                                     <Form.Control
                                         type="password"
@@ -70,7 +70,7 @@ export default function Login() {
                                     />
                                 </Form.Group>
 
-                                <Button variant="primary" type="submit">
+                                <Button className="mt-3" variant="primary" type="submit">
                                     로그인
                                 </Button>
                             </Form>

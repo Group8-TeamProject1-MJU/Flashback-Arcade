@@ -5,30 +5,27 @@ import { Container, Row, Col } from "react-bootstrap";
 import Iframe from 'react-iframe'
 import { API_BASE_URL } from "../../configs/api-endpoints";
 
-export default function MainLayout() {
+export default function MainLayout(props) {
     return (
         <>
-            <Container fluid className="m-0 p-0">
+            <Container fluid className="m-0 p-0 w-100">
                 <NavBar />
 
                 <div className='min-vh-100'>
                     <Container fluid="md">
-                        <Row>
-                            <Col>
-                                <Outlet />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col className="text-center">
-                                <Iframe
-                                    url={`${API_BASE_URL}/reactchat/jeheecheon`}
-                                    width="640px"
-                                    height="320px"
-                                    id=""
-                                    className="mx-auto border-0"
-                                />
-                            </Col>
-                        </Row>
+                        {props.children}
+                        <Outlet />
+
+                        <div className="text-center">
+                            <Iframe
+                                url={`${API_BASE_URL}/reactchat/jeheecheon`}
+                                width="640px"
+                                height="320px"
+                                id=""
+                                className="mx-auto border-0"
+                            />
+                        </div>
+
                     </Container>
                 </div>
 

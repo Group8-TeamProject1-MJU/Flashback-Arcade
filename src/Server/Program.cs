@@ -1,3 +1,4 @@
+using Application.Services;
 using Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<AccountService>();
+
 builder.Services.AddCors(corsOpts => {
     corsOpts.AddDefaultPolicy(b => {
         b.WithOrigins(builder.Configuration["ClientUrls:ReactUrl"]!)
@@ -30,10 +33,16 @@ builder.Services.AddAuthentication(o => {
     o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
     .AddCookie(o => {
-        o.LoginPath = "/api/account/login";
+        o.LoginPath = "/api/account/signin";
     });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequiredLength = 5;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+})
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>();

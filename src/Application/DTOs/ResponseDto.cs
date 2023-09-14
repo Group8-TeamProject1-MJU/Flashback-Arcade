@@ -1,6 +1,14 @@
+
+using System.Runtime.Serialization;
+using Microsoft.AspNetCore.SignalR;
+
 namespace Application.DTOs;
 
-public class ResponseDt {
+[DataContract]
+public class ResponseDTO {
+    [DataMember]
+    public bool Succeeded {get;set;} = false;
+
+    [DataMember]
     public List<string> Errors { get; set; } = new List<string>();
-    public bool hasSucceed = false;
 }
