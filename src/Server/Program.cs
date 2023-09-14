@@ -24,13 +24,9 @@ builder.Services.AddCors(corsOpts => {
 });
 
 builder.Services.AddAuthentication(o => {
-    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
-    .AddCookie(o => {
-        o.LoginPath = "/api/account/signin";
-    });
+    o.DefaultScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+});
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
@@ -47,27 +43,27 @@ builder.Services.AddDbContext<IdentityDbContext>(option => {
     option.UseSqlite(builder.Configuration.GetConnectionString("BlogDbConnectionString")!);
 });
 
-// Add Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Test", Version = "v1" });
-    options.OperationFilter<SecurityRequirementsOperationFilter>();
-});
-
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddResponseCompression(opts => {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
           new[] { "application/octet-stream" });
 });
+
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Test", Version = "v1" });
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-
+}
+else {
     app.UseSwagger();
     app.UseSwaggerUI(options => {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");

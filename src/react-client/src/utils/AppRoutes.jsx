@@ -7,7 +7,7 @@ import Home from '../pages/index';
 import SnakeGame from '../pages/games/SnakeGame';
 import Signin from '../pages/account/signin';
 import Signup from '../pages/account/signup';
-
+import Test from '../pages/test'
 
 const AppRoutes = [
   {
@@ -41,6 +41,10 @@ const AppRoutes = [
   {
     path: '/games/jehee',
     element: <Jehee />
+  },
+  {
+    path: '/Test',
+    element: <Test />
   },
   {
     path: '*',
