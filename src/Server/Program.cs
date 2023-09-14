@@ -64,7 +64,22 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.Use(async (context, next) => {
-    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors " + app.Configuration["ClientUrls:ReactUrl"]!);    
+    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors " + app.Configuration["ClientUrls:ReactUrl"]!);
+    await next();
+});
+
+app.Use(async (context, next) => {
+    string url = context.Request.Path;
+
+    if (url.Contains("/reactchat")) {
+        string referer = context.Request.Headers["Referer"]!;
+        if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
+
+            // context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            // await context.Response.WriteAsync("Access denied.");
+            context.Response.Redirect("/");
+        }
+    }
     await next();
 });
 
