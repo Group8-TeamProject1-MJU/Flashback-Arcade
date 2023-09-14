@@ -74,10 +74,9 @@ app.Use(async (context, next) => {
     if (url.Contains("/reactchat")) {
         string referer = context.Request.Headers["Referer"]!;
         if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
-
             // context.Response.StatusCode = StatusCodes.Status403Forbidden;
             // await context.Response.WriteAsync("Access denied.");
-            context.Response.Redirect("/");
+            // context.Response.Redirect("/");
         }
     }
     await next();
