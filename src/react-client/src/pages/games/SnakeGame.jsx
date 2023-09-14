@@ -36,17 +36,17 @@ class SnakeGame extends Component {
   };
 
   handleKeyDown = (event) => {
-    switch (event.key) {
-      case 'ArrowUp':
+    switch (event.code) {
+      case 'KeyW':
         this.setState({ direction: UP });
         break;
-      case 'ArrowDown':
+      case 'KeyS':
         this.setState({ direction: DOWN });
         break;
-      case 'ArrowLeft':
+      case 'KeyA':
         this.setState({ direction: LEFT });
         break;
-      case 'ArrowRight':
+      case 'KeyD':
         this.setState({ direction: RIGHT });
         break;
       default:
@@ -91,44 +91,47 @@ class SnakeGame extends Component {
     const { snake, food } = this.state;
 
     return (
-      <div>
-        <h1>Snake Game</h1>
-        <div
-          style={{
-            width: COLS * CELL_SIZE,
-            height: ROWS * CELL_SIZE,
-            border: '1px solid #000',
-            display: 'grid',
-            gridTemplateRows: `repeat(${ROWS}, ${CELL_SIZE}px)`,
-            gridTemplateColumns: `repeat(${COLS}, ${CELL_SIZE}px)`,
-          }}
-        >
-          {Array.from({ length: ROWS * COLS }, (_, i) => {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const isSnakeSegment = snake.some(
-              (segment) => segment.row === row && segment.col === col
-            );
-            const isFood = food.row === row && food.col === col;
+      <div className="d-flex justify-content-center mb-4">
+        <div>
+          <h1>Snake Game</h1>
+          <div
+            style={{
+              width: COLS * CELL_SIZE,
+              height: ROWS * CELL_SIZE,
+              border: '1px solid #000',
+              display: 'grid',
+              gridTemplateRows: `repeat(${ROWS}, ${CELL_SIZE}px)`,
+              gridTemplateColumns: `repeat(${COLS}, ${CELL_SIZE}px)`,
+            }}
+          >
+            {Array.from({ length: ROWS * COLS }, (_, i) => {
+              const row = Math.floor(i / COLS);
+              const col = i % COLS;
+              const isSnakeSegment = snake.some(
+                (segment) => segment.row === row && segment.col === col
+              );
+              const isFood = food.row === row && food.col === col;
 
-            return (
-              <div
-                key={i}
-                style={{
-                  width: CELL_SIZE,
-                  height: CELL_SIZE,
-                  backgroundColor: isSnakeSegment
-                    ? 'green'
-                    : isFood
-                    ? 'red'
-                    : 'white',
-                  border: '1px solid #ccc',
-                }}
-              ></div>
-            );
-          })}
+              return (
+                <div
+                  key={i}
+                  style={{
+                    width: CELL_SIZE,
+                    height: CELL_SIZE,
+                    backgroundColor: isSnakeSegment
+                      ? 'green'
+                      : isFood
+                        ? 'red'
+                        : 'white',
+                    border: '1px solid #ccc',
+                  }}
+                ></div>
+              );
+            })}
+          </div>
         </div>
       </div>
+
     );
   }
 }
