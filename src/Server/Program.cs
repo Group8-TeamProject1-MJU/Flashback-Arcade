@@ -63,22 +63,25 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+// react client에서만 iframe 사용 가능하도록 CSR 추가
 app.Use(async (context, next) => {
     context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors " + app.Configuration["ClientUrls:ReactUrl"]!);
     await next();
 });
 
+// /reactchat 채팅 페이지 iframe으로만 접근되도록 하는 middleware
+// cloud에서는 정상적으로 되지 않아 주석 처리
 app.Use(async (context, next) => {
-    string url = context.Request.Path;
+//     string url = context.Request.Path;
 
-    if (url.Contains("/reactchat")) {
-        string referer = context.Request.Headers["Referer"]!;
-        if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
-            // context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            // await context.Response.WriteAsync("Access denied.");
-            // context.Response.Redirect("/");
-        }
-    }
+//     if (url.Contains("/reactchat")) {
+//         string referer = context.Request.Headers["Referer"]!;
+//         if (string.IsNullOrEmpty(referer) || !referer.Contains(app.Configuration["ClientUrls:ReactUrl"]!)) {
+//             // context.Response.StatusCode = StatusCodes.Status403Forbidden;
+//             // await context.Response.WriteAsync("Access denied.");
+//             context.Response.Redirect("/");
+//         }
+//     }
     await next();
 });
 
