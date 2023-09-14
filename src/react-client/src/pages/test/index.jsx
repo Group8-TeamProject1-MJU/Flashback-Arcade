@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import ENDPOINTS, { API_BASE_URL } from "../../configs/api-endpoints";
+import { API_BASE_URL } from "../../configs/api-endpoints";
 
 export default function Test() {
     function TestCall() {

@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ENDPOINTS from '../../../configs/api-endpoints'
+import { UserContext } from '../../../contexts/UserContext';
 
 export default function Signin() {
+    const { user, setUser } = useContext(UserContext);
+
     const [formData, setFormData] = useState({
         id: '',
         password: ''
@@ -34,6 +37,13 @@ export default function Signin() {
             .then(responseFromServer => {
                 console.log(responseFromServer.Errors);
                 console.log(responseFromServer.Succeeded);
+
+                var succeeded = responseFromServer.Succeeded;
+                if (succeeded) {
+                    setUser({
+                        username: formData.id
+                    });
+                }
             })
             .catch(error => console.log(error));
     }
