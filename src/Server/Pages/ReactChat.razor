@@ -1,4 +1,4 @@
-﻿@page "/{username?}"
+@page "/reactchat/{username?}"
 
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
@@ -72,10 +72,8 @@
 
     static string GenerateRandomUsername(int length)
     {
-        System.Console.WriteLine("Started generating a username");
         Random random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        System.Console.WriteLine("Finished generating a username");
         return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
