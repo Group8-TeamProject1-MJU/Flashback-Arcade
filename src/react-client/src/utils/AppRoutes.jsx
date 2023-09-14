@@ -5,12 +5,16 @@ import Yongchan from '../pages/games/Yongchan';
 import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
 import SnakeGame from '../pages/games/SnakeGame';
-import Test from '../pages/Test/index';
+import Login from '../pages/account/login';
 
 const AppRoutes = [
   {
     index: true,
     element: <Home />
+  },
+  {
+    path: '/account/login',
+    element: <Login />
   },
   {
     path: '/games/snakegame',
@@ -31,10 +35,6 @@ const AppRoutes = [
   {
     path: '/games/jehee',
     element: <Jehee />
-  },
-  {
-    path: '/test',
-    element: <Test />
   },
   {
     path: '*',
