@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@page "/{username?}"
+
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
@@ -8,7 +9,7 @@
 <div class="form-group">
     <label>
         User:
-        <input @bind="userInput" />
+        <input disabled @bind="username" />
     </label>
 </div>
 <div class="form-group">
@@ -31,8 +32,10 @@
 @code {
     private HubConnection? hubConnection;
     private List<string> messages = new List<string>();
-    private string? userInput;
     private string? messageInput;
+
+    [Parameter]
+    public string? username { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,9 +56,7 @@
     private async Task Send()
     {
         if (hubConnection is not null)
-            {
-                await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-            }
+            await hubConnection.SendAsync("SendMessage", username, messageInput);
     }
 
     public bool IsConnected =>
@@ -66,6 +67,24 @@
         if (hubConnection is not null)
         {
             await hubConnection.DisposeAsync();
+        }
+    }
+
+    static string GenerateRandomUsername(int length)
+    {
+        System.Console.WriteLine("Started generating a username");
+        Random random = new Random();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        System.Console.WriteLine("Finished generating a username");
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (string.IsNullOrWhiteSpace(username)) {
+            username = GenerateRandomUsername(8);
         }
     }
 }

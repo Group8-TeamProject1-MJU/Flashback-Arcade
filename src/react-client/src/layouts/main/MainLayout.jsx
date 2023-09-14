@@ -3,6 +3,7 @@ import NavBar from "./NavBar"
 import Footer from './Footer';
 import { Container, Row, Col } from "react-bootstrap";
 import Iframe from 'react-iframe'
+import { API_BASE_URL } from "../../configs/api-endpoints";
 
 export default function MainLayout() {
     return (
@@ -20,12 +21,11 @@ export default function MainLayout() {
                         <Row>
                             <Col className="text-center">
                                 <Iframe
-                                    url="https://localhost:7105"
+                                    url={`${API_BASE_URL}/jeheecheon`}
                                     width="640px"
                                     height="320px"
                                     id=""
                                     className="mx-auto border-0"
-                                    style=""
                                 />
                             </Col>
                         </Row>
