@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Server;
 using Server.Hubs;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -20,11 +21,6 @@ builder.Services.AddCors(corsOpts => {
             .AllowAnyMethod()
             .AllowCredentials();
     });
-});
-
-builder.Services.ConfigureApplicationCookie(options => {
-    options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.HttpOnly = true;
 });
 
 builder.Services.AddAuthentication(o => {

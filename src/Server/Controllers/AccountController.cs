@@ -26,21 +26,15 @@ public class AccountController : ControllerBase {
         var username = json.GetString("username");
         var password = json.GetString("password");
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-            return BadRequest("Empty input");
+            return Ok(new ResponseDTO {
+                Succeeded = false,
+                Errors = new List<string> { "아이디 또는 비밀번호가 비었습니다." }
+            });
 
-        _logger.LogInformation($"{username} {password}");
-
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-        new ClaimsPrincipal(
-            new ClaimsIdentity(new List<Claim>() {
-                new Claim(ClaimTypes.NameIdentifier, password)
-            },
-            CookieAuthenticationDefaults.AuthenticationScheme)
-        ));
-
-        return Ok(new {
-            message = "Logined"
-        });
+        var response = await _accountService.SignInAsync(username!, password!);
+        var jsonResponse = JsonSerializer.Serialize(response);
+        
+        return response.Succeeded ? Ok(jsonResponse) : BadRequest(jsonResponse);
     }
 
     [HttpPost(template: "signup")]
