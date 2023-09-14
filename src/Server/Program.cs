@@ -1,4 +1,5 @@
 using ChatServer.Hubs;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -8,12 +9,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(corsOpts => {
     corsOpts.AddDefaultPolicy(b => {
-        b.AllowAnyHeader()
+        b.WithOrigins(builder.Configuration["ClientUrls:ReactUrl"]!)
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials()
-            .WithOrigins(builder.Configuration["ClientUrls:ReactUrl"]!);
+            .AllowCredentials();
     });
 });
+
+builder.Services.ConfigureApplicationCookie(options => {
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.HttpOnly = true;
+});
+
+builder.Services.AddAuthentication(o => {
+    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+    .AddCookie(o => {
+        o.LoginPath = "/api/account/login";
+    });
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -48,7 +63,13 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+app.Use(async (context, next) => {
+    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors " + app.Configuration["ClientUrls:ReactUrl"]!);    
+    await next();
+});
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseStaticFiles();
