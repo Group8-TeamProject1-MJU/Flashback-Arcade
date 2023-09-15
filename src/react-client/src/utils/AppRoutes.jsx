@@ -53,7 +53,7 @@ const AppRoutes = [
   {
     path: '/test',
     element: <Test />,
-    isPrivate: true
+    isPrivate: false
   },
   {
     path: '*',

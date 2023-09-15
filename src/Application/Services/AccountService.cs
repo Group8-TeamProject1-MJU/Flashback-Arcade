@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Application.DTOs;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
+using Infrastructure.Repositories;
 
 namespace Application.Services;
 
@@ -9,15 +9,17 @@ public class AccountService {
     private readonly ILogger _logger;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
-
+    private readonly AccountRepository _accountRepository;
     public AccountService(
         ILogger<AccountService> logger,
         SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager
+        UserManager<IdentityUser> userManager,
+        AccountRepository accountRepository
     ) {
         _logger = logger;
         _signInManager = signInManager;
         _userManager = userManager;
+        _accountRepository = accountRepository;
     }
 
     public async Task<ResponseDTO> SignInAsync(string username, string password) {
@@ -64,5 +66,9 @@ public class AccountService {
                 Succeeded = false,
                 Errors = result.Errors.Select(e => e.Description).ToList()
             };
+    }
+
+    public async Task<IdentityUser> GetByEmailAsync(string email) {
+        return await _accountRepository.GetByEmailAsync(email);
     }
 }

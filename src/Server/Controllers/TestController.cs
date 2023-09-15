@@ -27,7 +27,7 @@ public class TestController : ControllerBase {
 
 
     [HttpGet("test")]
-    public async Task<IActionResult> TestGet() {
+    public IActionResult TestGet() {
         HttpContext.User.Claims.ToList().ForEach(c => {
             System.Console.WriteLine($"{c.Type} {c.Value}");
         });

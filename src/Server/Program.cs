@@ -1,5 +1,6 @@
 using Application.Services;
 using Infrastructure.DbContexts;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountRepository>();
 
 builder.Services.AddCors(corsOpts => {
     corsOpts.AddDefaultPolicy(b => {
@@ -25,11 +27,25 @@ builder.Services.AddCors(corsOpts => {
 
 builder.Services.AddAuthentication(o => {
     o.DefaultScheme = IdentityConstants.ApplicationScheme;
-    o.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
-});
+    o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+    .AddGoogle(o => {
+        o.SaveTokens = false;
+        o.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+        o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    })
+    .AddKakaoTalk(o => {
+        o.SaveTokens = false;
+        o.CallbackPath = "/signin-kakaotalk";
+        o.ClientId = builder.Configuration["Authentication:Kakaotalk:ClientId"]!;
+        o.ClientSecret = builder.Configuration["Authentication:Kakaotalk:ClientSecret"]!;
+    });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
     options.Password.RequiredLength = 5;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
@@ -38,6 +54,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>();
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<IdentityDbContext>(option => {
     option.UseSqlite(builder.Configuration.GetConnectionString("BlogDbConnectionString")!);
@@ -98,13 +116,13 @@ app.Use(async (context, next) => {
     await next();
 });
 
-app.UseAuthentication();
-
-app.UseAuthorization();
-
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapHub<ChatHub>("/chathub");
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import ENDPOINTS from '../../../configs/api-endpoints'
+import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import { UserContext } from '../../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,6 +52,14 @@ export default function Signin() {
             .catch(error => console.log(error));
     }
 
+    function GoogleLogin() {
+        window.location.href = API_BASE_URL + "/api/account/google-signin";
+    }
+    
+    function KakaotalkLogin() {
+        window.location.href = API_BASE_URL + "/api/account/kakaotalk-signin";
+    }
+    
     return (
         <>
             <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -85,6 +93,8 @@ export default function Signin() {
                                 <Button className="mt-3" variant="primary" type="submit">
                                     로그인
                                 </Button>
+                                <Button onClick={GoogleLogin}>Google login</Button>
+                                <Button onClick={KakaotalkLogin}>Kakaotalk login</Button>
                             </Form>
                         </div>
                     </Col>
