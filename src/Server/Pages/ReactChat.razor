@@ -74,7 +74,7 @@
     {
         Random random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        return new string(Enumerable.Repeat(chars, length)
+        return "익명-" + new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
@@ -82,7 +82,7 @@
     {
         base.OnInitialized();
         if (string.IsNullOrWhiteSpace(username)) {
-            username = GenerateRandomUsername(8);
+            username = GenerateRandomUsername(6);
         }
     }
 }
