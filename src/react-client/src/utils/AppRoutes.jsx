@@ -5,40 +5,60 @@ import Yongchan from '../pages/games/Yongchan';
 import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
 import SnakeGame from '../pages/games/SnakeGame';
-import Login from '../pages/account/login';
+import Signin from '../pages/account/signin';
+import Signup from '../pages/account/signup';
+import Test from '../pages/test'
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Home />,
+    isPrivate: true
   },
   {
-    path: '/account/login',
-    element: <Login />
+    path: '/account/signin',
+    element: <Signin />,
+    isPrivate: false
+  },
+  {
+    path: '/account/signup',
+    element: <Signup />,
+    isPrivate: false
   },
   {
     path: '/games/snakegame',
-    element: <SnakeGame />
+    element: <SnakeGame />,
+    isPrivate: false
   },
   {
     path: '/games/yongchan',
-    element: <Yongchan />
+    element: <Yongchan />,
+    isPrivate: false
   },
   {
     path: '/games/gayeong',
-    element: <Gayeong />
+    element: <Gayeong />,
+    isPrivate: false
   },  
   {
     path: '/games/jiwon',
-    element: <Jiwon />
+    element: <Jiwon />,
+    isPrivate: false
   },
   {
     path: '/games/jehee',
-    element: <Jehee />
+    element: <Jehee />,
+    isPrivate: true
+  },
+  {
+    path: '/test',
+    element: <Test />,
+    isPrivate: false
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFound />,
+    isPrivate: false
   }
 ];
 

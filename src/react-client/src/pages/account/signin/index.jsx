@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import ENDPOINTS from '../../../configs/api-endpoints'
+import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
+import { UserContext } from '../../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Signin() {
+    const navigate = useNavigate();
+    const { user, setUser } = useContext(UserContext);
+
     const [formData, setFormData] = useState({
-        username: '',
+        id: '',
         password: ''
     });
 
@@ -19,27 +24,42 @@ export default function Login() {
     function handleSubmit(event) {
         event.preventDefault();
 
-        console.log('입력된 아이디:', formData.username);
-        console.log('입력된 비밀번호:', formData.password);
-        fetch(ENDPOINTS.POST_API_ACCOUNT_LOGIN, {
+        fetch(ENDPOINTS.POST_API_ACCOUNT_SIGNIN, {
             method: 'POST',
-            credentials: 'include',
             headers: {
-                "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
-                console.log(response);
-                return response.json();
+            credentials: 'include',
+            body: JSON.stringify({
+                username: formData.id,
+                password: formData.password
             })
+        })
+            .then(response => response.json())
             .then(responseFromServer => {
-                console.log(responseFromServer.message);
+                console.log(responseFromServer.Errors);
+                console.log(responseFromServer.Succeeded);
+
+                var succeeded = responseFromServer.Succeeded;
+                if (succeeded) {
+                    setUser({
+                        isAuthenticated: true,
+                        username: formData.id
+                    });
+                    navigate("/");
+                }
             })
             .catch(error => console.log(error));
     }
 
+    function GoogleLogin() {
+        window.location.href = API_BASE_URL + "/api/account/google-signin";
+    }
+    
+    function KakaotalkLogin() {
+        window.location.href = API_BASE_URL + "/api/account/kakaotalk-signin";
+    }
+    
     return (
         <>
             <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -52,14 +72,14 @@ export default function Login() {
                                     <Form.Label>아이디</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        name="username"
-                                        value={formData.username}
+                                        name="id"
+                                        value={formData.id}
                                         onChange={handleInputChange}
                                         placeholder="아이디를 입력하세요"
                                     />
                                 </Form.Group>
 
-                                <Form.Group controlId="formBasicPassword">
+                                <Form.Group className='mt-3' controlId="formBasicPassword">
                                     <Form.Label>비밀번호</Form.Label>
                                     <Form.Control
                                         type="password"
@@ -70,9 +90,11 @@ export default function Login() {
                                     />
                                 </Form.Group>
 
-                                <Button variant="primary" type="submit">
+                                <Button className="mt-3" variant="primary" type="submit">
                                     로그인
                                 </Button>
+                                <Button onClick={GoogleLogin}>Google login</Button>
+                                <Button onClick={KakaotalkLogin}>Kakaotalk login</Button>
                             </Form>
                         </div>
                     </Col>
