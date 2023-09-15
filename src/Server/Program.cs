@@ -2,6 +2,7 @@ using Application.Services;
 using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ builder.Services.AddCors(corsOpts => {
             .AllowAnyMethod()
             .AllowCredentials();
     });
+});
+
+builder.Services.ConfigureApplicationCookie(o => {
+    o.Cookie.SameSite = SameSiteMode.None;
+    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    o.Cookie.HttpOnly = true;
 });
 
 builder.Services.AddAuthentication(o => {
