@@ -28,11 +28,7 @@ public class TestController : ControllerBase {
 
     [HttpGet("test")]
     public IActionResult TestGet() {
-        HttpContext.User.Claims.ToList().ForEach(c => {
-            System.Console.WriteLine($"{c.Type} {c.Value}");
-        });
-        System.Console.WriteLine(HttpContext.User.Identity?.IsAuthenticated);
-        System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
+        _logger.LogInformation("TestGet");
         return Ok(JsonSerializer.Serialize("asdasdasd"));
     }
 }
