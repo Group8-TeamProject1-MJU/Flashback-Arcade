@@ -31,13 +31,6 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: Set environment variables
-        run: |
-          echo "GOOGLE_CLIENTID=${{ secrets.GOOGLE_CLIENTID }}" >> $GITHUB_ENV
-          echo "GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}" >> $GITHUB_ENV
-          echo "KAKAOTALK_CLIENTID=${{ secrets.KAKAOTALK_CLIENTID }}" >> $GITHUB_ENV
-          echo "KAKAOTALK_SECRET=${{ secrets.KAKAOTALK_SECRET }}" >> $GITHUB_ENV
-
       - name: Restore
         working-directory: ./src
         run: dotnet restore
