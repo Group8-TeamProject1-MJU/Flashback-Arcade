@@ -31,32 +31,37 @@ builder.Services.AddCors(corsOpts => {
     });
 });
 
-// builder.Services.ConfigureApplicationCookie(o => {
-//     o.Cookie.SameSite = SameSiteMode.None;
-//     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-//     o.Cookie.HttpOnly = true;
-//     o.Cookie.MaxAge = TimeSpan.FromHours(2);
-// });
+builder.Services.ConfigureApplicationCookie(o => {
+    o.Cookie.SameSite = SameSiteMode.None;
+    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    o.Cookie.HttpOnly = true;
+    o.Cookie.MaxAge = TimeSpan.FromHours(2);
+});
 
 builder.Services.AddAuthentication(o => {
-    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    // o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    // o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    // o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    o.DefaultScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
     o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme ,o => {
-        o.Cookie.SameSite = SameSiteMode.None;
-        o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        o.Cookie.HttpOnly = true;
-        o.Cookie.MaxAge = TimeSpan.FromHours(2);
-    })
+    // .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme ,o => {
+    //     o.Cookie.SameSite = SameSiteMode.None;
+    //     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    //     o.Cookie.HttpOnly = true;
+    //     o.Cookie.MaxAge = TimeSpan.FromHours(2);
+    // })
     .AddGoogle(o => {
-        o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        // o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        o.SignInScheme = IdentityConstants.ApplicationScheme;
         o.SaveTokens = false;
         o.ClientId = googleClientId;
         o.ClientSecret = googleSecret;
     })
     .AddKakaoTalk(o => {
-        o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        // o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        o.SignInScheme = IdentityConstants.ApplicationScheme;
         o.SaveTokens = false;
         o.CallbackPath = "/signin-kakaotalk";
         o.ClientId = kakaotalkClientId;
