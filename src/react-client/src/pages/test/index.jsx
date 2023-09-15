@@ -6,7 +6,7 @@ export default function Test() {
 const Navigate = useNavigate();
 
     function TestCall() {
-        fetch(API_BASE_URL + "/api/Test/test", {
+        fetch(API_BASE_URL + "/api/test/test", {
             method: 'GET',
             credentials: 'include'
         })
@@ -33,7 +33,7 @@ const Navigate = useNavigate();
     return (
         <>
             <Button onClick={TestCall}>Click me</Button>
-            <Button onClick={GoogleLogin}>Google login</Button>
+            {/* <Button onClick={GoogleLogin}>Google login</Button> */}
         </>
     );
 }
