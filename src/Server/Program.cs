@@ -1,13 +1,10 @@
 using Application.Services;
 using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Server;
 using Server.Hubs;
 using Swashbuckle.AspNetCore.Filters;
 
