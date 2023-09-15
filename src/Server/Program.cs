@@ -12,6 +12,11 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENTID") ?? builder.Configuration["Authentication:Google:ClientId"]!;
+string googleSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET") ?? builder.Configuration["Authentication:Google:ClientSecret"]!;
+string kakaotalkClientId = Environment.GetEnvironmentVariable("KAKAOTALK_CLIENTID") ?? builder.Configuration["Authentication:Kakaotalk:ClientId"]!;
+string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") ?? builder.Configuration["Authentication:Kakaotalk:ClientSecret"]!;
+
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
@@ -32,14 +37,14 @@ builder.Services.AddAuthentication(o => {
 })
     .AddGoogle(o => {
         o.SaveTokens = false;
-        o.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
-        o.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+        o.ClientId = googleClientId;
+        o.ClientSecret = googleSecret;
     })
     .AddKakaoTalk(o => {
         o.SaveTokens = false;
         o.CallbackPath = "/signin-kakaotalk";
-        o.ClientId = builder.Configuration["Authentication:Kakaotalk:ClientId"]!;
-        o.ClientSecret = builder.Configuration["Authentication:Kakaotalk:ClientSecret"]!;
+        o.ClientId = kakaotalkClientId;
+        o.ClientSecret = kakaotalkSecret;
     });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
