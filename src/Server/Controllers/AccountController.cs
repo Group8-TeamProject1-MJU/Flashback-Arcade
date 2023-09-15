@@ -99,7 +99,7 @@ public class AccountController : ControllerBase {
 
         Console.WriteLine(info.Principal.HasClaim(c => c.Type == ClaimTypes.Email));
         // Attempt to external-login with the session loaded up
-        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
 
         if (result.Succeeded) {
             _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity?.Name, info.LoginProvider);
