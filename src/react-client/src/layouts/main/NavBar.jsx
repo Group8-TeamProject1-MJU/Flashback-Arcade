@@ -26,6 +26,7 @@ const NavBar = () => {
               <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
               <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
               <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>
+              <Nav.Link as={Link} to="/test">Test</Nav.Link>
 
               <NavDropdown
                 title="Dropdown"
