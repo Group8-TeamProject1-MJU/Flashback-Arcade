@@ -5,6 +5,7 @@ using Application.Services;
 using AspNet.Security.OAuth.KakaoTalk;
 using AspNet.Security.OAuth.Naver;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -78,7 +79,7 @@ public class AccountController : ControllerBase {
 
         return Challenge(prop, NaverAuthenticationDefaults.AuthenticationScheme);
     }
-    
+
     [HttpGet(template: "kakaotalk-signin")]
     public IActionResult KakaotalkSignin() {
         var prop = _signInManager.ConfigureExternalAuthenticationProperties(KakaoTalkAuthenticationDefaults.AuthenticationScheme, "/api/account/oauth-cb");
@@ -105,7 +106,17 @@ public class AccountController : ControllerBase {
             _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity?.Name, info.LoginProvider);
             if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email)) {
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                await _signInManager.SignInAsync(user!, true);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+                    new ClaimsIdentity(
+                        new List<Claim> {
+                            new Claim(ClaimTypes.Email, info.Principal.FindFirstValue(ClaimTypes.Email)!),
+                            new Claim(ClaimTypes.Name, info.Principal.FindFirstValue(ClaimTypes.Email)!)
+                        },
+                        CookieAuthenticationDefaults.AuthenticationScheme
+                    )
+                ));
+                // await _signInManager.SignInAsync(user!, true);
             }
             return Redirect(_configuration["ClientUrls:ReactUrl"]!);
         }
@@ -120,7 +131,16 @@ public class AccountController : ControllerBase {
                     var addResult = await _userManager.AddLoginAsync(user, info);
 
                     if (addResult.Succeeded) {
-                        await _signInManager.SignInAsync(user!, true);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+                            new ClaimsIdentity(
+                                new List<Claim> {
+                                    new Claim(ClaimTypes.Email, info.Principal.FindFirstValue(ClaimTypes.Email)!),
+                                    new Claim(ClaimTypes.Name, info.Principal.FindFirstValue(ClaimTypes.Email)!)
+                                },
+                                CookieAuthenticationDefaults.AuthenticationScheme
+                            )
+                        ));
+                        // await _signInManager.SignInAsync(user!, true);
                     }
                     // return Redirect(_configuration["ClientUrls:ReactUrl"]!);
                 }
@@ -136,8 +156,16 @@ public class AccountController : ControllerBase {
                         var addResult = await _userManager.AddLoginAsync(user, info);
                         if (addResult.Succeeded) {
                             _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-
-                            await _signInManager.SignInAsync(user!, true);
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+                                new ClaimsIdentity(
+                                    new List<Claim> {
+                                        new Claim(ClaimTypes.Email, info.Principal.FindFirstValue(ClaimTypes.Email)!),
+                                        new Claim(ClaimTypes.Name, info.Principal.FindFirstValue(ClaimTypes.Email)!)
+                                    },
+                                    CookieAuthenticationDefaults.AuthenticationScheme
+                                )
+                            ));
+                            // await _signInManager.SignInAsync(user!, true);
 
                             // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
