@@ -32,6 +32,7 @@ builder.Services.ConfigureApplicationCookie(o => {
     o.Cookie.SameSite = SameSiteMode.None;
     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     o.Cookie.HttpOnly = true;
+    o.Cookie.MaxAge = TimeSpan.FromHours(2);
 });
 
 builder.Services.AddAuthentication(o => {
