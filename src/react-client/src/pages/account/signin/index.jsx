@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Nav } from 'react-bootstrap';
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import { UserContext } from '../../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signin() {
     const navigate = useNavigate();
@@ -49,7 +49,7 @@ export default function Signin() {
                     });
                     navigate("/");
                 }
-                else 
+                else
                     setErrMsgs(responseFromServer.Errors);
             })
             .catch(error => console.log(error));
@@ -95,6 +95,9 @@ export default function Signin() {
 
                                 <Button className="mt-3" variant="primary" type="submit">
                                     로그인
+                                </Button>
+                                <Button className="mt-3" variant="primary" type="submit">
+                                    <Nav.Link as={Link} to="/account/signup">회원가입</Nav.Link>
                                 </Button>
                                 <Button onClick={GoogleLogin}>Google login</Button>
                                 <Button onClick={KakaotalkLogin}>Kakaotalk login</Button>
