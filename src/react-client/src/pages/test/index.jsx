@@ -13,6 +13,7 @@ const Navigate = useNavigate();
             .then(response => response.json())
             .then(json => {
                 console.log(json);
+                console.log(json.username);
             })
             .catch(error => console.log(error));
     }

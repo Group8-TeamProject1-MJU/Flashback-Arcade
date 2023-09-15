@@ -21,6 +21,7 @@ export default function MainLayout(props) {
                         <Outlet />
 
                         <div className="text-center">
+                            {console.log(user.username)}
                             <Iframe
                                 url={`${API_BASE_URL}/reactchat/${user.username}`}
                                 width="640px"

@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../configs/api-endpoints';
+import LoadLoginSession from '../utils/Account';
 
 export const UserContext = createContext(null);
 
@@ -7,6 +9,10 @@ export function UserProvider({ children }) {
         isAuthenticated: false,
         username: ""
     });
+
+    useEffect(() => {
+        LoadLoginSession();
+    }, []);
 
     return (
         <UserContext.Provider
