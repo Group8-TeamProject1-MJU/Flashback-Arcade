@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Application.DTOs;
 using Microsoft.Extensions.Logging;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace Application.Services;
 
@@ -10,16 +14,19 @@ public class AccountService {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly AccountRepository _accountRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     public AccountService(
         ILogger<AccountService> logger,
         SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        AccountRepository accountRepository
+        AccountRepository accountRepository,
+        IHttpContextAccessor httpContextAccessor
     ) {
         _logger = logger;
         _signInManager = signInManager;
         _userManager = userManager;
         _accountRepository = accountRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ResponseDTO> SignInAsync(string username, string password) {
@@ -31,8 +38,8 @@ public class AccountService {
                 Errors = new List<string> { "유저아이디 또는 비밀번호가 일치하지 않습니다" }
             };
 
-        // var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
-        var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+        // var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
 
         if (!result.Succeeded)
             return new ResponseDTO() {
@@ -43,6 +50,14 @@ public class AccountService {
             // await _signInManager.SignInWithClaimsAsync(user, false, new List<Claim> {
             //     new Claim(ClaimTypes.NameIdentifier, username)
             // });
+            await _httpContextAccessor.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new List<Claim>() {
+                        new Claim(ClaimTypes.Name, username)
+                    }
+                    , CookieAuthenticationDefaults.AuthenticationScheme
+                )
+            ));
 
             return new ResponseDTO { Succeeded = true };
         }

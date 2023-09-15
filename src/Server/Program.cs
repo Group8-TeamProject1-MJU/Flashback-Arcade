@@ -1,6 +1,7 @@
 using Application.Services;
 using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") 
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddCors(corsOpts => {
     corsOpts.AddDefaultPolicy(b => {
         b.WithOrigins(builder.Configuration["ClientUrls:ReactUrl"]!)
@@ -28,24 +31,32 @@ builder.Services.AddCors(corsOpts => {
     });
 });
 
-builder.Services.ConfigureApplicationCookie(o => {
-    o.Cookie.SameSite = SameSiteMode.None;
-    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    o.Cookie.HttpOnly = true;
-    o.Cookie.MaxAge = TimeSpan.FromHours(2);
-});
+// builder.Services.ConfigureApplicationCookie(o => {
+//     o.Cookie.SameSite = SameSiteMode.None;
+//     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+//     o.Cookie.HttpOnly = true;
+//     o.Cookie.MaxAge = TimeSpan.FromHours(2);
+// });
 
 builder.Services.AddAuthentication(o => {
-    o.DefaultScheme = IdentityConstants.ApplicationScheme;
-    o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme ,o => {
+        o.Cookie.SameSite = SameSiteMode.None;
+        o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        o.Cookie.HttpOnly = true;
+        o.Cookie.MaxAge = TimeSpan.FromHours(2);
+    })
     .AddGoogle(o => {
+        o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         o.SaveTokens = false;
         o.ClientId = googleClientId;
         o.ClientSecret = googleSecret;
     })
     .AddKakaoTalk(o => {
+        o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         o.SaveTokens = false;
         o.CallbackPath = "/signin-kakaotalk";
         o.ClientId = kakaotalkClientId;

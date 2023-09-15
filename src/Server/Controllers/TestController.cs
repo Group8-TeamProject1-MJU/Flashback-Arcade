@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,6 +30,16 @@ public class TestController : ControllerBase {
     [HttpGet("test")]
     public IActionResult TestGet() {
         _logger.LogInformation("TestGet");
-        return Ok(JsonSerializer.Serialize("asdasdasd"));
+
+        HttpContext.User.Claims.ToList().ForEach(c => {
+            System.Console.WriteLine($"{c.Type} {c.Value}");
+        });
+        System.Console.WriteLine(HttpContext.User.Identity?.IsAuthenticated);
+        System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
+        
+        return Ok(JsonSerializer.Serialize(new {
+            username = HttpContext.User.FindFirstValue(ClaimTypes.Name),
+            email = HttpContext.User.FindFirstValue(ClaimTypes.Email)
+        }));
     }
 }
