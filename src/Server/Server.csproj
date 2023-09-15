@@ -19,15 +19,15 @@
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
     <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\BlogDb.db</TargetPath>
+      <TargetPath>.\Data\IdentityDb.db</TargetPath>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-shm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\BlogDb.db-shm</TargetPath>
+      <TargetPath>.\Data\IdentityDb.db-shm</TargetPath>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-wal">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\BlogDb.db-wal</TargetPath>
+      <TargetPath>.\Data\IdentityDb.db-wal</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
 </Project>
