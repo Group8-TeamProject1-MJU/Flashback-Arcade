@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Signin() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
+    const [errMsgs, setErrMsgs] = useState([]);
 
     const [formData, setFormData] = useState({
         id: '',
@@ -48,6 +49,8 @@ export default function Signin() {
                     });
                     navigate("/");
                 }
+                else 
+                    setErrMsgs(responseFromServer.Errors);
             })
             .catch(error => console.log(error));
     }
@@ -55,11 +58,11 @@ export default function Signin() {
     function GoogleLogin() {
         window.location.href = API_BASE_URL + "/api/account/google-signin";
     }
-    
+
     function KakaotalkLogin() {
         window.location.href = API_BASE_URL + "/api/account/kakaotalk-signin";
     }
-    
+
     return (
         <>
             <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -95,6 +98,11 @@ export default function Signin() {
                                 </Button>
                                 <Button onClick={GoogleLogin}>Google login</Button>
                                 <Button onClick={KakaotalkLogin}>Kakaotalk login</Button>
+                                <div className='mt-3 text-danger w-auto'>
+                                    {errMsgs.map((msg, idx) => (
+                                        <p key={idx}>{msg}</p>
+                                    ))}
+                                </div>
                             </Form>
                         </div>
                     </Col>
