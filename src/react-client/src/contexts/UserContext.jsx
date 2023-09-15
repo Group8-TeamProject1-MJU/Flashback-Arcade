@@ -11,7 +11,19 @@ export function UserProvider({ children }) {
     });
 
     useEffect(() => {
-        LoadLoginSession();
+        // LoadLoginSession();
+        fetch(API_BASE_URL + "/api/test/test", {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(json => {
+                setUser({
+                    isAuthenticated: true,
+                    username: json.username.replace(/\s+/g, '')
+                });
+            })
+            .catch(error => console.log(error));
     }, []);
 
     return (
