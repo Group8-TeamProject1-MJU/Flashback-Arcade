@@ -32,6 +32,9 @@ builder.Services.ConfigureApplicationCookie(o => {
     o.Cookie.SameSite = SameSiteMode.None;
     o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     o.Cookie.HttpOnly = true;
+    if (!builder.Environment.IsDevelopment()) {
+        o.Cookie.Domain = ".zealous-forest-0f6f05700.3.azurestaticapps.net";
+    }
 });
 
 builder.Services.AddAuthentication(o => {
