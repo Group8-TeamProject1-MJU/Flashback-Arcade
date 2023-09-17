@@ -13,6 +13,7 @@
     <PackageReference Include="AspNet.Security.OAuth.KakaoTalk" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.8" />
     <PackageReference Include="AspNet.Security.OAuth.Naver" Version="7.0.4" />
+    <PackageReference Include="MailKit" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

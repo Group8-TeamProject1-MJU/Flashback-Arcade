@@ -1,10 +1,14 @@
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Application.Services;
+using Domain.IServices;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MimeKit.Text;
 
 namespace Server.Controllers;
 
@@ -15,15 +19,18 @@ public class TestController : ControllerBase {
     private readonly ILogger _logger;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly EmailService _emailService;
 
     public TestController(
         ILogger<TestController> logger,
         SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager
+        UserManager<IdentityUser> userManager,
+        IEmailService emailService 
     ) {
         _logger = logger;
         _signInManager = signInManager;
         _userManager = userManager;
+        _emailService = (emailService as EmailService)!;
     }
 
 
@@ -36,10 +43,17 @@ public class TestController : ControllerBase {
         });
         System.Console.WriteLine(HttpContext.User.Identity?.IsAuthenticated);
         System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
-        
+
         return Ok(JsonSerializer.Serialize(new {
             username = HttpContext.User.FindFirstValue(ClaimTypes.Name),
             email = HttpContext.User.FindFirstValue(ClaimTypes.Email)
         }));
+    }
+
+    [HttpPost("mail")]
+    public async Task<IActionResult> MailAsync(string body) {
+        await _emailService.SendFromServerAsync("jeheecheon@gmail.com", "Test!!", body);
+
+        return Ok("ok~~");
     }
 }

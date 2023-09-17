@@ -1,7 +1,7 @@
 using Application.Services;
+using Domain.IServices;
 using Infrastructure.DbContexts;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +19,7 @@ string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") 
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();
 
