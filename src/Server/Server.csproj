@@ -21,13 +21,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>.\Data\IdentityDb.db</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-shm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\IdentityDb.db-shm</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db-wal">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\IdentityDb.db-wal</TargetPath>
-    </ContentWithTargetPath>
   </ItemGroup>
 </Project>
