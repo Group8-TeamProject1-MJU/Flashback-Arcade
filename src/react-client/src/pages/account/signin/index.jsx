@@ -55,11 +55,13 @@ export default function Signin() {
             .catch(error => console.log(error));
     }
 
-    function GoogleLogin() {
+    function GoogleLogin(e) {
+        e.preventDefault();
         window.location.href = API_BASE_URL + "/api/account/google-signin";
     }
 
-    function KakaotalkLogin() {
+    function KakaotalkLogin(e) {
+        e.preventDefault();
         window.location.href = API_BASE_URL + "/api/account/kakaotalk-signin";
     }
 

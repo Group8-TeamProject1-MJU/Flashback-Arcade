@@ -66,6 +66,14 @@ public class AccountController : ControllerBase {
         return response.Succeeded ? Ok(jsonResponse) : BadRequest(jsonResponse);
     }
 
+    [HttpPost(template: "signout")]
+    public async Task<IActionResult> SignoutAsync() {
+        await _signInManager.SignOutAsync();
+        return Ok(new ResponseDTO {
+            Succeeded = true
+        });
+    }
+
     [HttpGet(template: "google-signin")]
     public IActionResult GoogleSignIn() {
         var prop = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, "/api/account/oauth-cb");

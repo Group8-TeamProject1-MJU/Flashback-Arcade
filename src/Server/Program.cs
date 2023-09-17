@@ -45,6 +45,7 @@ builder.Services.AddAuthentication(o => {
     o.DefaultScheme = IdentityConstants.ApplicationScheme;
     o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
     o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    o.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
 })
     // .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme ,o => {
     //     o.Cookie.SameSite = SameSiteMode.None;
@@ -54,14 +55,14 @@ builder.Services.AddAuthentication(o => {
     // })
     .AddGoogle(o => {
         // o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        o.SignInScheme = IdentityConstants.ApplicationScheme;
+        o.SignInScheme = IdentityConstants.ExternalScheme;
         o.SaveTokens = false;
         o.ClientId = googleClientId;
         o.ClientSecret = googleSecret;
     })
     .AddKakaoTalk(o => {
         // o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        o.SignInScheme = IdentityConstants.ApplicationScheme;
+        o.SignInScheme = IdentityConstants.ExternalScheme;
         o.SaveTokens = false;
         o.CallbackPath = "/signin-kakaotalk";
         o.ClientId = kakaotalkClientId;

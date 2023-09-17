@@ -1,7 +1,12 @@
 import { Button, Container, Form, Nav, NavDropdown, Navbar, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../configs/api-endpoints";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
+  const { user, setUser } = useContext(UserContext);
+
   return (
     <Navbar expand='md' className="bg-dark-subtle m-0">
       <Container fluid>
@@ -27,6 +32,22 @@ const NavBar = () => {
               <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
               <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>
               <Nav.Link as={Link} to="/test">Test</Nav.Link>
+              <Button onClick={() => {
+                fetch(API_BASE_URL + "/api/account/signout", {
+                  method: 'POST',
+                  credentials: 'include'
+                })
+                  .then(response => response.json())
+                  .then(json => {
+                    console.log(json);
+                    if (json.Succeeded = true) {
+                      setUser({
+                        isAuthenticated: false
+                      });
+                    }
+                  })
+                  .catch(error => console.log(error));
+              }}>로그아웃</Button>
 
               <NavDropdown
                 title="Dropdown"
