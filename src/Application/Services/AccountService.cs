@@ -48,11 +48,13 @@ public class AccountService {
                 Errors = new List<string> { "유저아이디 또는 비밀번호가 일치하지 않습니다" }
             };
 
-        if (!user.EmailConfirmed)
+        if (!user.EmailConfirmed) {
+            await SendConfirmationEmail(user);
             return new ResponseDTO() {
                 Succeeded = false,
                 Errors = new List<string> { "이메일 인증을 완료해주세요" }
             };
+        }
 
         // var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
         var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
@@ -91,20 +93,8 @@ public class AccountService {
         var result = await _userManager.CreateAsync(user, password);
         var httpContext = _httpContextAccessor.HttpContext!;
         if (result.Succeeded) {
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
-            _logger.LogInformation(token);
-
-            var url = $"{_configuration["ClientUrls:ReactUrl"]!}/account/confirm-email?token={token}&email={email}";
-
-            var body = $"<h3>아래 링크를 눌러 이메일 인증을 완료해주세요</h3><br /><a href={url}>인증페이지로 이동</a>";
-            var isSent = await _emailService.SendFromServerAsync(email, "Flashback Arcade 회원가입을 완료해주세요", body);
-            if (!isSent) {
-                _logger.LogInformation("Failed to send an email...");
-            }
-
-            return new ResponseDTO { Succeeded = true };
+            var isSent = await SendConfirmationEmail(user);
+            return isSent ? new ResponseDTO { Succeeded = true } : new ResponseDTO { Succeeded = false };
         }
         else
             return new ResponseDTO() {
@@ -115,5 +105,23 @@ public class AccountService {
 
     public async Task<IdentityUser> GetByEmailAsync(string email) {
         return await _accountRepository.GetByEmailAsync(email);
+    }
+
+    public async Task<bool> SendConfirmationEmail(IdentityUser user) {
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+        _logger.LogInformation(token);
+
+        var url = $"{_configuration["ClientUrls:ReactUrl"]!}/account/confirm-email?token={token}&email={user.Email}";
+        var body = $"<h3>아래 링크를 눌러 이메일 인증을 완료해주세요</h3><br /><a href={url}>인증페이지로 이동</a>";
+
+        var isSent = await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 회원가입을 완료해주세요", body);
+        if (!isSent) {
+            _logger.LogInformation("Failed to send an email...");
+            return false;
+        }
+        else
+            return true;
     }
 }
