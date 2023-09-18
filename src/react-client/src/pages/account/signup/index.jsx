@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
+import PacmanLoader from "react-spinners/PacmanLoader";
+
+const override = {
+    display: "block",
+    margin: "0 auto",
+};
 
 export default function Signup() {
     let navigate = useNavigate();
+
+    let [loading, setLoading] = useState(false);
+    let [color, setColor] = useState("#36d7b7");
 
     const [formData, setFormData] = useState({
         id: '',
@@ -29,6 +38,7 @@ export default function Signup() {
 
     function handleSubmit(event) {
         event.preventDefault();
+        setLoading(true);
 
         console.log('입력된 아이디:', formData.id);
         console.log('입력된 이메일:', formData.email);
@@ -80,69 +90,80 @@ export default function Signup() {
 
     return (
         <>
-            <Container className="d-flex justify-content-center align-items-center vh-100">
+            <Container className="d-flex justify-content-center align-items-center vh-100 sweet-loading">
 
-                <div className="bg-yellow p-4 rounded border-2 border-black">
-                    <h2 className="text-center mb-4">회원가입</h2>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="formBasicId">
-                            <Form.Label>아이디</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="id"
-                                value={formData.id}
-                                onChange={handleInputChange}
-                                placeholder="아이디를 입력하세요"
-                            />
-                        </Form.Group>
+                {loading ? (
+                    <PacmanLoader
+                        color={color}
+                        loading={loading}
+                        cssOverride={override}
+                        size={100}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
+                ) : (
+                    <div className="bg-yellow p-4 rounded border-2 border-black">
+                        <h2 className="text-center mb-4">회원가입</h2>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group controlId="formBasicId">
+                                <Form.Label>아이디</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="id"
+                                    value={formData.id}
+                                    onChange={handleInputChange}
+                                    placeholder="아이디를 입력하세요"
+                                />
+                            </Form.Group>
 
-                        <Form.Group controlId="formBasicId">
-                            <Form.Label>이메일</Form.Label>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder="이메일을 입력하세요"
-                            />
-                        </Form.Group>
+                            <Form.Group controlId="formBasicId">
+                                <Form.Label>이메일</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="이메일을 입력하세요"
+                                />
+                            </Form.Group>
 
-                        <Form.Group className='mt-3' controlId="formBasicPassword">
-                            <Form.Label>비밀번호</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                placeholder="비밀번호를 입력하세요"
-                            />
-                        </Form.Group>
+                            <Form.Group className='mt-3' controlId="formBasicPassword">
+                                <Form.Label>비밀번호</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    placeholder="비밀번호를 입력하세요"
+                                />
+                            </Form.Group>
 
-                        <Form.Group className='mt-3' controlId="formBasicPasswordConfirm">
-                            <Form.Label>비밀번호 확인</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="passwordConfirm"
-                                value={formData.passwordConfirm}
-                                onChange={handleInputChange}
-                                placeholder="비밀번호를 재입력하세요"
-                            />
-                        </Form.Group>
+                            <Form.Group className='mt-3' controlId="formBasicPasswordConfirm">
+                                <Form.Label>비밀번호 확인</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="passwordConfirm"
+                                    value={formData.passwordConfirm}
+                                    onChange={handleInputChange}
+                                    placeholder="비밀번호를 재입력하세요"
+                                />
+                            </Form.Group>
 
-                        <Button className="mt-3" variant="primary" type="submit">
-                            회원가입
-                        </Button>
+                            <Button className="mt-3" variant="primary" type="submit">
+                                회원가입
+                            </Button>
 
 
-                        <div className='mt-3 text-danger w-auto'>
-                            {showIdErrorMsg && (<p>아이디는 5자 이상 입력해주세요</p>)}
-                            {showPwdErrorMsg && (<p>비밀번호는 5자 이상 입력해주세요</p>)}
-                            {showPwdConfirmErrorMsg && (<p>비밀번호가 일치하지 않습니다</p>)}
-                            {msgsFromServer !== "" && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
-                        </div>
+                            <div className='mt-3 text-danger w-auto'>
+                                {showIdErrorMsg && (<p>아이디는 5자 이상 입력해주세요</p>)}
+                                {showPwdErrorMsg && (<p>비밀번호는 5자 이상 입력해주세요</p>)}
+                                {showPwdConfirmErrorMsg && (<p>비밀번호가 일치하지 않습니다</p>)}
+                                {msgsFromServer !== "" && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
+                            </div>
 
-                    </Form>
-                </div>
+                        </Form>
+                    </div>
+                )}
             </Container>
         </>
     );
