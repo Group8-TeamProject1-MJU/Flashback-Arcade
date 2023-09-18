@@ -48,6 +48,12 @@ public class AccountService {
                 Errors = new List<string> { "유저아이디 또는 비밀번호가 일치하지 않습니다" }
             };
 
+        if (!user.EmailConfirmed)
+            return new ResponseDTO() {
+                Succeeded = false,
+                Errors = new List<string> { "이메일 인증을 완료해주세요" }
+            };
+
         // var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
         var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
 

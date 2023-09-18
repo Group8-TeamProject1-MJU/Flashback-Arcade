@@ -68,8 +68,10 @@ export default function Signup() {
                 console.log(responseFromServer.Succeeded);
 
                 var succeeded = responseFromServer.Succeeded;
-                if (succeeded)
+                if (succeeded) {
+                    alert("회원가입 인증 이메일이 전송되었습니다.");
                     navigate("/account/signin");
+                }
                 else
                     setMsgsFromServer(responseFromServer.Errors);
             })
