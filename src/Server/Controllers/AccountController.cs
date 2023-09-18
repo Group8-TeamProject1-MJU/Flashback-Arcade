@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using Application.DTOs;
 using Application.Services;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Server.Controllers;
 
@@ -54,13 +56,15 @@ public class AccountController : ControllerBase {
     public async Task<IActionResult> SignupAsync(JsonElement json) {
         var username = json.GetString("username");
         var password = json.GetString("password");
-        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        var email = json.GetString("email");
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email))
             return Ok(new ResponseDTO {
                 Succeeded = false,
-                Errors = new List<string> { "아이디 또는 비밀번호가 비었습니다." }
+                Errors = new List<string> { "이메일, 비밀번호, 아이디 중 값이 비어있습니다." }
             });
 
-        var response = await _accountService.SignUpAsync(username!, password!);
+        var response = await _accountService.SignUpAsync(username!, password!, email!);
         var jsonResponse = JsonSerializer.Serialize(response);
 
         return response.Succeeded ? Ok(jsonResponse) : BadRequest(jsonResponse);
@@ -198,5 +202,26 @@ public class AccountController : ControllerBase {
             }
             return Redirect(_configuration["ClientUrls:ReactUrl"]!);
         }
+    }
+
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(string token, string email) {
+        string msg;
+        _logger.LogInformation($"token before decoding: {token}");
+        _logger.LogInformation(email);
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null) {
+            msg = "The matching user doesn't exist with the provided email";
+            _logger.LogInformation(msg);
+            return BadRequest(new { msg });
+        }
+
+        token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+        _logger.LogInformation($"token after decoding: {token}");
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        msg = result.Succeeded ? "메일 인증에 성공했습니다." : "메일 인증에 실패했습니다.";
+        return Ok(new { msg });
     }
 }

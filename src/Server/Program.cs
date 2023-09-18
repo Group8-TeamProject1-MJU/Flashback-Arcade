@@ -71,8 +71,8 @@ builder.Services.AddAuthentication(o => {
     });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.SignIn.RequireConfirmedEmail = false;
+    // options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
     options.Password.RequiredLength = 5;
     options.Password.RequireNonAlphanumeric = false;

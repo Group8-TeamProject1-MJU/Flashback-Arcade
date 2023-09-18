@@ -8,6 +8,7 @@ export default function Signup() {
 
     const [formData, setFormData] = useState({
         id: '',
+        email: '',
         password: '',
         passwordConfirm: ''
     });
@@ -30,8 +31,9 @@ export default function Signup() {
         event.preventDefault();
 
         console.log('입력된 아이디:', formData.id);
+        console.log('입력된 이메일:', formData.email);
         console.log('입력된 비밀번호:', formData.password);
-        console.log('입력된 비밀번호:', formData.passwordConfirm);
+        console.log('입력된 비밀번호확인:', formData.passwordConfirm);
 
         if (formData.id.length < 5)
             setShowIdErrorMsg(true);
@@ -56,6 +58,7 @@ export default function Signup() {
             },
             body: JSON.stringify({
                 username: formData.id,
+                email: formData.email,
                 password: formData.password
             })
         })
@@ -88,6 +91,17 @@ export default function Signup() {
                                 value={formData.id}
                                 onChange={handleInputChange}
                                 placeholder="아이디를 입력하세요"
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBasicId">
+                            <Form.Label>이메일</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                placeholder="이메일을 입력하세요"
                             />
                         </Form.Group>
 
