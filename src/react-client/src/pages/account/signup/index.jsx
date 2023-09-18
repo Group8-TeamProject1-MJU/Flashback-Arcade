@@ -4,16 +4,10 @@ import { useNavigate } from "react-router-dom";
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import PacmanLoader from "react-spinners/PacmanLoader";
 
-const override = {
-    display: "block",
-    margin: "0 auto",
-};
-
 export default function Signup() {
     let navigate = useNavigate();
 
     let [loading, setLoading] = useState(false);
-    let [color, setColor] = useState("#36d7b7");
 
     const [formData, setFormData] = useState({
         id: '',
@@ -82,8 +76,10 @@ export default function Signup() {
                     alert("회원가입 인증 이메일이 전송되었습니다.");
                     navigate("/account/signin");
                 }
-                else
+                else {
+                    setLoading(false);
                     setMsgsFromServer(responseFromServer.Errors);
+                }
             })
             .catch(error => console.log(error));
     }
@@ -94,9 +90,8 @@ export default function Signup() {
 
                 {loading ? (
                     <PacmanLoader
-                        color={color}
+                        color="#36d7b7"
                         loading={loading}
-                        cssOverride={override}
                         size={100}
                         aria-label="Loading Spinner"
                         data-testid="loader"
