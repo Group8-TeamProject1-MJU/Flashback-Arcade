@@ -7,7 +7,7 @@ import CustomPacmanLoader from '../../../components/PacmanLoader';
 export default function Signup() {
     let navigate = useNavigate();
 
-    let [loading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         id: '',

@@ -63,12 +63,16 @@ export default function Signin() {
 
     function GoogleLogin(e) {
         e.preventDefault();
+        setLoading(true);
         window.location.href = API_BASE_URL + "/api/account/google-signin";
+        // setLoading(false);
     }
 
     function KakaotalkLogin(e) {
         e.preventDefault();
+        setLoading(true);
         window.location.href = API_BASE_URL + "/api/account/kakaotalk-signin";
+        // setLoading(false);
     }
 
     return (
