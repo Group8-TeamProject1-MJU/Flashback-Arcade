@@ -4,11 +4,11 @@ import Gayeong from '../pages/games/Gayeong';
 import Yongchan from '../pages/games/Yongchan';
 import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
-import SnakeGame from '../pages/games/SnakeGame';
 import Signin from '../pages/account/signin';
 import Signup from '../pages/account/signup';
 import Test from '../pages/test'
 import ConfirmEmail from '../pages/account/confirm-email';
+import SnakeGame from '../pages/games/snake-game';
 
 const AppRoutes = [
   {
@@ -32,7 +32,7 @@ const AppRoutes = [
     isPrivate: false
   },
   {
-    path: '/games/snakegame',
+    path: '/games/snake-game',
     element: <SnakeGame />,
     isPrivate: false
   },

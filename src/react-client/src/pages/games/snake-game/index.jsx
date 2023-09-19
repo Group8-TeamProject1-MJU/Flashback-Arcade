@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 
 const ROWS = 10;
 const COLS = 10;
-const CELL_SIZE = 20;
+const CELL_SIZE = 40; // 타일 크기를 40px로 늘림
 const UP = 'UP';
 const DOWN = 'DOWN';
 const LEFT = 'LEFT';
 const RIGHT = 'RIGHT';
+
+const controllerStyle = {
+  width: '40px',
+  height: '40px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'lightgray',
+  fontSize: '24px',
+  cursor: 'pointer',
+};
 
 class SnakeGame extends Component {
   constructor() {
@@ -54,6 +65,35 @@ class SnakeGame extends Component {
     }
   };
 
+  handleTouch = (event) => {
+    const { direction } = this.state;
+
+    switch (event.target.id) {
+      case 'up':
+        if (direction !== DOWN) {
+          this.setState({ direction: UP });
+        }
+        break;
+      case 'down':
+        if (direction !== UP) {
+          this.setState({ direction: DOWN });
+        }
+        break;
+      case 'left':
+        if (direction !== RIGHT) {
+          this.setState({ direction: LEFT });
+        }
+        break;
+      case 'right':
+        if (direction !== LEFT) {
+          this.setState({ direction: RIGHT });
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   moveSnake = () => {
     const { snake, direction, food } = this.state;
     const newSnake = [...snake];
@@ -74,6 +114,19 @@ class SnakeGame extends Component {
         break;
       default:
         break;
+    }
+
+    // 게임 종료 조건: 뱀의 머리가 화면을 벗어나면 게임 종료
+    if (
+      head.row < 0 ||
+      head.row >= ROWS ||
+      head.col < 0 ||
+      head.col >= COLS ||
+      newSnake.some((segment) => segment.row === head.row && segment.col === head.col)
+    ) {
+      clearInterval(this.intervalId);
+      alert('게임 종료!');
+      return;
     }
 
     newSnake.unshift(head);
@@ -121,17 +174,68 @@ class SnakeGame extends Component {
                     backgroundColor: isSnakeSegment
                       ? 'green'
                       : isFood
-                        ? 'red'
-                        : 'white',
+                      ? 'red'
+                      : 'white',
                     border: '1px solid #ccc',
                   }}
                 ></div>
               );
             })}
           </div>
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '20px',
+              }}
+            >
+              <div
+                id="up"
+                onTouchStart={this.handleTouch}
+                style={controllerStyle}
+              >
+                ↑
+              </div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div
+                id="left"
+                onTouchStart={this.handleTouch}
+                style={controllerStyle}
+              >
+                ←
+              </div>
+              <div
+                id="right"
+                onTouchStart={this.handleTouch}
+                style={controllerStyle}
+              >
+                →
+              </div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                id="down"
+                onTouchStart={this.handleTouch}
+                style={controllerStyle}
+              >
+                ↓
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     );
   }
 }

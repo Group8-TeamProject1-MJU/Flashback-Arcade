@@ -25,7 +25,7 @@ const NavBar = () => {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/games/snakegame">SnakeGame</Nav.Link>
+              <Nav.Link as={Link} to="/games/snake-game">SnakeGame</Nav.Link>
 
               <Nav.Link as={Link} to="/games/Jehee">Jehee</Nav.Link>
               <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
