@@ -9,6 +9,7 @@ import Signup from '../pages/account/signup';
 import Test from '../pages/test'
 import ConfirmEmail from '../pages/account/confirm-email';
 import SnakeGame from '../pages/games/snake-game';
+import ExternalSignup from '../pages/external-signup';
 
 const AppRoutes = [
   {
@@ -24,6 +25,11 @@ const AppRoutes = [
   {
     path: '/account/signup',
     element: <Signup />,
+    isPrivate: false
+  },
+  {
+    path: '/account/external-signup',
+    element: <ExternalSignup />,
     isPrivate: false
   },
   {
@@ -59,6 +65,11 @@ const AppRoutes = [
   {
     path: '/test',
     element: <Test />,
+    isPrivate: false
+  },
+  {
+    path: '/notfound',
+    element: <NotFound />,
     isPrivate: false
   },
   {

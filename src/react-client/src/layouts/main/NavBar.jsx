@@ -1,11 +1,12 @@
 import { Button, Container, Form, Nav, NavDropdown, Navbar, Offcanvas } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
+  let navigate = useNavigate();
 
   return (
     <Navbar expand='md' className="bg-dark-subtle m-0">
@@ -44,6 +45,7 @@ const NavBar = () => {
                       setUser({
                         isAuthenticated: false
                       });
+                      navigate("/account/signin");
                     }
                   })
                   .catch(error => console.log(error));

@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { API_BASE_URL } from '../configs/api-endpoints';
-import LoadLoginSession from '../utils/Account';
+import ENDPOINTS from '../configs/api-endpoints';
 
 export const UserContext = createContext(null);
 
@@ -11,20 +10,21 @@ export function UserProvider({ children }) {
     });
 
     useEffect(() => {
-        // LoadLoginSession();
-        // fetch(API_BASE_URL + "/api/test/test", {
-        //     method: 'GET',
-        //     credentials: 'include'
-        // })
-        //     .then(response => response.json())
-        //     .then(json => {
-        //         setUser({
-        //             isAuthenticated: true,
-        //             username: json.username.replace(/\s+/g, '')
-        //         });
-        //     })
-        //     .catch(error => console.log(error));
+        fetch(ENDPOINTS.GET_API_ACCOUNT_AUTHENTICATE, {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.isAuthenticated)
+                    setUser({
+                        isAuthenticated: json.isAuthenticated,
+                        username: json.username
+                    });
+            })
+            .catch(error => console.log(error));
     }, []);
+
 
     return (
         <UserContext.Provider

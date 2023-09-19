@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Application.DTOs;
 using Application.Services;
 using AspNet.Security.OAuth.KakaoTalk;
@@ -112,7 +113,7 @@ public class AccountController : ControllerBase {
 
         Console.WriteLine(info.Principal.HasClaim(c => c.Type == ClaimTypes.Email));
         // Attempt to external-login with the session loaded up
-        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
+        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
         if (result.Succeeded) {
             _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity?.Name, info.LoginProvider);
@@ -158,9 +159,15 @@ public class AccountController : ControllerBase {
                 }
                 // 동일한 이메일로 가입된 소셜 계정이 없을 경우
                 else {
+                    var username = info.Principal.FindFirstValue(ClaimTypes.Email)!;
+                    username = username.Split('@')[0];
+                    username = Regex.Replace(username, @"[^a-zA-Z0-9]", "");
+
+                    // string result = input.Replace(" ", ""); // 모든 공백을 제거합니다.
                     user = new IdentityUser {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)!,
-                        UserName = info.Principal.FindFirstValue(ClaimTypes.Email)!
+                        UserName = username,
+                        EmailConfirmed = true
                     };
 
                     var createResult = await _userManager.CreateAsync(user);
@@ -178,24 +185,6 @@ public class AccountController : ControllerBase {
                             //     )
                             // ));
                             await _signInManager.SignInAsync(user!, true);
-
-                            // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            // var callbackUrl = Url.Page(
-                            //     "/Account/ConfirmEmail",
-                            //     pageHandler: null,
-                            //     values: new { area = "Identity", userId = userId, code = code },
-                            //     protocol: Request.Scheme);
-
-                            // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            // $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            // If account confirmation is required, we need to show the link if we don't have a real email sender
-                            // if(userManager.Options.SignIn.RequireConfirmedAccount) {
-                            //     return RedirectToPage("./RegisterConfirmation", new { Email = Input.이메일 });
-                            // }
-
-                            // return Redirect(_configuration["ClientUrls:ReactUrl"]!);
                         }
                     }
                 }
@@ -222,6 +211,89 @@ public class AccountController : ControllerBase {
 
         var result = await _userManager.ConfirmEmailAsync(user, token);
         msg = result.Succeeded ? "메일 인증에 성공했습니다." : "메일 인증에 실패했습니다.";
+
         return Ok(new { msg });
+    }
+
+    [HttpPost("external-signup")]
+    public async Task<IActionResult> ExternalSignupAsync(string token, string provider, string email, string username, string password) {
+        System.Console.WriteLine("asdasdas@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@d");
+        if (string.IsNullOrWhiteSpace(username)
+            || string.IsNullOrWhiteSpace(email)
+            || string.IsNullOrWhiteSpace(password)
+            || string.IsNullOrWhiteSpace(token))
+            return BadRequest(JsonSerializer.Serialize(
+                new ResponseDTO {
+                    Succeeded = false,
+                    Errors = new List<string> {
+                        "유저네임 또는 패스워드가 비었습니다"
+                    }
+                }));
+
+        var user = await _accountService.GetByEmailAsync(email);
+        if (user is null)
+            return BadRequest(JsonSerializer.Serialize(
+                            new ResponseDTO {
+                                Succeeded = false,
+                                Errors = new List<string> {
+                        "회원가입 실패. 관리자에게 문의하세요. e1"
+                                }
+                            }));
+
+
+        token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+        var result = await _userManager.ResetPasswordAsync(user, token, password);
+        if (!result.Succeeded)
+            return BadRequest(JsonSerializer.Serialize(
+                    new ResponseDTO {
+                        Succeeded = false,
+                        Errors = new List<string> {
+                        "회원가입 실패. 관리자에게 문의하세요. e1"
+                        }
+                    }));
+
+        var usernameSet = await _userManager.SetUserNameAsync(user, username);
+
+        if (!usernameSet.Succeeded)
+            return BadRequest(JsonSerializer.Serialize(
+                    new ResponseDTO {
+                        Succeeded = false,
+                        Errors = new List<string> {
+                                "회원가입 실패. 관리자에게 문의하세요. e2"
+                        }
+                    }));
+
+        _logger.LogInformation("User created an account using {Name} provider.", provider);
+        // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(
+        //     new ClaimsIdentity(
+        //         new List<Claim> {
+        //             new Claim(ClaimTypes.Email, info.Principal.FindFirstValue(ClaimTypes.Email)!),
+        //             new Claim(ClaimTypes.Name, info.Principal.FindFirstValue(ClaimTypes.Email)!)
+        //         },
+        //         CookieAuthenticationDefaults.AuthenticationScheme
+        //     )
+        // ));
+        await _signInManager.SignInAsync(user!, true);
+
+        return Ok(new ResponseDTO {
+            Succeeded = true
+        });
+    }
+
+
+    [HttpGet("authenticate")]
+    public IActionResult AuthenticateAsync() {
+        _logger.LogInformation("authenticate");
+
+        HttpContext.User.Claims.ToList().ForEach(c => {
+            _logger.LogInformation($"{c.Type} {c.Value}");
+        });
+        System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
+
+        return Ok(JsonSerializer.Serialize(new {
+            isAuthenticated = _signInManager.IsSignedIn(HttpContext.User),
+            username = HttpContext.User.FindFirstValue(ClaimTypes.Name),
+            email = HttpContext.User.FindFirstValue(ClaimTypes.Email)
+        }));
     }
 }
