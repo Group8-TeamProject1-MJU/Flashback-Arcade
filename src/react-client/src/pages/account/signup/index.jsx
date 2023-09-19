@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
-import PacmanLoader from "react-spinners/PacmanLoader";
+import CustomPacmanLoader from '../../../components/PacmanLoader';
 
 export default function Signup() {
     let navigate = useNavigate();
 
-    let [loading, setLoading] = useState(false);
+    let [loading, setLoading] = useState(true);
 
     const [formData, setFormData] = useState({
         id: '',
@@ -89,13 +89,11 @@ export default function Signup() {
             <Container className="d-flex justify-content-center align-items-center vh-100 sweet-loading">
 
                 {loading ? (
-                    <PacmanLoader
-                        color="#36d7b7"
+                    <CustomPacmanLoader
                         loading={loading}
-                        size={100}
-                        aria-label="Loading Spinner"
-                        data-testid="loader"
-                    />
+                    >
+                        asdasdasd
+                    </CustomPacmanLoader>
                 ) : (
                     <div className="bg-yellow p-4 rounded border-2 border-black">
                         <h2 className="text-center mb-4">회원가입</h2>

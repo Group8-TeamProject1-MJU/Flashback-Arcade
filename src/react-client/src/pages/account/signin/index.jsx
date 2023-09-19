@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button, Nav } from 'react-bootstrap';
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import { UserContext } from '../../../contexts/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
-import PacmanLoader from "react-spinners/PacmanLoader";
+import CustomPacmanLoader from '../../../components/PacmanLoader';
 
 export default function Signin() {
     const navigate = useNavigate();
@@ -75,12 +75,8 @@ export default function Signin() {
         <>
             <Container className="d-flex justify-content-center align-items-center vh-100">
                 {loading ? (
-                    <PacmanLoader
-                        color="#36d7b7"
+                    <CustomPacmanLoader
                         loading={loading}
-                        size={100}
-                        aria-label="Loading Spinner"
-                        data-testid="loader"
                     />
                 ) : (
                     <Row>

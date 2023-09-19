@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ENDPOINTS from '../../configs/api-endpoints'
 import { Button, Container, Form } from "react-bootstrap";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import CustomPacmanLoader from "../../components/PacmanLoader";
 
 export default function ExternalSignup() {
     let navigate = useNavigate();
@@ -98,12 +98,8 @@ export default function ExternalSignup() {
         <>
             <Container className="d-flex justify-content-center align-items-center vh-100 sweet-loading">
                 {loading ? (
-                    <PacmanLoader
-                        color="#36d7b7"
+                    <CustomPacmanLoader
                         loading={loading}
-                        size={100}
-                        aria-label="Loading Spinner"
-                        data-testid="loader"
                     />
                 ) : (
                     <div className="bg-yellow p-4 rounded border-2 border-black">
