@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { API_BASE_URL } from "../../../configs/api-endpoints";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export default function ConfirmEmail() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -22,7 +23,8 @@ export default function ConfirmEmail() {
                 })
                 .then(responseFromServer => {
                     console.log(responseFromServer.msg);
-                    setMsg(responseFromServer.msg)
+                    toast(responseFromServer.msg);
+                    setMsg(responseFromServer.msg);
                 })
                 .catch(error => console.log(error));
         }
