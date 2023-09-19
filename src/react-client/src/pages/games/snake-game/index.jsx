@@ -57,14 +57,14 @@ export default function SnakeGame() {
             padding: "6px 20px",
             backgroundColor: "#1a1a1a",
             borderRadius: "10px",
-            fontSize: "17px",
+            fontSize: "24px",
             fontWeight: "600",
             cursor: "pointer"
           }}
           startButtonHoverStyle={{
             backgroundColor: "#4f4d4d"
           }}
-          startGameText="Start Game"
+          startGameText="화면을 눌러 시작! 🪱"
           class="border-black border"
         />
       </Container>

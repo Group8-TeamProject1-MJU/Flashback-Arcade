@@ -26,8 +26,10 @@ export default function NotFound() {
     //     })
     //     .catch(error => console.log(error));
     if (stay !== "stay") {
-      if (!user.isAuthenticated)
+      if (!user.isAuthenticated) {
+        alert("접근 권한이 없습니다!😒 로그인을 해주세요")
         navigate("/account/signin");
+      }
       else
         navigate("/");
     }

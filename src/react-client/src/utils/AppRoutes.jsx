@@ -40,7 +40,7 @@ const AppRoutes = [
   {
     path: '/games/snake-game',
     element: <SnakeGame />,
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/yongchan',
