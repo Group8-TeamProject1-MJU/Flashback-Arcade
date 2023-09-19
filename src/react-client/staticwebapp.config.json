@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "route": "/",
+      "serve":"/"
+    },
+    {
+      "route": "/account/confirm-email",
+      "serve": "/"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/"
+  }
+}

@@ -9,7 +9,6 @@ import Signin from '../pages/account/signin';
 import Signup from '../pages/account/signup';
 import Test from '../pages/test'
 import ConfirmEmail from '../pages/account/confirm-email';
-import ConfirmEmailResult from '../pages/account/confirm-email-result';
 
 const AppRoutes = [
   {
@@ -30,11 +29,6 @@ const AppRoutes = [
   {
     path: '/account/confirm-email',
     element: <ConfirmEmail />,
-    isPrivate: false
-  },
-  {
-    path: '/account/confirm-email-result',
-    element: <ConfirmEmailResult />,
     isPrivate: false
   },
   {
