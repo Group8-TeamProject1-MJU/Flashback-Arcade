@@ -111,7 +111,7 @@ export default function Signup() {
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicId">
+                            <Form.Group className='mt-3' controlId="formBasicId">
                                 <Form.Label>이메일</Form.Label>
                                 <Form.Control
                                     type="email"
