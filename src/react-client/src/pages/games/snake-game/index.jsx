@@ -75,20 +75,32 @@ export default function SnakeGame() {
       <Container className="text-center mt-3">
         <Row>
           <Col>
-            <Button className="btn-primary" onClick="handleButtonClick(KEY_BIND.UP)">↑</Button>
+            <Button className="btn-primary" onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick(KEY_BIND.UP);
+            }}>↑</Button>
           </Col>
         </Row>
         <Row className='justify-content-center'>
           <Col className='col-1'>
-            <Button className="btn-primary" onClick="handleButtonClick(KEY_BIND.LEFT)">←</Button>
+            <Button className="btn-primary" onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick(KEY_BIND.LEFT);
+            }}>←</Button>
           </Col>
           <Col className='col-1'>
-            <Button className="btn-primary" onClick="handleButtonClick(KEY_BIND.RIGHT)">→</Button>
+            <Button className="btn btn-primary" onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick(KEY_BIND.RIGHT);
+            }}>→</Button>
           </Col>
         </Row>
         <Row>
           <Col>
-            <Button className="btn-primary" onClick="handleButtonClick(KEY_BIND.DOWN)">↓</Button>
+            <Button className="btn-primary" onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick(KEY_BIND.DOWN);
+            }}>↓</Button>
           </Col>
         </Row>
       </Container>
