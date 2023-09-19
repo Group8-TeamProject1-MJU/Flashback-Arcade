@@ -189,7 +189,7 @@ public class AccountController : ControllerBase {
                     }
                 }
             }
-            return Redirect(_configuration["ClientUrls:ReactUrl"]!);
+            return Redirect($"{_configuration["ClientUrls:ReactUrl"]!}/account/signin?failed=true&provider={info.LoginProvider}");
         }
     }
 

@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import CustomPacmanLoader from '../../../components/PacmanLoader';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
     let navigate = useNavigate();
@@ -73,7 +74,7 @@ export default function Signup() {
 
                 var succeeded = responseFromServer.Succeeded;
                 if (succeeded) {
-                    alert("회원가입 인증 이메일이 전송되었습니다.");
+                    toast("회원가입 인증 이메일이 전송되었습니다.");
                     navigate("/account/signin");
                 }
                 else {

@@ -16,6 +16,7 @@
     "react-scripts": "5.0.1",
     "react-snake-lib": "^1.0.9",
     "react-spinners": "^0.13.8",
+    "react-toastify": "^9.1.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

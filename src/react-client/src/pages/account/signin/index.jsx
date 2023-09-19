@@ -1,11 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Nav } from 'react-bootstrap';
 import ENDPOINTS, { API_BASE_URL } from '../../../configs/api-endpoints'
 import { UserContext } from '../../../contexts/UserContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import CustomPacmanLoader from '../../../components/PacmanLoader';
+import { toast } from 'react-toastify';
 
 export default function Signin() {
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [errMsgs, setErrMsgs] = useState([]);
@@ -16,6 +19,17 @@ export default function Signin() {
     });
 
     let [loading, setLoading] = useState(false);
+
+    const redirected = searchParams.get("redirected");
+    const failed = searchParams.get("failed");
+    const provider = searchParams.get("provider");
+
+    useEffect(() => {
+        if (redirected === "true")
+            toast("접근 권한이 없습니다!😒 로그인을 해주세요");
+        else if (failed === "true")
+            toast(`${provider} 로그인에 실패했습니다..😥 다시 시도해주세요`);
+    }, []);
 
     function handleInputChange(event) {
         const { name, value } = event.target;
@@ -28,7 +42,7 @@ export default function Signin() {
     function handleSubmit(event) {
         event.preventDefault();
         setLoading(true);
-        
+
         fetch(ENDPOINTS.POST_API_ACCOUNT_SIGNIN, {
             method: 'POST',
             headers: {

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import LoadLoginSession from "../../utils/Account";
 import { API_BASE_URL } from "../../configs/api-endpoints";
+import { toast } from 'react-toastify';
 
 export default function NotFound() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +28,8 @@ export default function NotFound() {
     //     .catch(error => console.log(error));
     if (stay !== "stay") {
       if (!user.isAuthenticated) {
-        alert("접근 권한이 없습니다!😒 로그인을 해주세요")
+        // alert("접근 권한이 없습니다!😒 로그인을 해주세요");
+        // toast("접근 권한이 없습니다!😒 로그인을 해주세요");
         navigate("/account/signin");
       }
       else
