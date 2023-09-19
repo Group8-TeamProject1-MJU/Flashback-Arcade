@@ -22,7 +22,7 @@ const KEY_BIND = {
 };
 
 export default function SnakeGame() {
-  const [score, setScore] = useState(-1);
+  const [score, setScore] = useState(0);
 
   const handleButtonClick = (keyBind) => {
     const event = new KeyboardEvent('keydown', {
@@ -38,17 +38,14 @@ export default function SnakeGame() {
     <>
       <h1>
         SNAKE GAME 🪱
-        {score !== undefined ? (
-          <p>
-            점수: {score}
-          </p>
-        ) : null
-        }
+        <p>
+          점수: {score}
+        </p>
       </h1>
 
       <Container className='p-0 d-flex justify-content-center'>
         <Snake
-          onScoreChange={onScoreChange}
+          onScoreChange={setScore}
           onGameOver={onGameOver}
           onGameStart={onGameStart}
           boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
@@ -116,11 +113,8 @@ export default function SnakeGame() {
     </>
   );
 
-  function onScoreChange() {
-    setScore(() => score + 1);
-  }
-
   function onGameOver() {
+    setScore(0);
   }
 
   function onGameStart() {
