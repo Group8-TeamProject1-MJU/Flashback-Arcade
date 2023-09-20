@@ -189,7 +189,8 @@ public class AccountController : ControllerBase {
                     }
                 }
             }
-            return Redirect($"{_configuration["ClientUrls:ReactUrl"]!}/account/signin?provider={info.LoginProvider}");
+            // return Redirect($"{_configuration["ClientUrls:ReactUrl"]!}/account/signin?provider={info.LoginProvider}");
+            return Redirect($"{_configuration["ClientUrls:ReactUrl"]!}/account/signin");
         }
     }
 

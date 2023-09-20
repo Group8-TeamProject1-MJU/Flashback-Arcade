@@ -26,8 +26,8 @@ export default function Signin() {
     useEffect(() => {
         if (redirected === "true")
             toast("접근 권한이 없습니다!😒 로그인을 해주세요");
-        else if (provider === "KakaoTalk" || provider === "Google")
-            toast(`${provider} 로그인에 실패했습니다..😥 다시 시도해주세요`);
+        // else if (provider === "KakaoTalk" || provider === "Google")
+        //     toast(`${provider} 로그인에 실패했습니다..😥 다시 시도해주세요`);
     }, []);
 
     function handleInputChange(event) {
