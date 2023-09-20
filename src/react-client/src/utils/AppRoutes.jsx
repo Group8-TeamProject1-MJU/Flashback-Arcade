@@ -1,5 +1,4 @@
 import React, { lazy, Suspense } from 'react';
-import Fifteenpuzzle from '../pages/games/15Puzzle/Fifteenpuzzle';
 
 const Jehee = lazy(() => import('../pages/games/Jehee'));
 const Jiwon = lazy(() => import('../pages/games/Jiwon'));
@@ -16,6 +15,8 @@ const ExternalSignup = lazy(() => import('../pages/external-signup'));
 const BallShooting = lazy(() => import('../pages/games/ball-shooting/BallShooting'));
 const Tetris = lazy(() => import('../pages/games/tetris/src/components/Tetris'));
 const Memory = lazy(() => import('../pages/games/memory/memory'));
+const Fifteenpuzzle = lazy(() => import('../pages/games/15Puzzle/Fifteenpuzzle'));
+const BrickBreakout = lazy(() => import('../pages/games/BrickBreakout/BrickBreakout'));
 
 const AppRoutes = [
   {
@@ -66,6 +67,11 @@ const AppRoutes = [
   {
     path: '/games/15puzzle',
     element: <Fifteenpuzzle />,
+    isPrivate: false
+  },
+  {
+    path: '/games/brick-breackout',
+    element: <BrickBreakout />,
     isPrivate: false
   },
   {
