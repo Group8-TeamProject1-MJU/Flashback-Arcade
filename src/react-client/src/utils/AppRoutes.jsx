@@ -12,6 +12,7 @@ import SnakeGame from '../pages/games/snake-game';
 import ExternalSignup from '../pages/external-signup';
 import BallShooting from '../pages/games/ball-shooting/BallShooting';
 import Tetris from '../pages/games/tetris/src/components/Tetris';
+import Memory from '../pages/games/memory/memory';
 
 const AppRoutes = [
   {
@@ -52,6 +53,11 @@ const AppRoutes = [
   {
     path: '/games/ball-shooting',
     element: <BallShooting />,
+    isPrivate: false
+  },
+  {
+    path: '/games/memory',
+    element: <Memory />,
     isPrivate: false
   },
   {
