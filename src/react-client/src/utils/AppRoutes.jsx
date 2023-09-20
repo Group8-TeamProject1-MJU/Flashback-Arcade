@@ -10,6 +10,7 @@ import Test from '../pages/test'
 import ConfirmEmail from '../pages/account/confirm-email';
 import SnakeGame from '../pages/games/snake-game';
 import ExternalSignup from '../pages/external-signup';
+import BallShooting from '../pages/games/ball-shooting/BallShooting';
 
 const AppRoutes = [
   {
@@ -41,6 +42,11 @@ const AppRoutes = [
     path: '/games/snake-game',
     element: <SnakeGame />,
     isPrivate: true
+  },
+  {
+    path: '/games/ball-shooting',
+    element: <BallShooting />,
+    isPrivate: false
   },
   {
     path: '/games/yongchan',
