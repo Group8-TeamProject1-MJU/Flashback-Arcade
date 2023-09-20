@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import Fifteenpuzzle from '../pages/games/15Puzzle/Fifteenpuzzle';
 
 const Jehee = lazy(() => import('../pages/games/Jehee'));
 const Jiwon = lazy(() => import('../pages/games/Jiwon'));
@@ -60,6 +61,11 @@ const AppRoutes = [
   {
     path: '/games/memory',
     element: <Memory />,
+    isPrivate: false
+  },
+  {
+    path: '/games/15puzzle',
+    element: <Fifteenpuzzle />,
     isPrivate: false
   },
   {
