@@ -28,7 +28,7 @@ const NavBar = () => {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/games/snake-game">SnakeGame</Nav.Link>
 
-              <Nav.Link as={Link} to="/games/Jehee">Jehee</Nav.Link>
+              <Nav.Link as={Link} to="/games/woojae">woojae</Nav.Link>
               <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
               <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
               <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>

@@ -1,7 +1,6 @@
-import Jehee from '../pages/games/Jehee';
 import Jiwon from '../pages/games/Jiwon';
-import Gayeong from '../pages/games/Gayeong';
-import Yongchan from '../pages/games/Yongchan';
+import Gayeong from '../pages/games/Gayeong/Gayeong';
+import Yongchan from '../pages/games/Yongchan/Yongchan';
 import NotFound from '../pages/notfound/index';
 import Home from '../pages/index';
 import Signin from '../pages/account/signin';
@@ -12,6 +11,7 @@ import SnakeGame from '../pages/games/snake-game';
 import ExternalSignup from '../pages/external-signup';
 import BallShooting from '../pages/games/ball-shooting/BallShooting';
 import Tetris from '../pages/games/tetris/src/components/Tetris';
+import Woojae from '../pages/games/Woojae/Woojae';
 
 const AppRoutes = [
   {
@@ -70,9 +70,9 @@ const AppRoutes = [
     isPrivate: false
   },
   {
-    path: '/games/jehee',
-    element: <Jehee />,
-    isPrivate: true
+    path: '/games/woojae',
+    element: <Woojae />,
+    isPrivate: false
   },
   {
     path: '/test',
