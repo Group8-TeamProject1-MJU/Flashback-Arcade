@@ -1,18 +1,20 @@
-import Jehee from '../pages/games/Jehee';
-import Jiwon from '../pages/games/Jiwon';
-import Gayeong from '../pages/games/Gayeong';
-import Yongchan from '../pages/games/Yongchan';
-import NotFound from '../pages/notfound/index';
-import Home from '../pages/index';
-import Signin from '../pages/account/signin';
-import Signup from '../pages/account/signup';
-import Test from '../pages/test'
-import ConfirmEmail from '../pages/account/confirm-email';
-import SnakeGame from '../pages/games/snake-game';
-import ExternalSignup from '../pages/external-signup';
-import BallShooting from '../pages/games/ball-shooting/BallShooting';
-import Tetris from '../pages/games/tetris/src/components/Tetris';
-import Memory from '../pages/games/memory/memory';
+import React, { lazy, Suspense } from 'react';
+
+const Jehee = lazy(() => import('../pages/games/Jehee'));
+const Jiwon = lazy(() => import('../pages/games/Jiwon'));
+const Gayeong = lazy(() => import('../pages/games/Gayeong'));
+const Yongchan = lazy(() => import('../pages/games/Yongchan'));
+const NotFound = lazy(() => import('../pages/notfound/index'));
+const Home = lazy(() => import('../pages/index'));
+const Signin = lazy(() => import('../pages/account/signin'));
+const Signup = lazy(() => import('../pages/account/signup'));
+const Test = lazy(() => import('../pages/test'));
+const ConfirmEmail = lazy(() => import('../pages/account/confirm-email'));
+const SnakeGame = lazy(() => import('../pages/games/snake-game'));
+const ExternalSignup = lazy(() => import('../pages/external-signup'));
+const BallShooting = lazy(() => import('../pages/games/ball-shooting/BallShooting'));
+const Tetris = lazy(() => import('../pages/games/tetris/src/components/Tetris'));
+const Memory = lazy(() => import('../pages/games/memory/memory'));
 
 const AppRoutes = [
   {

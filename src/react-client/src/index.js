@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'normalize.css';
 import 'react-toastify/dist/ReactToastify.css';
-
+import './assets/styles/default.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';

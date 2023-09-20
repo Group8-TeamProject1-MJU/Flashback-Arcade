@@ -98,7 +98,7 @@ export default function Signin() {
                 ) : (
                     <Row>
                         <Col lg={10}>
-                            <div className="bg-yellow p-4 rounded">
+                            <div className="p-4 rounded">
                                 <h2 className="text-center mb-4">로그인</h2>
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group controlId="formBasicEmail">
