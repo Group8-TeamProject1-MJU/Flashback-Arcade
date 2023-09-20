@@ -5,7 +5,7 @@ const Jiwon = lazy(() => import('../pages/games/Jiwon'));
 const Gayeong = lazy(() => import('../pages/games/Gayeong'));
 const Yongchan = lazy(() => import('../pages/games/Yongchan'));
 const NotFound = lazy(() => import('../pages/notfound/index'));
-const Home = lazy(() => import('../pages/index'));
+const Home = lazy(() => import('../pages/Home/index'));
 const Signin = lazy(() => import('../pages/account/signin'));
 const Signup = lazy(() => import('../pages/account/signup'));
 const Test = lazy(() => import('../pages/test'));
@@ -47,51 +47,61 @@ const AppRoutes = [
   {
     path: '/games/snake-game',
     element: <SnakeGame />,
+    title: 'Snake Game',
     isPrivate: true
   },
   {
     path: '/games/tetris',
     element: <Tetris />,
+    title: 'Tetris',
     isPrivate: false
   },
   {
     path: '/games/ball-shooting',
     element: <BallShooting />,
+    title: 'Ball Shooting',
     isPrivate: false
   },
   {
     path: '/games/memory',
     element: <Memory />,
+    title: 'Memory',
     isPrivate: false
   },
   {
     path: '/games/15puzzle',
     element: <Fifteenpuzzle />,
+    title: '15 Puzzle',
     isPrivate: false
   },
   {
     path: '/games/brick-breackout',
     element: <BrickBreakout />,
+    title: 'Brick Breakout',
     isPrivate: false
   },
   {
     path: '/games/yongchan',
     element: <Yongchan />,
+    title: 'Yongchan',
     isPrivate: false
   },
   {
     path: '/games/gayeong',
     element: <Gayeong />,
+    title: 'Gayeong',
     isPrivate: false
   },
   {
     path: '/games/jiwon',
     element: <Jiwon />,
+    title: 'Jiwon',
     isPrivate: false
   },
   {
     path: '/games/jehee',
     element: <Jehee />,
+    title: 'Jehee',
     isPrivate: true
   },
   {
