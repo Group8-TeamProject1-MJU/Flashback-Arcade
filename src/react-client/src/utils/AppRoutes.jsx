@@ -11,6 +11,7 @@ import ConfirmEmail from '../pages/account/confirm-email';
 import SnakeGame from '../pages/games/snake-game';
 import ExternalSignup from '../pages/external-signup';
 import BallShooting from '../pages/games/ball-shooting/BallShooting';
+import Tetris from '../pages/games/tetris/src/components/Tetris';
 
 const AppRoutes = [
   {
@@ -42,6 +43,11 @@ const AppRoutes = [
     path: '/games/snake-game',
     element: <SnakeGame />,
     isPrivate: true
+  },
+  {
+    path: '/games/tetris',
+    element: <Tetris />,
+    isPrivate: false
   },
   {
     path: '/games/ball-shooting',
