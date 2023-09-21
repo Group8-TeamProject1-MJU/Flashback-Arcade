@@ -57,8 +57,8 @@ function NavBar() {
                 }
               })
               .catch(error => console.log(error));
-          }}>로그아웃</button>) : (
-          <Link className="start-btn" to="/account/signin">로그인</Link>
+          }}>Logout</button>) : (
+          <Link className="start-btn" to="/account/signin">Login</Link>
         )}
 
         <Link to="/" className="start-btn">
