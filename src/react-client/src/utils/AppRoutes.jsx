@@ -55,37 +55,37 @@ const AppRoutes = [
     path: '/games/tetris',
     element: <Tetris />,
     title: 'Tetris',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/ball-shooting',
     element: <BallShooting />,
     title: 'Ball Shooting',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/memory',
     element: <Memory />,
     title: 'Memory',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/15puzzle',
     element: <Fifteenpuzzle />,
     title: '15 Puzzle',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/brick-breackout',
     element: <BrickBreakout />,
     title: 'Brick Breakout',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/mine-sweeper',
     element: <Board />,
     title: '지뢰찾기-Mine Sweeper',
-    isPrivate: false
+    isPrivate: true
   },
   {
     path: '/games/yongchan',
