@@ -49,66 +49,77 @@ const AppRoutes = [
     path: '/games/snake-game',
     element: <SnakeGame />,
     title: 'Snake Game',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '01'
   },
   {
     path: '/games/tetris',
     element: <Tetris />,
     title: 'Tetris',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '02'
   },
   {
     path: '/games/ball-shooting',
     element: <BallShooting />,
     title: 'Ball Shooting',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '03'
   },
   {
     path: '/games/memory',
     element: <Memory />,
     title: 'Memory',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '04'
   },
   {
     path: '/games/15puzzle',
     element: <Fifteenpuzzle />,
     title: '15 Puzzle',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '05'
   },
   {
     path: '/games/brick-breackout',
     element: <BrickBreakout />,
     title: 'Brick Breakout',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '06'
   },
   {
     path: '/games/mine-sweeper',
     element: <Board />,
     title: '지뢰찾기-Mine Sweeper',
-    isPrivate: true
+    isPrivate: true,
+    serial_number: '07'
   },
   {
     path: '/games/yongchan',
     element: <Yongchan />,
     title: 'Yongchan',
-    isPrivate: false
+    isPrivate: false,
+    serial_number: '08'
   },
   {
     path: '/games/gayeong',
     element: <Gayeong />,
     title: 'Gayeong',
-    isPrivate: false
+    isPrivate: false,
+    serial_number: '09'
   },
   {
     path: '/games/jiwon',
     element: <Jiwon />,
     title: 'Jiwon',
-    isPrivate: false
+    isPrivate: false,
+    serial_number: '10'
   },
   {
     path: '/games/woojae',
     element: <Woojae />,
-    isPrivate: false
+    isPrivate: false,
+    serial_number: '11'
   },
   {
     path: '/test',

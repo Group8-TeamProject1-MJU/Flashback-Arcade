@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom"
-import NavBar from "./NavBar"
+import NavBar from "./Navbar"
 import Footer from './Footer';
 import { Col, Container, Row } from "react-bootstrap";
 import Iframe from 'react-iframe'
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
+import '../../assets/styles/Home.css'
+import '../../assets/styles/particles.css'
 
 export default function MainLayout(props) {
     const { user, setUser } = useContext(UserContext);
@@ -23,14 +25,15 @@ export default function MainLayout(props) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <div className="about-section p-0">
                             <Iframe
                                 url={`${API_BASE_URL}/reactchat/${user.username}`}
-                                width="640px"
-                                height="320px"
+                                // width="640px"
+                                // height="320px"
+                                className="w-100"
                                 id=""
                             />
-                        </Col>
+                        </div>
                     </Row>
                 </Container>
 

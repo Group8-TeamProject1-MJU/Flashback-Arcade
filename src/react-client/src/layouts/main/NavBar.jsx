@@ -1,83 +1,49 @@
-import { Button, Container, Form, Nav, NavDropdown, Navbar, Offcanvas } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../../configs/api-endpoints";
-import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import React from "react";
+import { Link } from "react-router-dom";
 
-const NavBar = () => {
-  const { user, setUser } = useContext(UserContext);
-  let navigate = useNavigate();
+import "../../assets/styles/Navbar.css";
+import buttonSound1 from "../../assets/sounds/button-sound-A.mp3";
+import buttonSound2 from "../../assets/sounds/button-sound-B.mp3"
+
+function NavBar() {
+  const playButtonSound1 = () => {
+    const audio = new Audio(buttonSound1);
+    audio.play();
+  };
+  const playButtonSound2 = () => {
+    const audio = new Audio(buttonSound2);
+    audio.play();
+  };
+
+  const handleAButtonClick = () => {
+    playButtonSound1();
+    // Perform additional actions for "A" button click
+    console.log("A button clicked");
+  };
+
+  const handleBButtonClick = () => {
+    playButtonSound2();
+    // Perform additional actions for "B" button click
+    console.log("B button clicked");
+  };
 
   return (
-    <Navbar expand='md' className="bg-dark-subtle m-0">
-      <Container fluid>
-        <Navbar.Brand as={Link} to="/">ㅁㄴㅇㅁㄴ</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
-        <Navbar.Offcanvas
-          id={`offcanvasNavbar-expand-md`}
-          aria-labelledby={`offcanvasNavbarLabel-expand-md`}
-          placement="end"
-        >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
-              Offcanvas
-            </Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/games/snake-game">SnakeGame</Nav.Link>
+    <React.Fragment>
+      <div className="body_navbar center">
+     
+        <div className="video-game-button" onClick={handleAButtonClick}>
+          A
+        </div>
+        <div className="start-btn">
+          <Link to="/">HOME</Link>
+        </div>
+        <div className="video-game-button" onClick={handleBButtonClick}>
+          B
+        </div>
+      </div>
 
-              <Nav.Link as={Link} to="/games/woojae">woojae</Nav.Link>
-              <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
-              <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
-              <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>
-              <Nav.Link as={Link} to="/test">Test</Nav.Link>
-              <Button onClick={() => {
-                fetch(API_BASE_URL + "/api/account/signout", {
-                  method: 'POST',
-                  credentials: 'include'
-                })
-                  .then(response => response.json())
-                  .then(json => {
-                    console.log(json);
-                    if (json.Succeeded = true) {
-                      setUser({
-                        isAuthenticated: false
-                      });
-                      navigate("/account/signin");
-                    }
-                  })
-                  .catch(error => console.log(error));
-              }}>로그아웃</Button>
-
-              <NavDropdown
-                title="Dropdown"
-                id={`offcanvasNavbarDropdown-expand-md`}
-              >
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search" />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Container>
-    </Navbar>
-
+      <br />
+    </React.Fragment>
   );
 }
 

@@ -19,8 +19,8 @@ function App() {
     <UserProvider>
       {loading ? (
         <div className="loading-animation">
-          <CustomPacmanLoader />
-          <p className="loader1" style={{ color: "#3e5845" }}>Welcome To Flash Arcade!!!</p>
+          <CustomPacmanLoader className="" />
+          <p className="loader1" style={{ color: "#f1e702" }}>Welcome to Flash Arcade🔥</p>
         </div>
       ) : (
         <Suspense

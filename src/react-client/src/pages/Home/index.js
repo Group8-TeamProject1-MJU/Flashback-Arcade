@@ -1,29 +1,126 @@
 import { Link } from "react-router-dom";
 import AppRoutes from "../../utils/AppRoutes";
 import { Card, Col, Row } from "react-bootstrap";
+import TrianglePlayLogo from "../../components/TrianglePlayLogo";
+import { useContext, useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import Iframe from "react-iframe";
+import { API_BASE_URL } from "../../configs/api-endpoints";
+import { UserContext } from "../../contexts/UserContext";
+
+const gameRoutes = AppRoutes.filter(r => r.path?.includes("games/"));
 
 export default function Home() {
+  const { user, setUser } = useContext(UserContext);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredAppRoutes, setFilteredAppRoutes] = useState(gameRoutes);
+
+  const handleSearch = (e) => {
+    const inputValue = e.target.value;
+    setSearchQuery(inputValue);
+
+    const filtered =
+      inputValue === ''
+        ? gameRoutes // Show all values if search query is empty
+        : gameRoutes.filter((item) =>
+          item.title?.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    setFilteredAppRoutes(filtered);
+  };
+
   return (
     <>
-      <h1>
-        Home Page
-      </h1>
+      <div className="container_landing">
+        <div className="pacman"></div>
+        <div className="ghost"></div>
+        <div className="ghost"></div>
+        <div className="ghost"></div>
+        <div className="ghost"></div>
+        <div className="text"></div>
+      </div>
+      <div class="page-bg"></div>
+      <div class="animation-wrapper">
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+      </div>
 
-      <Row xs={1} md={2} className="g-4">
-        {AppRoutes.filter(r => r.path?.includes("games/")).map((r, idx) => (
-          <Col key={idx}>
-            <Card as={Link} to={r.path}>
-              <Card.Body>
-                <Card.Title>{r.title}</Card.Title>
-                <Card.Text>
-                  {r.path}
-                  게임설명
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <div className="about-section p-0">
+        <Iframe
+          url={`${API_BASE_URL}/reactchat/${user.username}`}
+          // width="640px"
+          // height="320px"
+          className="w-100"
+          id=""
+        />
+      </div>
+
+      {/* Heading of Cards */}
+      <div className="header_homepage">
+        <h1> Game on!!</h1>
+      </div>
+
+      {/* The content in the cards came from mapping data1, if you want to contribute a game kindly add it to data1 in the Data folder first*/}
+      <label htmlFor="search-games" className="sr-only text-center">플레이 할 게임을 검색해보세요</label>
+
+      <div className="search-section">
+        <input
+          id="search-game"
+          name="search-game"
+          type="text"
+          className="search-input"
+          value={searchQuery}
+          onChange={handleSearch}
+          placeholder="플레이 할 게임을 검색해보세요..."
+
+        />
+        <label className="search-icon">
+          <FaSearch />
+        </label>
+      </div>
+
+      <div className="body_card">
+
+        <div className="container_card">
+          {filteredAppRoutes.map((r, idx) => (
+            <div className="card" key={idx}>
+              <div className="content">
+                <div class="flip-card">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                      <div>
+                        <h2>{r.serial_number}</h2>
+                        <h3>{r.title}</h3>
+                      </div>
+                    </div>
+                    <div class="flip-card-back">
+                      <div class="rule_heading">{r.rule_heading}</div>
+                      <div class="step">{r.step1}</div>
+                      <div class="step">{r.step2}</div>
+                      <div class="step">{r.step3}</div>
+                    </div>
+                  </div>
+                </div>
+                {/* Flip card feature ends here. */}
+
+                <p>{r.about} </p>
+                {/* Create a route for your game and add it in AllRoutes.js in Routes folder then add the link in data1 in Data Folder */}
+                <Link to={r.path}><TrianglePlayLogo /></Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="copyright">
+        <div className="social-icons" >
+          <a href="https://www.instagram.com/ieeessit/" target="_blank" aria-label="Visit us on Instagram" title="Instagram (External Link)"><i class='bx bxl-instagram-alt' ></i></a>
+          <a href="https://github.com/ssitvit/Games-and-Go" target="_blank" aria-label="Visit us on GitHub" title="GitHub (External Link)"><i class='bx bxl-github'></i></a>
+        </div>
+      </div>
+
+
     </>
   );
 }
