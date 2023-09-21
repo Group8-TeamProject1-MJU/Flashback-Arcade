@@ -17,12 +17,13 @@ const Tetris = lazy(() => import('../pages/games/tetris/src/components/Tetris'))
 const Memory = lazy(() => import('../pages/games/memory/memory'));
 const Fifteenpuzzle = lazy(() => import('../pages/games/15Puzzle/Fifteenpuzzle'));
 const BrickBreakout = lazy(() => import('../pages/games/BrickBreakout/BrickBreakout'));
+const Board = lazy(() => import('../pages/games/Minesweeper/Components/Board'));
 
 const AppRoutes = [
   {
     index: true,
     element: <Home />,
-    isPrivate: true
+    isPrivate: false
   },
   {
     path: '/account/signin',
@@ -78,6 +79,12 @@ const AppRoutes = [
     path: '/games/brick-breackout',
     element: <BrickBreakout />,
     title: 'Brick Breakout',
+    isPrivate: false
+  },
+  {
+    path: '/games/mine-sweeper',
+    element: <Board />,
+    title: '지뢰찾기-Mine Sweeper',
     isPrivate: false
   },
   {
