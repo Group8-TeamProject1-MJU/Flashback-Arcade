@@ -73,7 +73,7 @@ export default function Home() {
           className="search-input"
           value={searchQuery}
           onChange={handleSearch}
-          placeholder="플레이 할 게임을 검색해보세요..."
+          placeholder="플레이 ..."
 
         />
         <label className="search-icon">

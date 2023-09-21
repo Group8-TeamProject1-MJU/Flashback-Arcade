@@ -1,3 +1,6 @@
+/* Googe fonts imported */
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Monofett&display=swap");
 
 :root {
     --move: 5s linear forwards;
@@ -180,7 +183,7 @@
     content: "Flashback Arcade";
     position: relative;
     color: transparent;
-    font-family: "Monofett", cursive;
+    font-family: cursive;
     font-size: 3rem;
     background: gold;
     background-clip: text;
@@ -269,7 +272,7 @@
       font-family: arial;
       position: relative;
       color: transparent;
-      font-family: "Monofett", cursive;
+      font-family: cursive;
       font-size: 50px;
       background: gold;
       background-clip: text;

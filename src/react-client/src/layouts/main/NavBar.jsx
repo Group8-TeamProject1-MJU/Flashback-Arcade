@@ -38,29 +38,33 @@ function NavBar() {
         <div className="video-game-button" onClick={handleAButtonClick}>
           A
         </div>
-        <div className="start-btn">
-          {user.isAuthenticated ? (
-            <Link onClick={(e) => {
-              e.preventDefault();
-              fetch(API_BASE_URL + "/api/account/signout", {
-                method: 'POST',
-                credentials: 'include'
+
+        {user.isAuthenticated ? (
+          <button className="start-btn" onClick={(e) => {
+            e.preventDefault();
+            fetch(API_BASE_URL + "/api/account/signout", {
+              method: 'POST',
+              credentials: 'include'
+            })
+              .then(response => response.json())
+              .then(json => {
+                console.log(json);
+                if (json.Succeeded = true) {
+                  setUser({
+                    isAuthenticated: false
+                  });
+                  Navigate("/account/signin");
+                }
               })
-                .then(response => response.json())
-                .then(json => {
-                  console.log(json);
-                  if (json.Succeeded = true) {
-                    setUser({
-                      isAuthenticated: false
-                    });
-                    Navigate("/account/signin");
-                  }
-                })
-                .catch(error => console.log(error));
-            }}>로그아웃</Link>) : (
-            <Link to="/account/signin">로그인</Link>
-          )}
-        </div>
+              .catch(error => console.log(error));
+          }}>로그아웃</button>) : (
+          <Link className="start-btn" to="/account/signin">로그인</Link>
+        )}
+
+        <Link to="/" className="start-btn">
+          <Link className="w-100 h-100" to="/">HOME</Link>
+        </Link>
+
         <div className="video-game-button" onClick={handleBButtonClick}>
           B
         </div>
