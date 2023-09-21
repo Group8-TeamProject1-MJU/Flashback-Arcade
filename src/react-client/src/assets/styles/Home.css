@@ -295,7 +295,6 @@
   
   /* Search input  */
   .search-input {
-
     border-radius: 10px;
     background: none;
     border: 2px solid purple;
@@ -310,8 +309,8 @@
   
   .search-icon {
     position: absolute;
-    right: -23px;
-    top: 7px;
+    right: 75px;
+    top: -13px;
     width: 60px;
     height: 100%;
     text-align: center;

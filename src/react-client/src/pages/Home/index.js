@@ -70,10 +70,10 @@ export default function Home() {
           id="search-game"
           name="search-game"
           type="text"
-          className="search-input"
+          className="search-input text-warning"
           value={searchQuery}
           onChange={handleSearch}
-          placeholder="플레이 ..."
+          placeholder="게임 검색..."
 
         />
         <label className="search-icon">
