@@ -8,8 +8,9 @@ import Iframe from "react-iframe";
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { UserContext } from "../../contexts/UserContext";
 
-const gameRoutes = AppRoutes.filter(r => r.path?.includes("games/"));
+const gameRoutes = AppRoutes.filter(r => r.path?.includes("/games"))[0].sub_routes;
 
+console.log(gameRoutes);
 export default function Home() {
   const { user, setUser } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,12 +39,12 @@ export default function Home() {
         <div className="ghost"></div>
         <div className="text"></div>
       </div>
-      <div class="page-bg"></div>
-      <div class="animation-wrapper">
-        <div class="particle particle-1"></div>
-        <div class="particle particle-2"></div>
-        <div class="particle particle-3"></div>
-        <div class="particle particle-4"></div>
+      <div className="page-bg"></div>
+      <div className="animation-wrapper">
+        <div className="particle particle-1"></div>
+        <div className="particle particle-2"></div>
+        <div className="particle particle-3"></div>
+        <div className="particle particle-4"></div>
       </div>
 
       <div className="about-section p-0">
@@ -86,19 +87,20 @@ export default function Home() {
           {filteredAppRoutes.map((r, idx) => (
             <div className="card" key={idx}>
               <div className="content">
-                <div class="flip-card">
-                  <div class="flip-card-inner">
-                    <div class="flip-card-front">
+                {/* Addition of Flip card feature */}
+                <div className="flip-card">
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front w-100">
                       <div>
                         <h2>{r.serial_number}</h2>
                         <h3>{r.title}</h3>
                       </div>
                     </div>
-                    <div class="flip-card-back">
-                      <div class="rule_heading">{r.rule_heading}</div>
-                      <div class="step">{r.step1}</div>
-                      <div class="step">{r.step2}</div>
-                      <div class="step">{r.step3}</div>
+                    <div className="flip-card-back">
+                      <div className="rule_heading">{r.rule_heading}</div>
+                      <div className="step">{r.step1}</div>
+                      <div className="step">{r.step2}</div>
+                      <div className="step">{r.step3}</div>
                     </div>
                   </div>
                 </div>
@@ -106,7 +108,7 @@ export default function Home() {
 
                 <p>{r.about} </p>
                 {/* Create a route for your game and add it in AllRoutes.js in Routes folder then add the link in data1 in Data Folder */}
-                <Link to={r.path}><TrianglePlayLogo /></Link>
+                <Link to={`/games/${r.path}`}><TrianglePlayLogo /></Link>
               </div>
             </div>
           ))}
@@ -115,8 +117,8 @@ export default function Home() {
 
       <div className="copyright">
         <div className="social-icons" >
-          <a href="https://www.instagram.com/ieeessit/" target="_blank" aria-label="Visit us on Instagram" title="Instagram (External Link)"><i class='bx bxl-instagram-alt' ></i></a>
-          <a href="https://github.com/ssitvit/Games-and-Go" target="_blank" aria-label="Visit us on GitHub" title="GitHub (External Link)"><i class='bx bxl-github'></i></a>
+          <a href="https://www.instagram.com/ieeessit/" target="_blank" aria-label="Visit us on Instagram" title="Instagram (External Link)"><i className='bx bxl-instagram-alt' ></i></a>
+          <a href="https://github.com/ssitvit/Games-and-Go" target="_blank" aria-label="Visit us on GitHub" title="GitHub (External Link)"><i className='bx bxl-github'></i></a>
         </div>
       </div>
 

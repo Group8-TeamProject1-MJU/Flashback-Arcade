@@ -46,80 +46,76 @@ const AppRoutes = [
     isPrivate: false
   },
   {
-    path: '/games/snake-game',
-    element: <SnakeGame />,
-    title: 'Snake Game',
-    isPrivate: true,
-    serial_number: '01'
-  },
-  {
-    path: '/games/tetris',
-    element: <Tetris />,
-    title: 'Tetris',
-    isPrivate: true,
-    serial_number: '02'
-  },
-  {
-    path: '/games/ball-shooting',
-    element: <BallShooting />,
-    title: 'Ball Shooting',
-    isPrivate: true,
-    serial_number: '03'
-  },
-  {
-    path: '/games/memory',
-    element: <Memory />,
-    title: 'Memory',
-    isPrivate: true,
-    serial_number: '04'
-  },
-  {
-    path: '/games/15puzzle',
-    element: <Fifteenpuzzle />,
-    title: '15 Puzzle',
-    isPrivate: true,
-    serial_number: '05'
-  },
-  {
-    path: '/games/brick-breackout',
-    element: <BrickBreakout />,
-    title: 'Brick Breakout',
-    isPrivate: true,
-    serial_number: '06'
-  },
-  {
-    path: '/games/mine-sweeper',
-    element: <Board />,
-    title: '지뢰찾기-Mine Sweeper',
-    isPrivate: true,
-    serial_number: '07'
-  },
-  {
-    path: '/games/yongchan',
-    element: <Yongchan />,
-    title: 'Yongchan',
+    path: '/games',
     isPrivate: false,
-    serial_number: '08'
-  },
-  {
-    path: '/games/gayeong',
-    element: <Gayeong />,
-    title: 'Gayeong',
-    isPrivate: false,
-    serial_number: '09'
-  },
-  {
-    path: '/games/jiwon',
-    element: <Jiwon />,
-    title: 'Jiwon',
-    isPrivate: false,
-    serial_number: '10'
-  },
-  {
-    path: '/games/woojae',
-    element: <Woojae />,
-    isPrivate: false,
-    serial_number: '11'
+    sub_routes: [
+      {
+        path: 'snake-game',
+        element: <SnakeGame />,
+        title: 'Snake Game',
+        serial_number: '01'
+      },
+      {
+        path: 'tetris',
+        element: <Tetris />,
+        title: 'Tetris',
+        serial_number: '02'
+      },
+      {
+        path: 'ball-shooting',
+        element: <BallShooting />,
+        title: 'Ball Shooting',
+        serial_number: '03'
+      },
+      {
+        path: 'memory',
+        element: <Memory />,
+        title: 'Memory',
+        serial_number: '04'
+      },
+      {
+        path: '15puzzle',
+        element: <Fifteenpuzzle />,
+        title: '15 Puzzle',
+        serial_number: '05'
+      },
+      {
+        path: 'brick-breackout',
+        element: <BrickBreakout />,
+        title: 'Brick Breakout',
+        serial_number: '06'
+      },
+      {
+        path: 'mine-sweeper',
+        element: <Board />,
+        title: '지뢰찾기-Mine Sweeper',
+        serial_number: '07'
+      },
+      {
+        path: 'yongchan',
+        element: <Yongchan />,
+        title: 'Yongchan',
+        serial_number: '08'
+      },
+      {
+        path: 'gayeong',
+        element: <Gayeong />,
+        title: 'Gayeong',
+        serial_number: '09'
+      },
+      {
+        path: 'jiwon',
+        element: <Jiwon />,
+        title: 'Jiwon',
+        serial_number: '10'
+      },
+      {
+        path: 'woojae',
+        element: <Woojae />,
+        title: 'Woojae',
+        serial_number: '11'
+      }
+    ]
   },
   {
     path: '/test',

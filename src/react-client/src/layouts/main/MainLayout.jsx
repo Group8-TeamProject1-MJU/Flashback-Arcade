@@ -25,7 +25,7 @@ export default function MainLayout(props) {
                         </Col>
                     </Row>
                     <Row>
-                        <div className="about-section p-0">
+                        {/* <div className="about-section p-0">
                             <Iframe
                                 url={`${API_BASE_URL}/reactchat/${user.username}`}
                                 // width="640px"
@@ -33,11 +33,11 @@ export default function MainLayout(props) {
                                 className="w-100"
                                 id=""
                             />
-                        </div>
+                        </div> */}
                     </Row>
                 </Container>
 
-                <Footer />
+                {/* <Footer /> */}
             </div>
         </>
     )

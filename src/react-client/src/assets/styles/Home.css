@@ -690,6 +690,7 @@
     color: black;
     padding: 13px;
     border-radius: 1rem;
+    margin-left: -5px;
   }
   
   /* Style the back side */
@@ -699,6 +700,7 @@
     color: white;
     transform: rotateY(180deg);
     font-family: math;
+    margin-left: 5px;
   }
   
   /* Styling steps */
