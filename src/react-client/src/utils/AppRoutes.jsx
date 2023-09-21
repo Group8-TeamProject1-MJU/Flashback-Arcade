@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 
-const Jehee = lazy(() => import('../pages/games/Jehee'));
 const Jiwon = lazy(() => import('../pages/games/Jiwon'));
-const Gayeong = lazy(() => import('../pages/games/Gayeong'));
-const Yongchan = lazy(() => import('../pages/games/Yongchan'));
+const Gayeong = lazy(() => import('../pages/games/Gayeong/Gayeong'));
+const Yongchan = lazy(() => import('../pages/games/Yongchan/Yongchan'));
+const Woojae = lazy(() => import('../pages/games/Woojae/Woojae'));
 const NotFound = lazy(() => import('../pages/notfound/index'));
 const Home = lazy(() => import('../pages/Home/index'));
 const Signin = lazy(() => import('../pages/account/signin'));
@@ -106,10 +106,9 @@ const AppRoutes = [
     isPrivate: false
   },
   {
-    path: '/games/jehee',
-    element: <Jehee />,
-    title: 'Jehee',
-    isPrivate: true
+    path: '/games/woojae',
+    element: <Woojae />,
+    isPrivate: false
   },
   {
     path: '/test',
