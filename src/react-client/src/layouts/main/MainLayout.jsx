@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import NavBar from "./Navbar"
+import NavBar from "./NavBar"
 import Footer from './Footer';
 import { Col, Container, Row } from "react-bootstrap";
 import Iframe from 'react-iframe'
