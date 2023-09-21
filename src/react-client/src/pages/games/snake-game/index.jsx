@@ -36,7 +36,7 @@ export default function SnakeGame() {
 
   return (
     <>
-      <h1>
+      <h1 className='text-warning'>
         SNAKE GAME 🪱
         <p>
           점수: {score}
@@ -65,7 +65,7 @@ export default function SnakeGame() {
             backgroundColor: "#4f4d4d"
           }}
           startGameText="화면을 눌러 시작! 🪱"
-          class="border-black border"
+          class=""
         />
       </Container>
 
@@ -102,7 +102,7 @@ export default function SnakeGame() {
         </Row>
       </Container>
 
-      <Container className='text-center p-0'>
+      <Container className='text-center p-0 text-warning fs-3 text'>
         <p>🔥게임 이용 방법</p>
         <p>W or ↑ = 위</p>
         <p>A or ← = 좌</p>

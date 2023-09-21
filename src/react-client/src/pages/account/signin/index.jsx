@@ -98,11 +98,11 @@ export default function Signin() {
                 ) : (
                     <Row>
                         <Col lg={10}>
-                            <div className="p-4 rounded">
+                            <div className="p-4 rounded text-warning">
                                 <h2 className="text-center mb-4">로그인</h2>
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>아이디</Form.Label>
+                                        <Form.Label className='text-warning'>아이디</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="id"
@@ -113,7 +113,7 @@ export default function Signin() {
                                     </Form.Group>
 
                                     <Form.Group className='mt-3' controlId="formBasicPassword">
-                                        <Form.Label>비밀번호</Form.Label>
+                                        <Form.Label className='text-warning'>비밀번호</Form.Label>
                                         <Form.Control
                                             type="password"
                                             name="password"

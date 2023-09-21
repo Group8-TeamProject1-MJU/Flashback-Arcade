@@ -97,10 +97,10 @@ export default function Signup() {
                     </CustomPacmanLoader>
                 ) : (
                     <div className="bg-yellow p-4 rounded border-2 border-black">
-                        <h2 className="text-center mb-4">회원가입</h2>
+                        <h2 className="text-center mb-4 text-warning">회원가입</h2>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formBasicId">
-                                <Form.Label>아이디</Form.Label>
+                                <Form.Label className='text-warning'>아이디</Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="id"
@@ -111,7 +111,7 @@ export default function Signup() {
                             </Form.Group>
 
                             <Form.Group className='mt-3' controlId="formBasicId">
-                                <Form.Label>이메일</Form.Label>
+                                <Form.Label className='text-warning'>이메일</Form.Label>
                                 <Form.Control
                                     type="email"
                                     name="email"
@@ -122,7 +122,7 @@ export default function Signup() {
                             </Form.Group>
 
                             <Form.Group className='mt-3' controlId="formBasicPassword">
-                                <Form.Label>비밀번호</Form.Label>
+                                <Form.Label className='text-warning'>비밀번호</Form.Label>
                                 <Form.Control
                                     type="password"
                                     name="password"
@@ -133,7 +133,7 @@ export default function Signup() {
                             </Form.Group>
 
                             <Form.Group className='mt-3' controlId="formBasicPasswordConfirm">
-                                <Form.Label>비밀번호 확인</Form.Label>
+                                <Form.Label className='text-warning'>비밀번호 확인</Form.Label>
                                 <Form.Control
                                     type="password"
                                     name="passwordConfirm"
