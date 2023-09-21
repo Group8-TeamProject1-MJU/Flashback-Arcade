@@ -20,7 +20,7 @@ function App() {
       {loading ? (
         <div className="loading-animation">
           <CustomPacmanLoader className="" />
-          <p className="loader1" style={{ color: "#f1e702" }}>Welcome to Flash Arcade🔥</p>
+          <p className="loader1" style={{ color: "#f1e702" }}>Welcome to Flashback Arcade🔥</p>
         </div>
       ) : (
         <Suspense
