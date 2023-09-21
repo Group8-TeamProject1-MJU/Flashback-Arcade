@@ -47,7 +47,7 @@ const AppRoutes = [
   },
   {
     path: '/games',
-    isPrivate: false,
+    isPrivate: true,
     sub_routes: [
       {
         path: 'snake-game',
