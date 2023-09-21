@@ -195,7 +195,10 @@ public class AccountController : ControllerBase {
     }
 
     [HttpPost("confirm-email")]
-    public async Task<IActionResult> ConfirmEmail(string token, string email) {
+    public async Task<IActionResult> ConfirmEmail(JsonElement json) {
+        var email = json.GetString("email");
+        var token = json.GetString("token");
+        
         string msg;
         _logger.LogInformation($"token before decoding: {token}");
         _logger.LogInformation(email);

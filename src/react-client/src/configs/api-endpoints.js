@@ -8,6 +8,7 @@ const ENDPOINTS = {
   POST_API_ACCOUNT_SIGNUP: `${API_BASE_URL}/api/account/signup/`,
   POST_API_ACCOUNT_EXTERNAL_SIGNUP: `${API_BASE_URL}/api/account/external-signup/`,
   GET_API_ACCOUNT_AUTHENTICATE: `${API_BASE_URL}/api/account/authenticate/`,
+  POST_API_ACCOUNT_CONFIRM_EMAIL: `${API_BASE_URL}/api/account/confirm-email`
 };
 
 export default ENDPOINTS;
