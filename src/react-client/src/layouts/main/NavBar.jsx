@@ -40,29 +40,35 @@ function NavBar() {
         </div>
 
         {user.isAuthenticated ? (
-          <button className="start-btn" onClick={(e) => {
-            e.preventDefault();
-            fetch(API_BASE_URL + "/api/account/signout", {
-              method: 'POST',
-              credentials: 'include'
-            })
-              .then(response => response.json())
-              .then(json => {
-                console.log(json);
-                if (json.Succeeded = true) {
-                  setUser({
-                    isAuthenticated: false
-                  });
-                  Navigate("/account/signin");
-                }
+          <Link className="start-btn">
+            <Link className="w-100 h-100" onClick={(e) => {
+              e.preventDefault();
+              fetch(API_BASE_URL + "/api/account/signout", {
+                method: 'POST',
+                credentials: 'include'
               })
-              .catch(error => console.log(error));
-          }}>Logout</button>) : (
-          <Link className="start-btn" to="/account/signin">Login</Link>
+                .then(response => response.json())
+                .then(json => {
+                  console.log(json);
+                  if (json.Succeeded = true) {
+                    setUser({
+                      isAuthenticated: false
+                    });
+                    Navigate("/account/signin");
+                  }
+                })
+                .catch(error => console.log(error));
+            }}>Logout</Link>
+          </Link>
+
+        ) : (
+          <Link className="start-btn" to="/account/signin">
+            <Link className="w-100 h-100" to="/account/signin">Login</Link>
+          </Link>
         )}
 
         <Link to="/" className="start-btn">
-          <Link className="w-100 h-100" to="/">HOME</Link>
+          HOME
         </Link>
 
         <div className="video-game-button" onClick={handleBButtonClick}>
