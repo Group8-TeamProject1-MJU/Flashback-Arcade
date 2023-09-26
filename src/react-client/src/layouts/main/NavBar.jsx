@@ -40,8 +40,8 @@ function NavBar() {
         </div>
 
         {user.isAuthenticated ? (
-          <Link className="start-btn">
-            <Link className="w-100 h-100" onClick={(e) => {
+
+            <Link className="start-btn" onClick={(e) => {
               e.preventDefault();
               fetch(API_BASE_URL + "/api/account/signout", {
                 method: 'POST',
@@ -59,11 +59,11 @@ function NavBar() {
                 })
                 .catch(error => console.log(error));
             }}>Logout</Link>
-          </Link>
+
 
         ) : (
           <Link className="start-btn" to="/account/signin">
-            <Link className="w-100 h-100" to="/account/signin">Login</Link>
+            LOgin
           </Link>
         )}
 

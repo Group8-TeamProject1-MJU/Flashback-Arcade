@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Snake } from 'react-snake-lib';
+import ENDPOINTS from '../../../configs/api-endpoints';
 
 const KEY_BIND = {
   LEFT: {
@@ -114,6 +115,24 @@ export default function SnakeGame() {
   );
 
   function onGameOver() {
+    fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        score: score,
+      })
+    })
+      .then(response => response.json())  
+      .then(responseFromServer => {
+        console.log(responseFromServer.response);
+      })
+      .catch(error => console.log(error));
+
+
+
     setScore(0);
   }
 

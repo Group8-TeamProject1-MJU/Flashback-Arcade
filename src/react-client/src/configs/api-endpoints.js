@@ -8,7 +8,10 @@ const ENDPOINTS = {
   POST_API_ACCOUNT_SIGNUP: `${API_BASE_URL}/api/account/signup/`,
   POST_API_ACCOUNT_EXTERNAL_SIGNUP: `${API_BASE_URL}/api/account/external-signup/`,
   GET_API_ACCOUNT_AUTHENTICATE: `${API_BASE_URL}/api/account/authenticate/`,
-  POST_API_ACCOUNT_CONFIRM_EMAIL: `${API_BASE_URL}/api/account/confirm-email`
+  POST_API_ACCOUNT_CONFIRM_EMAIL: `${API_BASE_URL}/api/account/confirm-email`,
+
+  POST_API_SCORE_ADD_SCORE: `${API_BASE_URL}/api/score/add-score/`,
+  GET_API_SCORE_TEST: `${API_BASE_URL}/api/score/test/`
 };
 
 export default ENDPOINTS;
