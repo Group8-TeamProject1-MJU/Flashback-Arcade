@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Repositories;
 
 public class AccountRepository {
-    private readonly IdentityDbContext _dbContext;
+    private readonly AccountDbContext _dbContext;
 
     public AccountRepository(
-        IdentityDbContext dbContext
+        AccountDbContext dbContext
     ) {
         _dbContext = dbContext;
     }

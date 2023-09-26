@@ -20,6 +20,7 @@ string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") 
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
 builder.Services.AddScoped<ScoreRepository>();
+builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -82,12 +83,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 })
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<IdentityDbContext>();
+    .AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<IdentityDbContext>(option => {
-    option.UseSqlite(builder.Configuration.GetConnectionString("IdentityDbConnectionString")!);
+builder.Services.AddDbContext<AccountDbContext>(option => {
+    option.UseSqlite(builder.Configuration.GetConnectionString("AccountDbConnectionString")!);
 });
 
 builder.Services.AddDbContext<MainDbContext>(option => {

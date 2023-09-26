@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-    <ContentWithTargetPath Include="../Infrastructure/Data/IdentityDb.db">
+    <ContentWithTargetPath Include="../Infrastructure/Data/AccountDb.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\Data\IdentityDb.db</TargetPath>
+      <TargetPath>.\Data\AccountDb.db</TargetPath>
     </ContentWithTargetPath>
     <ContentWithTargetPath Include="../Infrastructure/Data/MainDb.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

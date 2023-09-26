@@ -63,7 +63,7 @@ function NavBar() {
 
         ) : (
           <Link className="start-btn" to="/account/signin">
-            LOgin
+            Login
           </Link>
         )}
 
