@@ -21,17 +21,8 @@ public class ScoreController : ControllerBase {
         int score = Convert.ToInt32(json.GetString("score"));
         string? title = json.GetString("title");
 
-        await _scoreService.AddScore(score, title!);
-
-        return Ok(JsonSerializer.Serialize(new {
-            response = "Hey"
-        }));
-    }
-
-    [HttpGet("test")]
-    public IActionResult test() {
-        return Ok(JsonSerializer.Serialize(new {
-            response = "Hey"
-        }));
+        if (await _scoreService.AddScoreHistory(score, title!))
+            return Ok();
+        else return BadRequest();
     }
 }

@@ -14,6 +14,10 @@ public class ScoreRepository {
         _dbContext = dbContext;
     }
 
+    public List<ScoreHistory> GetAll() {
+        return _dbContext.ScoreHistoryDbSet.ToList();
+    }
+
     public async Task<bool> AddScoreHistory(ScoreHistory scoreHistory) {
         await _dbContext.ScoreHistoryDbSet.AddAsync(scoreHistory);
         return (await _dbContext.SaveChangesAsync()) > 0;

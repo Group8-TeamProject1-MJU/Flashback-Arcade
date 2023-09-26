@@ -115,22 +115,24 @@ export default function SnakeGame() {
   );
 
   function onGameOver() {
-    fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        score: score,
-        title: "Snake Game"
+    if (score > 0) {
+      fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          score: score,
+          title: "Snake Game"
+        })
       })
-    })
-      .then(response => response.json())  
-      .then(responseFromServer => {
-        console.log(responseFromServer.response);
-      })
-      .catch(error => console.log(error));
+        .then(response => response.json())  
+        .then(responseFromServer => {
+          console.log(responseFromServer.response);
+        })
+        .catch(error => console.log(error));
+    }
 
 
 

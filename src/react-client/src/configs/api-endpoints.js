@@ -11,7 +11,6 @@ const ENDPOINTS = {
   POST_API_ACCOUNT_CONFIRM_EMAIL: `${API_BASE_URL}/api/account/confirm-email`,
 
   POST_API_SCORE_ADD_SCORE: `${API_BASE_URL}/api/score/add-score/`,
-  GET_API_SCORE_TEST: `${API_BASE_URL}/api/score/test/`
 };
 
 export default ENDPOINTS;

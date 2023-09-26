@@ -14,7 +14,19 @@ public class GameRepository {
         _dbContext = dbContext;
     }
 
+    public Game? Get(int id) {
+        return _dbContext.GameDbSet.FirstOrDefault(game => game.Id == id);
+    }
+
+    public async Task<Game?> GetAsync(int id) {
+        return await _dbContext.GameDbSet.FirstOrDefaultAsync(game => game.Id == id);
+    }
+
     public async Task<Game?> GetByTitle(string title) {
         return await _dbContext.GameDbSet.FirstOrDefaultAsync(game => game.Title == title);
+    }
+
+    public List<Game> GetAll() {
+        return _dbContext.GameDbSet.ToList();
     }
 }

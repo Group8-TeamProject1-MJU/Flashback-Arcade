@@ -1,3 +1,4 @@
+using Application.Ranking;
 using Application.Services;
 using Domain.IServices;
 using Infrastructure.DbContexts;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<AccountRepository>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<ScoreRepository>();
 builder.Services.AddScoped<GameRepository>();
+builder.Services.AddScoped<RankersStaticHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -166,5 +168,7 @@ app.MapControllers();
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
+
+app.Services.GetRequiredService<RankersStaticHelper>().Initialize();
 
 app.Run();
