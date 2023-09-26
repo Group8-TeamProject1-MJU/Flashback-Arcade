@@ -86,7 +86,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<IdentityDbContext>(option => {
-    option.UseSqlite(builder.Configuration.GetConnectionString("BlogDbConnectionString")!);
+    option.UseSqlite(builder.Configuration.GetConnectionString("IdentityDbConnectionString")!);
+});
+
+builder.Services.AddDbContext<MainDbContext>(option => {
+    option.UseSqlite(builder.Configuration.GetConnectionString("MainDbConnectionString")!);
 });
 
 builder.Services.AddRazorPages();
