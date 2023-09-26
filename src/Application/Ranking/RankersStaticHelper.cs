@@ -1,6 +1,5 @@
 using Domain.Models;
 using Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Ranking;
 
@@ -38,18 +37,26 @@ public class RankersStaticHelper {
                         rankerIdx = k;
                 }
 
-                RankersStatic.GameRankersArray[i].Add(scores[rankerIdx]);
+                RankersStatic.GameRankersArray[i].TryAdd(scores[rankerIdx]);
             }
         }
 
+
         RankersStatic.TotalRankers = new Rankers(true);
+
+        // 종합 점수 상위 10명 계산
+        // TODO: 유저들의 종합점수를 구한 후,
+        // TODO: RankerStatic.TotalRankers.TryAdd(score) 를 호출해서 새 노드를 추가한다
+        // TODO: Rankers.TryAdd() 메소드는 10위 안에 들 수 있는 점수만 "알아서" 추가한다
+        // TODO: 그래서 유저의 종합점수만
+        
     }
 
     public async Task Add(ScoreHistory scoreHistoryToAdd) {
         var game = await _gameRepository.GetAsync(scoreHistoryToAdd.GameId);
         var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.gameTitle == game!.Title);
 
-        rankers?.Add(scoreHistoryToAdd);
-        RankersStatic.TotalRankers!.Add(scoreHistoryToAdd);
+        rankers?.TryAdd(scoreHistoryToAdd);
+        RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
     }
 }
