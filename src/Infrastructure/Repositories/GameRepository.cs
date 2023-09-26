@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class ScoreRepository {
+public class GameRepository {
     private readonly MainDbContext _dbContext;
 
-    public ScoreRepository(
+    public GameRepository(
         MainDbContext dbContext
     ) {
         _dbContext = dbContext;
     }
 
-    public async Task<bool> AddScoreHistory(ScoreHistory scoreHistory) {
-        await _dbContext.ScoreHistoryDbSet.AddAsync(scoreHistory);
-        return (await _dbContext.SaveChangesAsync()) > 0;
+    public async Task<Game?> GetByTitle(string title) {
+        return await _dbContext.GameDbSet.FirstOrDefaultAsync(game => game.Title == title);
     }
 }

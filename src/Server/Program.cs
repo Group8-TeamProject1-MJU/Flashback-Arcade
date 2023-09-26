@@ -19,8 +19,9 @@ string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") 
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
-builder.Services.AddScoped<ScoreRepository>();
 builder.Services.AddScoped<ScoreService>();
+builder.Services.AddScoped<ScoreRepository>();
+builder.Services.AddScoped<GameRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();

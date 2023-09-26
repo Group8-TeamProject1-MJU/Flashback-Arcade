@@ -123,6 +123,7 @@ export default function SnakeGame() {
       credentials: 'include',
       body: JSON.stringify({
         score: score,
+        title: "Snake Game"
       })
     })
       .then(response => response.json())  

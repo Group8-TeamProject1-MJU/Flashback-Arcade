@@ -17,10 +17,11 @@ public class ScoreController : ControllerBase {
     }
 
     [HttpPost("add-score")]
-    public IActionResult AddScore(JsonElement json) {
+    public async Task<IActionResult> AddScore(JsonElement json) {
         int score = Convert.ToInt32(json.GetString("score"));
+        string? title = json.GetString("title");
 
-
+        await _scoreService.AddScore(score, title!);
 
         return Ok(JsonSerializer.Serialize(new {
             response = "Hey"
