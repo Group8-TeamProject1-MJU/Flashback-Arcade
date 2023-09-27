@@ -41,7 +41,7 @@ public class Rankers {
         if (!CheckSameGame(scoreHistoryToAdd))
             return;
 
-        // 전달된 점수가 순위에 들 수 없으면 리턴
+        // 전달된 점수가 순위안에 들 수 있을만큼 높은 점수가 아니라면 리턴
         if (!CheckTopTen(scoreHistoryToAdd))
             return;
 
