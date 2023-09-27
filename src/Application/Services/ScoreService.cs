@@ -44,8 +44,8 @@ public class ScoreService {
             UserId = user.Id
         };
 
-        _rankersStaticHelper.Add(newScoreHistory);
-        
+        await _rankersStaticHelper.TryAddAsync(newScoreHistory);
+
         return await _scoreRepository.AddScoreHistory(newScoreHistory);
     }
 }

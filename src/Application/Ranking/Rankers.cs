@@ -5,14 +5,14 @@ namespace Application.Ranking;
 public class Rankers {
     private readonly LinkedList<ScoreHistory> _scores;
     public readonly bool descending;
-    public readonly string gameTitle;
+    public readonly Game game;
 
     public Rankers(
         bool descending,
-        string gameTitle = default!
+        Game game = default!
     ) {
         this.descending = descending;
-        this.gameTitle = gameTitle;
+        this.game = game;
         _scores = new();
     }
 
@@ -20,6 +20,10 @@ public class Rankers {
         return descending
             ? a > b
             : a < b;
+    }
+
+    public bool CheckSameGame(ScoreHistory scoreHistoryToAdd) {
+        return scoreHistoryToAdd.GameId == game.Id;
     }
 
     /// <returns>
@@ -33,7 +37,11 @@ public class Rankers {
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
     public void TryAdd(ScoreHistory scoreHistoryToAdd) {
-        // 전달된 객체가 순위에 들 수 없으면 리턴
+        // 전달된 점수가 다른 종류의 게임 점수이면 리턴
+        if (!CheckSameGame(scoreHistoryToAdd))
+            return;
+
+        // 전달된 점수가 순위에 들 수 없으면 리턴
         if (!CheckTopTen(scoreHistoryToAdd))
             return;
 
