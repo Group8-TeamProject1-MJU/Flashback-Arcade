@@ -169,6 +169,7 @@ app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
 
-app.Services.GetRequiredService<RankersStaticHelper>().Initialize();
+using var scope = app.Services.CreateScope();
+await scope.ServiceProvider.GetRequiredService<RankersStaticHelper>().InitializeAsync();
 
 app.Run();
