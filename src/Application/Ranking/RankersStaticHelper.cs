@@ -38,27 +38,33 @@ public class RankersStaticHelper {
                     if (game!.Title != RankersStatic.GameRankersArray[i].game.Title)
                         continue;
 
-                    // 해당 스코어가 더 높은 경우 선택
-                    if (RankersStatic.GameRankersArray[i].Compare(scores[k].Score, scores[rankerIdx].Score))
-                        rankerIdx = k;
+                    // 해당 스코어가 더 높은 경우
+                    if (RankersStatic.GameRankersArray[i].Compare(scores[k].Score, scores[rankerIdx].Score)) {
+                        // 이미 같은 유저의 스코어가 있는지 확인
+                        bool userExists = false;
+                        foreach (var score in RankersStatic.GameRankersArray[i].scores) {
+                            if (score.UserId == scores[k].UserId) {
+                                userExists = true;
+                                break;
+                            }
+                        }
+                        if (!userExists)
+                            rankerIdx = k;
+                    }
                 }
-
-                var result = RankersStatic.GameRankersArray[i].TryAdd(scores[rankerIdx]);
-                if (result is false)
-                    break;
 
                 // 선택된 점수를 swap
                 var temp = scores[rankerIdx];
                 scores[rankerIdx] = scores[j];
                 scores[j] = temp;
+
+                // 선택된 값 추가
+                RankersStatic.GameRankersArray[i].scores.Append(scores[j]);
             }
         }
 
         // 종합 순위 10명 계산
-        // TODO: 유저들의 종합점수를 구한 후,
-        // TODO: RankerStatic.TotalRankers.TryAdd(score) 를 호출해서 새 노드를 추가한다
-        // TODO: Rankers.TryAdd() 메소드는 10위 안에 들 수 있는 점수만 "알아서" 추가한다
-        // TODO: 그래서 유저의 종합점수만
+        // TODO: 게임 랭킹에 오른 유저들만 종합점수를 구하고 종합 순위에 추가한다
     }
 
     public async Task TryAddAsync(ScoreHistory scoreHistoryToAdd) {
