@@ -14,6 +14,13 @@ export default function MainLayout(props) {
 
     return (
         <>
+            <div className="animation-wrapper">
+                <div className="particle particle-1"></div>
+                <div className="particle particle-2"></div>
+                <div className="particle particle-3"></div>
+                <div className="particle particle-4"></div>
+            </div>
+            
             <div className="m-0 p-0 min-vh-100">
                 <NavBar />
 
@@ -23,18 +30,29 @@ export default function MainLayout(props) {
                             {props.children}
                             {/* <Outlet /> */}
                         </Col>
+                        {/* <Col>
+                            <div className="chat-section p-0">
+                                <Iframe
+                                    url={`${API_BASE_URL}/reactchat/${user.username}`}
+                                    // width="640px"
+                                    height="375px"
+                                    className="w-100"
+                                    id=""
+                                />
+                            </div>
+                        </Col> */}
                     </Row>
-                    <Row>
-                        {/* <div className="about-section p-0">
+                    {/* <Row>
+                        <div className="chat-section p-0">
                             <Iframe
                                 url={`${API_BASE_URL}/reactchat/${user.username}`}
                                 // width="640px"
-                                // height="320px"
+                                height="375px"
                                 className="w-100"
                                 id=""
                             />
-                        </div> */}
-                    </Row>
+                        </div>
+                    </Row> */}
                 </Container>
 
                 {/* <Footer /> */}

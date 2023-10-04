@@ -2,32 +2,38 @@
 
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
 @implements IAsyncDisposable
 
 <PageTitle>Index</PageTitle>
+<div style="height: 350px; overflow-x: none">
+    <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;">
+        <ul id="messagesList">
+            @foreach (var message in messages)
+            {
+                <li>@message</li>
+            }
+        </ul>
+    </div>
 
-<di class="form-group">
-    <label>
-        유저이름:
-        <input disabled @bind="username" />
-    </label>
-</di
-<div class="form-group">
-    <label>
-        메  시  지: 
-        <input @bind="messageInput" size="50" />
-    </label>
+    <div class="fixed-bottom bg-light p-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-auto">
+                    <label for="messageInput">@username:</label>
+                </div>
+                <div class="col">
+                    <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
 
-<hr>
-
-<ul id="messagesList">
-    @foreach (var message in messages)
-    {
-        <li>@message</li>
-    }
-</ul>
 
 @code {
     private HubConnection? hubConnection;

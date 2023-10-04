@@ -103,13 +103,12 @@ export default function SnakeGame() {
         </Row>
       </Container>
 
-      <Container className='text-center p-0 text-warning fs-3 text'>
+      <Container className='text-center p-0 text-warning fs-5'>
         <p>🔥게임 이용 방법</p>
         <p>W or ↑ = 위</p>
         <p>A or ← = 좌</p>
         <p>D or → = 우</p>
         <p>S or ↓ = 아래</p>
-        <p>모바일은 터치 컨트롤러</p>
       </Container>
     </>
   );
