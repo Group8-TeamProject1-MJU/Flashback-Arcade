@@ -4,6 +4,7 @@ import Iframe from "react-iframe";
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { Outlet } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
+import { GameRankingBoard } from "../../components/GameRankingBoard";
 
 export default function Games() {
     const { user, setUser } = useContext(UserContext);
@@ -26,6 +27,11 @@ export default function Games() {
 
                     <Col>
                         <Outlet />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <GameRankingBoard />
                     </Col>
                 </Row>
             </Container>

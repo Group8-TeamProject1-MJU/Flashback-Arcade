@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import Iframe from "react-iframe";
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { UserContext } from "../../contexts/UserContext";
+import { TotalRankingBoard } from "../../components/TotalRankingBoard";
 
 const gameRoutes = AppRoutes.filter(r => r.path?.includes("/games"))[0].sub_routes;
 
@@ -34,7 +35,8 @@ export default function Home() {
       <div className="container_landing">
         <div className="text"></div>
       </div>
-      <div className="page-bg"></div>
+
+      <TotalRankingBoard />
 
       <div className="chat-section p-0">
         <Iframe

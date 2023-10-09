@@ -8,7 +8,6 @@
 
 body {
   background: #010409 !important;
-  background-color: #010409;
 }
 
 /* Pacman landing page container */
@@ -26,6 +25,34 @@ body {
   overflow: hidden;
   position: relative;
   border-radius: 30px;
+}
+
+.board-section {
+  border-radius: 30px;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  padding: 0;
+  border: 10px groove lightblue;
+  outline: 10px groove purple;
+  box-shadow: 15px 15px 10px #bbb068;
+  min-width: 420px;
+  font-family: "Silkscreen", cursive;
+}
+
+.board-heading {
+  font-size: 2rem;
+  color: gold;
+  margin-bottom: 30px;
+}
+
+.board-top-col {
+  color: gold;
+}
+
+.board-row,
+.board-col {
+  color: white;
+  font-size: 1.5rem;
 }
 
 .chat-section {
@@ -49,7 +76,7 @@ body {
 .text::before {
   content: "Flashback Arcade";
   color: transparent;
-  font-family: cursive;
+  font-family: "Silkscreen", cursive;
   background: gold;
   background-clip: text;
   letter-spacing: 3px;
@@ -59,10 +86,11 @@ body {
 @keyframes flash {
   0% {
     opacity: 1;
-    font-size: 4rem;
+    font-size: 3rem;
+    
   }
   100% {
-    opacity: 0.3;
+    opacity: 0.7;
     font-size: 2rem;
   }
 }
@@ -248,9 +276,7 @@ input.search-input:hover {
   background-color: transparent;
   width: 242px;
   height: 200px;
-  /* border: 1px solid #201818; */
   perspective: 1000px;
-  /* Remove this if you don't want the 3D effect */
 }
 
 /* This container is needed to position the front and back side */
