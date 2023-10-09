@@ -48,23 +48,23 @@ body {
 
 .text::before {
   content: "Flashback Arcade";
-  position: relative;
   color: transparent;
   font-family: cursive;
-  font-size: 3rem;
   background: gold;
   background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-stroke: 1px black;
   letter-spacing: 3px;
+  animation: flash 1.5s infinite alternate;
 }
 
-.text::after {
-  width: 0;
-  height: 100px;
-  background: #010409;
-  top: 0;
-  left: 0;
+@keyframes flash {
+  0% {
+    opacity: 1;
+    font-size: 4rem;
+  }
+  100% {
+    opacity: 0.3;
+    font-size: 2rem;
+  }
 }
 
 .search-section {
@@ -240,7 +240,6 @@ input.search-input:hover {
 
   font-family: "Press Start 2P", cursive;
 }
-
 
 /* CSS for Flip card  */
 
