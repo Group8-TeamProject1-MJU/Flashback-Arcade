@@ -18,13 +18,12 @@ export default function MainLayout(props) {
                 <div className="particle particle-1"></div>
                 <div className="particle particle-2"></div>
                 <div className="particle particle-3"></div>
-                <div className="particle particle-4"></div>
             </div>
             
             <div className="m-0 p-0 min-vh-100">
                 <NavBar />
 
-                <Container fluid className='p-0 text-center'>
+                <Container fluid="md" className='p-0 text-center'>
                     <Row>
                         <Col>
                             {props.children}

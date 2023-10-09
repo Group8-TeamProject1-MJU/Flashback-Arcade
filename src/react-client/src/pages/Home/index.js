@@ -32,11 +32,6 @@ export default function Home() {
   return (
     <>
       <div className="container_landing">
-        <div className="pacman"></div>
-        <div className="ghost"></div>
-        <div className="ghost"></div>
-        <div className="ghost"></div>
-        <div className="ghost"></div>
         <div className="text"></div>
       </div>
       <div className="page-bg"></div>
@@ -55,8 +50,7 @@ export default function Home() {
         <h1> Game on!!</h1>
       </div>
 
-      {/* The content in the cards came from mapping data1, if you want to contribute a game kindly add it to data1 in the Data folder first*/}
-      <label htmlFor="search-games" className="sr-only text-center">플레이 할 게임을 검색해보세요</label>
+
 
       <div className="search-section">
         <input
@@ -107,15 +101,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-
-      <div className="copyright">
-        <div className="social-icons" >
-          <a href="https://www.instagram.com/ieeessit/" target="_blank" aria-label="Visit us on Instagram" title="Instagram (External Link)"><i className='bx bxl-instagram-alt' ></i></a>
-          <a href="https://github.com/ssitvit/Games-and-Go" target="_blank" aria-label="Visit us on GitHub" title="GitHub (External Link)"><i className='bx bxl-github'></i></a>
-        </div>
-      </div>
-
-
     </>
   );
 }

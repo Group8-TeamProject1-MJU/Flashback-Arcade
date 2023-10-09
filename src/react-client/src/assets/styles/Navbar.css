@@ -6,7 +6,7 @@
   font-family: "Press Start 2p";
   align-items: center;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-top: 10px;
   padding: 10px;
   background-color: rgba(
@@ -14,50 +14,12 @@
     14,
     14,
     0.8
-  ); /* 투명도를 조절할 수 있습니다. 0.8은 80% 불투명을 의미합니다. */
+  );
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-/* CSS FOR A AND B BUTTON in NAVBAR */
-
-.video-game-button {
-  text-shadow: 1px 1px pink, -1px -1px maroon;
-  font-family: "Press Start 2P", cursive;
-  line-height: 1.5em;
-  text-align: center;
-  display: inline-block;
-  width: 1.5em;
-  -webkit-border-radius: 0.75em;
-  -moz-border-radius: 0.75em;
-  -o-border-radius: 0.75em;
-  border-radius: 0.75em;
-  background-color: red;
-  -webkit-box-shadow: 0 0.2em maroon;
-  -moz-box-shadow: 0 0.2em maroon;
-  -o-box-shadow: 0 0.2em maroon;
-  box-shadow: 0 0.2em maroon;
-  color: red;
-  margin: 5px;
-  background-color: red;
-  background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
-  background-image: -moz-linear-gradient(
-    left top,
-    pink 3%,
-    red 22%,
-    maroon 99%
-  );
-  background-image: -webkit-linear-gradient(
-    left top,
-    pink 3%,
-    red 22%,
-    maroon 99%
-  );
-  background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
-  cursor: pointer;
-  padding-left: 5px;
-}
 
 /* Css for Home button in Navbar */
 .start-btn {
@@ -77,22 +39,6 @@
   cursor: pointer;
 }
 
-.video-game-button:active,
-.start-btn:active {
-  box-shadow: none;
-  position: relative;
-  top: 0.2em;
-  color: rgba(57, 248, 255, 0.842);
-  text-shadow: none;
-}
-.video-game-button:hover {
-  /* /* transition: .2s; */
+.start-btn:hover {
   transform: scale(1.1);
-  text-shadow: 0 0 5px black;
-}
-
-.backicon {
-  color: aqua;
-  font-size: 20px;
-  margin-top: -10px;
 }
