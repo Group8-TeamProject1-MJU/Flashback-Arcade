@@ -88,7 +88,7 @@ const AppRoutes = [
       {
         path: 'mine-sweeper',
         element: <Board />,
-        title: '지뢰찾기-Mine Sweeper',
+        title: 'Mine Sweeper',
         serial_number: '07'
       },
       {
