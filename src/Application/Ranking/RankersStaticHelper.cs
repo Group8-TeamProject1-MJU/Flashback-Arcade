@@ -24,7 +24,7 @@ public class RankersStaticHelper {
         RankersStatic.TotalRankers = new Rankers(true);
 
         // 게임별 TOP10 계산
-        for (int i = 0; i < RankersStatic.GameRankersArray.Count(); ++i) {
+        for (int i = 0; i < RankersStatic.GameRankersArray.Length; ++i) {
             // 순위 배열 초기화
             RankersStatic.GameRankersArray[i] = new Rankers(games[i].Descending, games[i]);
 
@@ -67,11 +67,13 @@ public class RankersStaticHelper {
         // TODO: 게임 랭킹에 오른 유저들만 종합점수를 구하고 종합 순위에 추가한다
     }
 
-    public async Task TryAddAsync(ScoreHistory scoreHistoryToAdd) {
+    public async Task<bool> TryAddAsync(ScoreHistory scoreHistoryToAdd) {
         var game = await _gameRepository.GetAsync(scoreHistoryToAdd.GameId);
         var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Title == game!.Title);
 
-        rankers?.TryAdd(scoreHistoryToAdd);
-        RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
+        bool addedToGameRankers = rankers!.TryAdd(scoreHistoryToAdd);
+        // bool addedToTotalRankers = RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
+
+        return addedToGameRankers;
     }
 }

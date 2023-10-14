@@ -44,8 +44,9 @@ public class ScoreService {
             UserId = user.Id
         };
 
-        await _rankersStaticHelper.TryAddAsync(newScoreHistory);
+        bool addedToRankers = await _rankersStaticHelper.TryAddAsync(newScoreHistory);
+        bool addedToDB = await _scoreRepository.AddScoreHistory(newScoreHistory);
 
-        return await _scoreRepository.AddScoreHistory(newScoreHistory);
+        return addedToDB && addedToDB;
     }
 }
