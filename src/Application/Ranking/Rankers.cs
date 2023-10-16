@@ -26,6 +26,10 @@ public class Rankers {
         return scoreHistoryToAdd.GameId == game.Id;
     }
 
+    public bool CheckSameUser(String userId){
+        return scores.Any(history => history.UserId == userId);
+    }
+
     /// <returns>
     /// true: 스코어가 순위10 안에 들 수 있다
     /// false: 스코어가 순위10 안에 들 수 없다
@@ -37,6 +41,8 @@ public class Rankers {
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
     public bool TryAdd(ScoreHistory scoreHistoryToAdd) {
+        LinkedListNode<ScoreHistory> currentNode = scores.First;
+
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
             return false;
@@ -44,6 +50,27 @@ public class Rankers {
         // 전달된 점수가 순위안에 들 수 있을만큼 높은 점수가 아니라면 리턴
         if (!CheckTopTen(scoreHistoryToAdd))
             return false;
+
+        // 같은 유저가 중복으로 존재하지 않으면 리턴
+        if(CheckSameUser(scoreHistoryToAdd.UserId)){
+            return false;
+        }
+        // scores 변수에 정렬된 상태를 유지하면서 새로운 노드 삽입
+        while(currentNode != null){
+            if(Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)){
+                scores.AddBefore(currentNode,scoreHistoryToAdd);
+                if(scores.Count > 10){
+                    scores.RemoveLast();
+                }
+                return true;
+            }
+            currentNode = currentNode.Next;
+        }
+
+        if(scores.Count < 10){
+            scores.AddLast(scoreHistoryToAdd);
+            return true;
+        }
 
         // TODO: _scores변수에 정렬된 상태를 유지하면서 새로운 노드를 삽입!
         // TODO: 공동순위자들을 고려해야 하고 10명이 초과되어선 안 됨
