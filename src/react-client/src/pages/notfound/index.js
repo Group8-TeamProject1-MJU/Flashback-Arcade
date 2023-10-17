@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import LoadLoginSession from "../../utils/Account";
@@ -9,7 +9,7 @@ export default function NotFound() {
   const [searchParams, setSearchParams] = useSearchParams();
   let navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-
+  const [show, setShow] = useState(false);
   const stay = searchParams.get("stay");
 
   useEffect(() => {
@@ -35,9 +35,14 @@ export default function NotFound() {
       else
         navigate("/");
     }
+    else {
+      setShow(true);
+    }
   }, [])
 
   return <>
-    <h1>Not Found Page</h1>
+    {show && (
+      <h1>Not Found Page</h1>
+    )}
   </>
 }

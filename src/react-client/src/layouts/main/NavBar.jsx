@@ -1,83 +1,48 @@
-import { Button, Container, Form, Nav, NavDropdown, Navbar, Offcanvas } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../../configs/api-endpoints";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+
+import "../../assets/styles/Navbar.css";
 import { UserContext } from "../../contexts/UserContext";
+import ENDPOINTS from "../../configs/api-endpoints";
 
-const NavBar = () => {
+function NavBar() {
   const { user, setUser } = useContext(UserContext);
-  let navigate = useNavigate();
 
+  console.log(user.isAuthenticated);
   return (
-    <Navbar expand='md' className="bg-dark-subtle m-0">
-      <Container fluid>
-        <Navbar.Brand as={Link} to="/">ㅁㄴㅇㅁㄴ</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
-        <Navbar.Offcanvas
-          id={`offcanvasNavbar-expand-md`}
-          aria-labelledby={`offcanvasNavbarLabel-expand-md`}
-          placement="end"
-        >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
-              Offcanvas
-            </Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/games/snake-game">SnakeGame</Nav.Link>
-
-              <Nav.Link as={Link} to="/games/woojae">woojae</Nav.Link>
-              <Nav.Link as={Link} to="/games/Gayeong">Gayeong</Nav.Link>
-              <Nav.Link as={Link} to="/games/Yongchan">Yongchan</Nav.Link>
-              <Nav.Link as={Link} to="/games/Jiwon">Jiwon</Nav.Link>
-              <Nav.Link as={Link} to="/test">Test</Nav.Link>
-              <Button onClick={() => {
-                fetch(API_BASE_URL + "/api/account/signout", {
-                  method: 'POST',
-                  credentials: 'include'
+    <React.Fragment>
+      <div className="body_navbar center">
+        {user.isAuthenticated ? (
+            <Link className="start-btn" onClick={(e) => {
+              e.preventDefault();
+              fetch(ENDPOINTS.POST_API_ACCOUNT_SIGNOUT, {
+                method: 'POST',
+                credentials: 'include'
+              })
+                .then(response => response.json())
+                .then(json => {
+                  console.log(json);
+                  if (json.succeeded === true) {
+                    window.location.reload();
+                  }
                 })
-                  .then(response => response.json())
-                  .then(json => {
-                    console.log(json);
-                    if (json.Succeeded = true) {
-                      setUser({
-                        isAuthenticated: false
-                      });
-                      navigate("/account/signin");
-                    }
-                  })
-                  .catch(error => console.log(error));
-              }}>로그아웃</Button>
+                .catch(error => console.log(error));
+            }}>Logout</Link>
 
-              <NavDropdown
-                title="Dropdown"
-                id={`offcanvasNavbarDropdown-expand-md`}
-              >
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <Form className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search" />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Container>
-    </Navbar>
 
+        ) : (
+          <Link className="start-btn" to="/account/signin">
+            Login
+          </Link>
+        )}
+
+        <Link to="/" className="start-btn">
+          HOME
+        </Link>
+      </div>
+
+      <br />
+    </React.Fragment>
   );
 }
 

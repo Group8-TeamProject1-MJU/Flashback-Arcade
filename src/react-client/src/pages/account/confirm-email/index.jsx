@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { API_BASE_URL } from "../../../configs/api-endpoints";
+import ENDPOINTS, { API_BASE_URL } from "../../../configs/api-endpoints";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -13,9 +13,15 @@ export default function ConfirmEmail() {
 
     useEffect(() => {
         if (token !== undefined && email !== undefined) {
-            fetch(API_BASE_URL + `/api/account/confirm-email?token=${token}&email=${email}`, {
+            fetch(ENDPOINTS.POST_API_ACCOUNT_CONFIRM_EMAIL, {
                 method: 'POST',
-                credentials: 'include'
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    token: token,
+                    email: email
+                })
             })
                 .then(response => {
                     console.log(response.status)

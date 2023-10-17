@@ -96,50 +96,51 @@ export default function Signin() {
                         loading={loading}
                     />
                 ) : (
-                    <Row>
-                        <Col lg={10}>
-                            <div className="bg-yellow p-4 rounded">
-                                <h2 className="text-center mb-4">로그인</h2>
-                                <Form onSubmit={handleSubmit}>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>아이디</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="id"
-                                            value={formData.id}
-                                            onChange={handleInputChange}
-                                            placeholder="아이디를 입력하세요"
-                                        />
-                                    </Form.Group>
+                    <div className="p-4 rounded text-warning">
+                        <h2 className="text-center mb-4">로그인</h2>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label className='text-warning'>아이디</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="id"
+                                    value={formData.id}
+                                    onChange={handleInputChange}
+                                    placeholder="아이디를 입력하세요"
+                                />
+                            </Form.Group>
 
-                                    <Form.Group className='mt-3' controlId="formBasicPassword">
-                                        <Form.Label>비밀번호</Form.Label>
-                                        <Form.Control
-                                            type="password"
-                                            name="password"
-                                            value={formData.password}
-                                            onChange={handleInputChange}
-                                            placeholder="비밀번호를 입력하세요"
-                                        />
-                                    </Form.Group>
+                            <Form.Group className='mt-3' controlId="formBasicPassword">
+                                <Form.Label className='text-warning'>비밀번호</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    placeholder="비밀번호를 입력하세요"
+                                />
+                            </Form.Group>
 
-                                    <Button className="mt-3" variant="primary" type="submit">
-                                        로그인
-                                    </Button>
-                                    <Button className="mt-3" variant="primary" type="submit">
-                                        <Nav.Link as={Link} to="/account/signup">회원가입</Nav.Link>
-                                    </Button>
-                                    <Button onClick={GoogleLogin}>Google login</Button>
-                                    <Button onClick={KakaotalkLogin}>Kakaotalk login</Button>
-                                    <div className='mt-3 text-danger w-auto'>
-                                        {errMsgs.map((msg, idx) => (
-                                            <p key={idx}>{msg}</p>
-                                        ))}
-                                    </div>
-                                </Form>
+                            <div className='mt-3'>
+                                <Button className="m-1" variant="primary" type="submit">
+                                    로그인
+                                </Button>
+                                <Button className="m-1" variant="primary" type="submit">
+                                    <Nav.Link as={Link} to="/account/signup">회원가입</Nav.Link>
+                                </Button>
                             </div>
-                        </Col>
-                    </Row>
+                            <div className='mt-3'>
+                                <Button className="m-1" onClick={GoogleLogin}>Google login</Button>
+                                <Button className="m-1" onClick={KakaotalkLogin}>Kakaotalk login</Button>
+                            </div>
+                            <div className='mt-3 text-danger w-auto'>
+                                {errMsgs.map((msg, idx) => (
+                                    <p key={idx}>{msg}</p>
+                                ))}
+                            </div>
+                        </Form>
+                    </div>
+
                 )
                 }
             </Container>

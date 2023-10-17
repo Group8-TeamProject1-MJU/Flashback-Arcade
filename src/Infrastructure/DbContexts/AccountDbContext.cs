@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DbContexts {
-    public class IdentityDbContext : IdentityDbContext<IdentityUser> {
+    public class AccountDbContext : IdentityDbContext<IdentityUser> {
         public DbSet<IdentityUser> IdentityDbSet { get; set; }
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> dbContextOptions) : base(dbContextOptions) { }
+        public AccountDbContext(DbContextOptions<AccountDbContext> dbContextOptions) : base(dbContextOptions) { }
     }
 }

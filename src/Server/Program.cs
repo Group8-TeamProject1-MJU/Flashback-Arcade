@@ -1,3 +1,4 @@
+using Application.Ranking;
 using Application.Services;
 using Domain.IServices;
 using Infrastructure.DbContexts;
@@ -19,6 +20,10 @@ string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") 
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<ScoreService>();
+builder.Services.AddScoped<ScoreRepository>();
+builder.Services.AddScoped<GameRepository>();
+builder.Services.AddScoped<RankersStaticHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -81,12 +86,16 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 })
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<IdentityDbContext>();
+    .AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<IdentityDbContext>(option => {
-    option.UseSqlite(builder.Configuration.GetConnectionString("BlogDbConnectionString")!);
+builder.Services.AddDbContext<AccountDbContext>(option => {
+    option.UseSqlite(builder.Configuration.GetConnectionString("AccountDbConnectionString")!);
+});
+
+builder.Services.AddDbContext<MainDbContext>(option => {
+    option.UseSqlite(builder.Configuration.GetConnectionString("MainDbConnectionString")!);
 });
 
 builder.Services.AddRazorPages();
@@ -159,5 +168,8 @@ app.MapControllers();
 app.MapBlazorHub();
 
 app.MapFallbackToPage("/_Host");
+
+using var scope = app.Services.CreateScope();
+await scope.ServiceProvider.GetRequiredService<RankersStaticHelper>().InitializeAsync();
 
 app.Run();

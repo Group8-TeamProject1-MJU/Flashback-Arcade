@@ -1,0 +1,44 @@
+/* Importing google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.body_navbar {
+  font-size: 30pt;
+  font-family: "Press Start 2p";
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgba(
+    14,
+    14,
+    14,
+    0.8
+  );
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+/* Css for Home button in Navbar */
+.start-btn {
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+  font-weight: bold;
+  padding: 10px 0 10px 10px;
+  background-color: lightgray;
+  text-shadow: -1px -1px black, 1px 1px white;
+  color: gray;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+  box-shadow: 0 0.2em gray;
+  cursor: pointer;
+}
+
+.start-btn:hover {
+  transform: scale(1.1);
+}

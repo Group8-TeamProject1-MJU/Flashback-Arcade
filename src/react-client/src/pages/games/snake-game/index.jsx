@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Snake } from 'react-snake-lib';
+import ENDPOINTS from '../../../configs/api-endpoints';
 
 const KEY_BIND = {
   LEFT: {
@@ -36,7 +37,7 @@ export default function SnakeGame() {
 
   return (
     <>
-      <h1>
+      <h1 className='text-warning'>
         SNAKE GAME 🪱
         <p>
           점수: {score}
@@ -65,7 +66,7 @@ export default function SnakeGame() {
             backgroundColor: "#4f4d4d"
           }}
           startGameText="화면을 눌러 시작! 🪱"
-          class="border-black border"
+          class=""
         />
       </Container>
 
@@ -102,18 +103,38 @@ export default function SnakeGame() {
         </Row>
       </Container>
 
-      <Container className='text-center p-0'>
+      <Container className='text-center p-0 text-warning fs-5'>
         <p>🔥게임 이용 방법</p>
         <p>W or ↑ = 위</p>
         <p>A or ← = 좌</p>
         <p>D or → = 우</p>
         <p>S or ↓ = 아래</p>
-        <p>모바일은 터치 컨트롤러</p>
       </Container>
     </>
   );
 
   function onGameOver() {
+    if (score > 0) {
+      fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          score: score,
+          title: "Snake Game"
+        })
+      })
+        .then(response => response.json())  
+        .then(responseFromServer => {
+          console.log(responseFromServer.response);
+        })
+        .catch(error => console.log(error));
+    }
+
+
+
     setScore(0);
   }
 
