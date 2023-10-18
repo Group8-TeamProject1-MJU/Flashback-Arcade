@@ -1,11 +1,15 @@
-screen {
-    width: 100%;
-    max-width: 720px;
+#screen {
+    min-width:500px;
+    min-height: 500px;
     margin: 2em auto;
     text-align: center;
     user-select: none;
-    /* margin-bottom: 50px; */
     }
+.score{
+    color: antiquewhite;
+    background-color:plum;
+    font-weight: bold;
+}
 #screen.waiting {
     background-color: rgb(166, 194, 243);
 }

@@ -5,7 +5,7 @@ class BokseupResponseCheck extends Component {
 constructor(props) {
 super(props);
 this.state = {
-  message: '클릭해서 시작하기',
+  message: 'Click to start',
   bgColorState: 'waiting',
   result: [],
 };
@@ -20,7 +20,7 @@ const { bgColorState } = this.state;
 
 if (bgColorState === 'waiting') {
   this.setState({
-    message: '초록색으로 바뀌면 클릭',
+    message: 'Click when screen turns green',
     bgColorState: 'ready',
   });
 
@@ -28,25 +28,25 @@ if (bgColorState === 'waiting') {
     this.startTime = new Date(); // 시간초 세기 시작
 
     this.setState({
-      message: '지금 클릭!',
+      message: 'Click Now!',
       bgColorState: 'now',
     });
   }, Math.floor(Math.random() * 1000) + 2000);
 } else if (bgColorState === 'ready') {
   // 빨간색 화면일 때 누르면
   this.setState({
-    message: '너무 빨리 눌렀음',
+    message: 'You clicked too fast',
     bgColorState: 'waiting',
     result: [],
   });
   clearTimeout(this.timer);
 } else if (bgColorState === 'now') {
-  console.log('초록색 일때 클릭');
+  console.log('Click when it turns green');
   // 초록색 화면으로 바뀌었을 때
   this.endTime = new Date();
 
   this.setState((prevState) => {
-    return { message: '클릭해서 시작하기', bgColorState: 'waiting', result: [...prevState.result, this.endTime - this.startTime] };
+    return { message: 'Click to start', bgColorState: 'waiting', result: [...prevState.result, this.endTime - this.startTime] };
   });
 }
 };
@@ -67,7 +67,7 @@ return (
     <div id="screen" className={bgColorState} onClick={this.onClickScreen}>
       {message}
     </div>
-    {result.length === 0 ? null : <div> 반응 시간 평균 {this.resultAverage()} ms 걸렸어요.</div>}
+    {result.length === 0 ? null : <div className="score"> Response time average: {this.resultAverage()} ms.</div>}
   </>
 );
 }
