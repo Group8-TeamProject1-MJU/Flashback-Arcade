@@ -59,7 +59,8 @@ public class RankersStaticHelper {
                 scores[j] = temp;
 
                 // 선택된 값 추가
-                RankersStatic.GameRankersArray[i].scores.Append(scores[j]);
+                RankersStatic.GameRankersArray[i].scores.AddLast(scores[j]);
+                // System.Console.WriteLine(RankersStatic.GameRankersArray[j].scores.Count);
             }
         }
 
@@ -69,7 +70,7 @@ public class RankersStaticHelper {
 
     public async Task<bool> TryAddAsync(ScoreHistory scoreHistoryToAdd) {
         var game = await _gameRepository.GetAsync(scoreHistoryToAdd.GameId);
-        var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Title == game!.Title);
+        var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Id == scoreHistoryToAdd.GameId);
 
         bool addedToGameRankers = rankers!.TryAdd(scoreHistoryToAdd);
         // bool addedToTotalRankers = RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
