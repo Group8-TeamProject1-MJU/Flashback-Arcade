@@ -15,6 +15,8 @@ console.log(gameRoutes);
 export default function Home() {
   const { user, setUser } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState('');
+  const [tag, setTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState(null);
   const [filteredAppRoutes, setFilteredAppRoutes] = useState(gameRoutes);
 
   const handleSearch = (e) => {
@@ -29,6 +31,33 @@ export default function Home() {
         );
     setFilteredAppRoutes(filtered);
   };
+
+  function onTagClicked(e) {
+    let text = e.target.innerText;
+
+    if (tag === '') {
+      setSelectedTag(text);
+      setTag(text);
+    }
+    else {
+      if (tag === text) {
+        text = '';
+        setTag('');
+        setSelectedTag('');
+      }
+      else {
+        setTag(text);
+        setSelectedTag(text);
+      }
+    }
+
+    const filtered = text === ''
+      ? gameRoutes // Show all values if search query is empty
+      : gameRoutes.filter((item) =>
+        item.categories?.includes(text)
+      );
+    setFilteredAppRoutes(filtered);
+  }
 
   return (
     <>
@@ -53,7 +82,6 @@ export default function Home() {
       </div>
 
 
-
       <div className="search-section">
         <input
           id="search-game"
@@ -63,11 +91,16 @@ export default function Home() {
           value={searchQuery}
           onChange={handleSearch}
           placeholder="게임 검색..."
-
         />
         <label className="search-icon">
           <FaSearch />
         </label>
+      </div>
+
+      <div className="category-box d-flex justify-content-around align-items-center">
+        <div onClick={onTagClicked} className={`category-tag rounded-5 ${selectedTag === 'Arcade' ? 'selected' : ''}`}>Arcade</div>
+        <div onClick={onTagClicked} className={`category-tag rounded-5 ${selectedTag === 'Shooting' ? 'selected' : ''}`}>Shooting</div>
+        <div onClick={onTagClicked} className={`category-tag rounded-5 ${selectedTag === 'Puzzle' ? 'selected' : ''}`}>Puzzle</div>
       </div>
 
       <div className="body_card">
