@@ -9,10 +9,13 @@ import CustomPacmanLoader from './components/PacmanLoader';
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    if (process.env.NODE_ENV !== 'development') {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    }
+
   }, []);
 
   return (

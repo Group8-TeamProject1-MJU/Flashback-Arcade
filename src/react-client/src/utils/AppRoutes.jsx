@@ -53,42 +53,49 @@ const AppRoutes = [
         path: 'snake-game',
         element: <SnakeGame />,
         title: 'Snake Game',
+        categories: ['Arcade'],
         serial_number: '01'
       },
       {
         path: 'tetris',
         element: <Tetris />,
         title: 'Tetris',
+        categories: ['Puzzle'],
         serial_number: '02'
       },
       {
         path: 'ball-shooting',
         element: <BallShooting />,
         title: 'Ball Shooting',
+        categories: ['Shooting'],
         serial_number: '03'
       },
       {
         path: 'memory',
         element: <Memory />,
         title: 'Memory',
+        categories: ['Puzzle'],
         serial_number: '04'
       },
       {
         path: '15puzzle',
         element: <Fifteenpuzzle />,
         title: '15 Puzzle',
+        categories: ['Puzzle'],
         serial_number: '05'
       },
       {
         path: 'brick-breackout',
         element: <BrickBreakout />,
         title: 'Brick Breakout',
+        categories: ['Shooting'],
         serial_number: '06'
       },
       {
         path: 'mine-sweeper',
         element: <Board />,
         title: 'Mine Sweeper',
+        categories: ['Puzzle'],
         serial_number: '07'
       },
       {
