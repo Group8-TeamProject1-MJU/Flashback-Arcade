@@ -57,10 +57,6 @@ public class Rankers {
         while(currentNode != null){
             if(Compare(scoreHistoryToAdd.Score,currentNode.Value.Score)){
                 scores.AddBefore(currentNode,scoreHistoryToAdd);
-                // 10명이 초과하면 삭제
-                if(scores.Count > 10){
-                    scores.RemoveLast();
-                }
                 // 같은 유저가 중복으로 존재하면 점수가 낮은 유저 점수는 삭제
                 if(currentNode.Value.UserId == scoreHistoryToAdd.UserId){
                     if(currentNode.Value.Score > scoreHistoryToAdd.Score){
@@ -69,6 +65,14 @@ public class Rankers {
                         scores.Remove(currentNode);
                         continue;
                     }
+                }
+                // 같은 점수가 중복으로 존재할 기존 점수 뒤로 삽입
+                if(currentNode.Value.Score == scoreHistoryToAdd.Score){
+                    scores.AddAfter(currentNode,scoreHistoryToAdd);
+                }
+                // 10명이 초과하면 삭제
+                if(scores.Count > 10){
+                    scores.RemoveLast();
                 }
                 return true;
             }
