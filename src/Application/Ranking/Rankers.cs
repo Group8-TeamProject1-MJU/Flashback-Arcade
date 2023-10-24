@@ -57,6 +57,7 @@ public class Rankers {
         while(currentNode != null){
             if(Compare(scoreHistoryToAdd.Score,currentNode.Value.Score)){
                 scores.AddBefore(currentNode,scoreHistoryToAdd);
+                // 10명이 초과하면 삭제
                 if(scores.Count > 10){
                     scores.RemoveLast();
                 }
@@ -66,7 +67,6 @@ public class Rankers {
                         return false;
                     }else{
                         scores.Remove(currentNode);
-                        currentNode = currentNode.Next;
                         continue;
                     }
                 }
