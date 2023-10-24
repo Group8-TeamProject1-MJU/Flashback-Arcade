@@ -23,12 +23,19 @@
                 <div class="col-auto">
                     <label for="messageInput">@username:</label>
                 </div>
+                @* <div class="col">
+                <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
+                </div> *@
+               
                 <div class="col">
-                    <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
+                    <input id="messageInput" class="form-control" @bind="messageInput" size="50"
+                        @onkeypress="HandleKeyPress" />
                 </div>
-                <div class="col-auto">
+
+                 <div class="col-auto">
                     <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -46,8 +53,8 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
-            .Build();
+        .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
+        .Build();
 
         hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
         {
@@ -66,7 +73,7 @@
     }
 
     public bool IsConnected =>
-        hubConnection?.State == HubConnectionState.Connected;
+    hubConnection?.State == HubConnectionState.Connected;
 
     public async ValueTask DisposeAsync()
     {
@@ -81,14 +88,26 @@
         Random random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         return "익명-" + new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
+        .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (string.IsNullOrWhiteSpace(username)) {
+        if (string.IsNullOrWhiteSpace(username))
+        {
             username = GenerateRandomUsername(6);
         }
     }
+
+    public async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        Console.WriteLine("HandleKeyPress 메서드 호출됨.");
+
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(messageInput))
+        {
+            await Send();
+        }
+    }
+
 }
