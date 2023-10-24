@@ -45,7 +45,8 @@ public class Rankers {
         foreach(var score in scores){
             Console.WriteLine($"{score.Score} {score.UserId}");
         }
-        var currentNode = scores.First;
+        LinkedListNode<ScoreHistory> currentNode = new LinkedListNode<ScoreHistory>();
+        currentNode = scores.First;
 
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
@@ -61,16 +62,19 @@ public class Rankers {
         }
         // scores 변수에 정렬된 상태를 유지하면서 새로운 노드 삽입
         while(currentNode != null){
-            if(scores.Count > 10){
-                scores.RemoveLast();
-            }else{
-                if(Compare(scoreHistoryToAdd.Score, currentNode.Value.Score) || scoreHistoryToAdd.Score == currentNode.Value.Score){
-                    scores.AddBefore(currentNode,scoreHistoryToAdd);
-                }else{
-                    scores.AddLast(scoreHistoryToAdd);
+            if(scoreHistoryToAdd.Score == currentNode.Value.Score){
+                scores.AddAfter(currentNode,scoreHistoryToAdd);
+                if(scores.Count > 10){
+                    scores.RemoveLast();
                 }
+                return true;
             }
             currentNode = currentNode.Next;
+        }
+
+        if(scores.Count < 10){
+            scores.AddLast(scoreHistoryToAdd);
+            return true;
         }
 
         // TODO: _scores변수에 정렬된 상태를 유지하면서 새로운 노드를 삽입!
@@ -78,7 +82,7 @@ public class Rankers {
         // TODO: 같은 유저가 중복으로 존재해서는 안됨
         // TODO: _descending이 true이면 내림차순으로, false이면 오름차순으로 정렬되어야 함
         // TODO: 그래서 가능하다면 이미 만들어둔 Compare 메소드를 쓰면 좋음
-        return true;
+        return false;
         // return true;
     }
 }
