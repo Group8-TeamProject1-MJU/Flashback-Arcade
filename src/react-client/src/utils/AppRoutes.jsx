@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-const Jiwon = lazy(() => import('../pages/games/Jiwon/Jiwon'));
+const QuickSpeedMaster = lazy(() => import('../pages/games/quick-speed-master/index'));
 const Gayeong = lazy(() => import('../pages/games/Gayeong/Gayeong'));
 const Yongchan = lazy(() => import('../pages/games/Yongchan/Yongchan'));
 const Woojae = lazy(() => import('../pages/games/Woojae/Woojae'));
@@ -53,49 +53,56 @@ const AppRoutes = [
         path: 'snake-game',
         element: <SnakeGame />,
         title: 'Snake Game',
+        categories: ['Arcade'],
         serial_number: '01'
       },
       {
         path: 'tetris',
         element: <Tetris />,
         title: 'Tetris',
+        categories: ['Puzzle'],
         serial_number: '02'
       },
       {
         path: 'ball-shooting',
         element: <BallShooting />,
         title: 'Ball Shooting',
+        categories: ['Shooting'],
         serial_number: '03'
       },
       {
         path: 'memory',
         element: <Memory />,
         title: 'Memory',
+        categories: ['Puzzle'],
         serial_number: '04'
       },
       {
         path: '15puzzle',
         element: <Fifteenpuzzle />,
         title: '15 Puzzle',
+        categories: ['Puzzle'],
         serial_number: '05'
       },
       {
         path: 'brick-breackout',
         element: <BrickBreakout />,
         title: 'Brick Breakout',
+        categories: ['Shooting'],
         serial_number: '06'
       },
       {
         path: 'mine-sweeper',
         element: <Board />,
         title: 'Mine Sweeper',
+        categories: ['Puzzle'],
         serial_number: '07'
       },
       {
-        path: 'yongchan',
-        element: <Yongchan />,
-        title: 'Yongchan',
-        serial_number: '08'
+        path: 'quick-speed-master',
+        element: <QuickSpeedMaster />,
+        title: 'Qucik Speed Master',
+        serial_number: '8'
       },
       {
         path: 'gayeong',
@@ -104,9 +111,9 @@ const AppRoutes = [
         serial_number: '09'
       },
       {
-        path: 'jiwon',
-        element: <Jiwon />,
-        title: 'Jiwon',
+        path: 'yongchan',
+        element: <Yongchan />,
+        title: 'Yongchan',
         serial_number: '10'
       },
       {
