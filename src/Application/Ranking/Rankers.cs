@@ -41,12 +41,13 @@ public class Rankers {
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
     public bool TryAdd(ScoreHistory scoreHistoryToAdd) {
+        LinkedList<ScoreHistory> scores = new LinkedList<ScoreHistory>();
+        LinkedListNode<ScoreHistory> currentNode = scores.First;
+
         System.Console.WriteLine("asdasdasdasdasd");
         foreach(var score in scores){
             Console.WriteLine($"{score.Score} {score.UserId}");
         }
-        LinkedListNode<ScoreHistory> currentNode = new LinkedListNode<ScoreHistory>();
-        currentNode = scores.First;
 
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
@@ -62,7 +63,7 @@ public class Rankers {
         }
         // scores 변수에 정렬된 상태를 유지하면서 새로운 노드 삽입
         while(currentNode != null){
-            if(scoreHistoryToAdd.Score == currentNode.Value.Score){
+            if(scoreHistoryToAdd.Score < currentNode.Value.Score ||scoreHistoryToAdd.Score == currentNode.Value.Score){
                 scores.AddAfter(currentNode,scoreHistoryToAdd);
                 if(scores.Count > 10){
                     scores.RemoveLast();
