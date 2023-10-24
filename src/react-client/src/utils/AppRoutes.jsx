@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-const Jiwon = lazy(() => import('../pages/games/Jiwon/Jiwon'));
+const QuickSpeedMaster = lazy(() => import('../pages/games/quick-speed-master/index'));
 const Gayeong = lazy(() => import('../pages/games/Gayeong/Gayeong'));
 const Yongchan = lazy(() => import('../pages/games/Yongchan/Yongchan'));
 const Woojae = lazy(() => import('../pages/games/Woojae/Woojae'));
@@ -99,10 +99,10 @@ const AppRoutes = [
         serial_number: '07'
       },
       {
-        path: 'yongchan',
-        element: <Yongchan />,
-        title: 'Yongchan',
-        serial_number: '08'
+        path: 'quick-speed-master',
+        element: <QuickSpeedMaster />,
+        title: 'Qucik Speed Master',
+        serial_number: '8'
       },
       {
         path: 'gayeong',
@@ -111,9 +111,9 @@ const AppRoutes = [
         serial_number: '09'
       },
       {
-        path: 'jiwon',
-        element: <Jiwon />,
-        title: 'Jiwon',
+        path: 'yongchan',
+        element: <Yongchan />,
+        title: 'Yongchan',
         serial_number: '10'
       },
       {
