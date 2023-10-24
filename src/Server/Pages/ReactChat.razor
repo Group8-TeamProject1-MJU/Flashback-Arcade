@@ -19,24 +19,21 @@
 
     <div class="fixed-bottom bg-light p-2">
         <div class="container">
-            <div class="row">
+            <form class="row">
                 <div class="col-auto">
                     <label for="messageInput">@username:</label>
                 </div>
-                @* <div class="col">
-                <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
-                </div> *@
-               
-                <div class="col">
-                    <input id="messageInput" class="form-control" @bind="messageInput" size="50"
-                        @onkeypress="HandleKeyPress" />
-                </div>
+                
+                    <div class="col">
+                        <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
+                    </div>
 
-                 <div class="col-auto">
-                    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
-                </div>
-
-            </div>
+                    <div class="col-auto">
+                        <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
+                            disabled="@(!IsConnected)">Send</button>
+                    </div>
+                
+            </form>
         </div>
     </div>
 </div>
@@ -68,8 +65,10 @@
 
     private async Task Send()
     {
-        if (hubConnection is not null)
+        if (hubConnection is not null){
             await hubConnection.SendAsync("SendMessage", username, messageInput);
+            messageInput=null;
+            }
     }
 
     public bool IsConnected =>
@@ -100,14 +99,20 @@
         }
     }
 
-    public async Task HandleKeyPress(KeyboardEventArgs e)
+    public async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        Console.WriteLine("HandleKeyPress 메서드 호출됨.");
-
+        Console.WriteLine("HandleKeyDown 메서드 호출됨.");
+        Console.WriteLine(messageInput);
         if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(messageInput))
         {
+
             await Send();
         }
     }
+
+
+
+
+
 
 }
