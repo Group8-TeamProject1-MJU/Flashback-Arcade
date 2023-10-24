@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-const Jiwon = lazy(() => import('../pages/games/Jiwon'));
+const Jiwon = lazy(() => import('../pages/games/Jiwon/Jiwon'));
 const Gayeong = lazy(() => import('../pages/games/Gayeong/Gayeong'));
 const Yongchan = lazy(() => import('../pages/games/Yongchan/Yongchan'));
 const Woojae = lazy(() => import('../pages/games/Woojae/Woojae'));
