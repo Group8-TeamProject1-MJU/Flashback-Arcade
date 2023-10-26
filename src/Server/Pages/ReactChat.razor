@@ -65,10 +65,10 @@
 
     private async Task Send()
     {
-        if (hubConnection is not null){
+        if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput)){
             await hubConnection.SendAsync("SendMessage", username, messageInput);
             messageInput=null;
-            }
+        }
     }
 
     public bool IsConnected =>
