@@ -16,52 +16,45 @@ public class RankersStaticHelper {
     }
 
     public async Task InitializeAsync() {
-        var games = _gameRepository.GetAll();
-        var scores = _scoreRepository.GetAll();
+        var games = _gameRepository.GetAll(); // 모든 종류의 게임
+        var scores = _scoreRepository.GetAll(); // 여러 종류의 게임의 스코어들이 한 링크드리스트에 한 리스트 자료형에 섞여 있음
 
         // 초기 배열 생성
         RankersStatic.GameRankersArray = new Rankers[games.Count];
         RankersStatic.TotalRankers = new Rankers(true);
 
-        // 게임별 TOP10 계산
+        // 모든 게임 순회
         for (int i = 0; i < RankersStatic.GameRankersArray.Length; ++i) {
-            // 순위 배열 초기화
-            RankersStatic.GameRankersArray[i] = new Rankers(games[i].Descending, games[i]);
+            RankersStatic.GameRankersArray[i] = new Rankers(games[i].Descending, games[i]); // 해당 게임의 랭커 객체 초기화
+            var gameScores = scores.Where(s => RankersStatic.GameRankersArray[i].game.Id == s.GameId).ToList(); // 해당 게임의 스코어들
 
-            // 상위 10명 선택 정렬 시작
-            for (int j = 0; j < 10 && j < scores.Count; ++j) {
-                int rankerIdx = j;
+            // 해당 게임 "선택 정렬" 시작, 100명만 뽑음
+            for (int j = 0; j < gameScores.Count && j < 100; ++j) {
+                int rankerIdx = j; // 선택된 인덱스
 
-                for (int k = j + 1; k < scores.Count; ++k) {
-                    // 동일한 게임의 스코어인지 확인
-                    var game = await _gameRepository.GetAsync(scores[k].GameId);
-                    if (game!.Title != RankersStatic.GameRankersArray[i].game.Title)
-                        continue;
+                for (int k = j + 1; k < gameScores.Count; ++k)
+                    if (RankersStatic.GameRankersArray[i].Compare(gameScores[k].Score, gameScores[rankerIdx].Score))
+                        rankerIdx = k;
 
-                    // 해당 스코어가 더 높은 경우
-                    if (RankersStatic.GameRankersArray[i].Compare(scores[k].Score, scores[rankerIdx].Score)) {
-                        // 이미 같은 유저의 스코어가 있는지 확인
-                        bool userExists = false;
-                        foreach (var score in RankersStatic.GameRankersArray[i].scores) {
-                            if (score.UserId == scores[k].UserId) {
-                                userExists = true;
-                                break;
-                            }
-                        }
-                        if (!userExists)
-                            rankerIdx = k;
-                    }
+                // 선택된 점수가 이미 선택되어 포함된 유저의 점수인 경우
+                if (RankersStatic.GameRankersArray[i].scores.Any(s => s.UserId == gameScores[rankerIdx].UserId)) {
+                    gameScores.RemoveAt(rankerIdx);
                 }
+                else {
+                    // 선택된 점수를 swap  
+                    var temp = gameScores[rankerIdx];
+                    gameScores[rankerIdx] = gameScores[j];
+                    gameScores[j] = temp;
 
-                // 선택된 점수를 swap
-                var temp = scores[rankerIdx];
-                scores[rankerIdx] = scores[j];
-                scores[j] = temp;
-
-                // 선택된 값 추가
-                RankersStatic.GameRankersArray[i].scores.AddLast(scores[j]);
-                // System.Console.WriteLine(RankersStatic.GameRankersArray[j].scores.Count);
+                    // 선택된 값 추가
+                    RankersStatic.GameRankersArray[i].scores.AddLast(gameScores[j]);
+                }
             }
+
+            System.Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
+            foreach (var s in RankersStatic.GameRankersArray[i].scores)
+                System.Console.WriteLine($"{s.UserId} {s.Score}");
+            System.Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 종료");
         }
 
         // 종합 순위 10명 계산
