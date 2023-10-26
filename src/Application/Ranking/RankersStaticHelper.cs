@@ -39,6 +39,7 @@ public class RankersStaticHelper {
                 // 선택된 점수가 이미 선택되어 포함된 유저의 점수인 경우
                 if (RankersStatic.GameRankersArray[i].scores.Any(s => s.UserId == gameScores[rankerIdx].UserId)) {
                     gameScores.RemoveAt(rankerIdx);
+                    j--;
                 }
                 else {
                     // 선택된 점수를 swap  
