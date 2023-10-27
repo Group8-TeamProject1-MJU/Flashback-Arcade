@@ -69,6 +69,10 @@ public class RankersStaticHelper {
         bool addedToGameRankers = rankers!.TryAdd(scoreHistoryToAdd);
         // bool addedToTotalRankers = RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
 
+        System.Console.WriteLine("게임 점수 목록 업데이트 후:");
+        foreach (var score in rankers.scores)
+            Console.WriteLine($"{score.Score} {score.UserId}");
+
         return addedToGameRankers;
     }
 }
