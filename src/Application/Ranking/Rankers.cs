@@ -37,9 +37,13 @@ public class Rankers {
     // 같은 유저가 중복으로 존재할경우 삭제
     public void DeleteSameUser(ScoreHistory scoreHistoryToAdd) {
         LinkedListNode<ScoreHistory> currentNode = scores.First!;
+        int pass = 1;
+
         while (currentNode != null) {
-            if (currentNode.Value.UserId == scoreHistoryToAdd.UserId && currentNode.Value.Score < scoreHistoryToAdd.Score)
-                scores.Remove(currentNode);
+            if (currentNode.Value.UserId == scoreHistoryToAdd.UserId && Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
+                if ((pass--) <= 0)
+                    scores.Remove(currentNode);
+            }
 
             currentNode = currentNode.Next!;
         }
