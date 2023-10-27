@@ -27,12 +27,12 @@ public class Rankers {
     }
 
     /// <returns>
-    /// true: 스코어가 순위10 안에 들 수 있다
-    /// false: 스코어가 순위10 안에 들 수 없다
+    /// true: 스코어가 순위 안에 들 수 있다
+    /// false: 스코어가 순위 안에 들 수 없다
     ///</returns>
-    public bool CheckTopTen(ScoreHistory newScoreHistory) {
-        return scores.FirstOrDefault() is null || Compare(newScoreHistory.Score, scores.Last().Score);
-    }
+    // public bool CheckTopTen(ScoreHistory newScoreHistory) {
+    //     return scores.FirstOrDefault() is null || Compare(newScoreHistory.Score, scores.Last().Score);
+    // }
 
     // 같은 유저가 중복으로 존재할경우 삭제
     public void DeleteSameUser(ScoreHistory scoreHistoryToAdd) {
@@ -53,8 +53,8 @@ public class Rankers {
             return false;
 
         // 전달된 점수가 순위안에 들 수 있을만큼 높은 점수가 아니라면 리턴
-        if (!CheckTopTen(scoreHistoryToAdd))
-            return false;
+        // if (!CheckTopTen(scoreHistoryToAdd))
+        //     return false;
 
         LinkedListNode<ScoreHistory> currentNode = scores.First!;
 
