@@ -35,6 +35,17 @@ public class Rankers {
         return scores.FirstOrDefault() is null || Compare(newScoreHistory.Score, scores.Last().Score);
     }
 
+    // 같은 유저가 중복으로 존재할경우 삭제
+    public void DeleteSameUser(LinkedList<ScoreHistory> scores, ScoreHistory scoreHistoryToAdd){
+        LinkedListNode<ScoreHistory> currentNode = scores.First;
+        while(currentNode != null){
+            if(currentNode.Value.UserId == scoreHistoryToAdd.UserId && currentNode.Value.Score < scoreHistoryToAdd.Score){
+                 scores.Remove(currentNode);
+            }
+            currentNode = currentNode.Next;
+        }
+    }
+
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
     public bool TryAdd(ScoreHistory scoreHistoryToAdd) {
@@ -48,30 +59,18 @@ public class Rankers {
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
             return false;
-
+        
         // 전달된 점수가 순위안에 들 수 있을만큼 높은 점수가 아니라면 리턴
         if (!CheckTopTen(scoreHistoryToAdd))
             return false;
 
         // scores 변수에 정렬된 상태를 유지하면서 새로운 노드 삽입
-        while(currentNode != null){
+        while(currentNode != null){  
             if(Compare(scoreHistoryToAdd.Score,currentNode.Value.Score)){
                 scores.AddBefore(currentNode,scoreHistoryToAdd);
-                // 같은 유저가 중복으로 존재하면 점수가 낮은 유저 점수는 삭제
-                if(currentNode.Value.UserId == scoreHistoryToAdd.UserId){
-                    if(currentNode.Value.Score > scoreHistoryToAdd.Score){
-                        return false;
-                    }else{
-                        scores.Remove(currentNode);
-                        continue;
-                    }
-                }
-                // 같은 점수가 중복으로 존재할 기존 점수 뒤로 삽입
-                if(currentNode.Value.Score == scoreHistoryToAdd.Score){
-                    scores.AddAfter(currentNode,scoreHistoryToAdd);
-                }
-                // 10명이 초과하면 삭제
-                if(scores.Count > 10){
+                DeleteSameUser(scores,scoreHistoryToAdd);
+                // 100명이 초과하면 삭제
+                if(scores.Count > 100){
                     scores.RemoveLast();
                 }
                 return true;
@@ -79,8 +78,13 @@ public class Rankers {
             currentNode = currentNode.Next;
         }
 
-        if(scores.Count < 10){
-            scores.AddLast(scoreHistoryToAdd);
+        // 같은 점수가 중복으로 존재할 기존 점수 뒤로 삽입
+        if(currentNode.Value.Score == scoreHistoryToAdd.Score){
+            if(descending){
+                scores.AddAfter(currentNode,scoreHistoryToAdd);
+            }else{
+                scores.AddBefore(currentNode,scoreHistoryToAdd);
+            }
             return true;
         }
 
