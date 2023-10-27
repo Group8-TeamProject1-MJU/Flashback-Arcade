@@ -18,8 +18,8 @@ public class Rankers {
 
     public bool Compare(int a, int b) {
         return descending
-            ? a > b
-            : a < b;
+            ? a >= b
+            : a <= b;
     }
 
     public bool CheckSameGame(ScoreHistory scoreHistoryToAdd) {
@@ -35,7 +35,7 @@ public class Rankers {
     }
 
     // 같은 유저가 중복으로 존재할경우 삭제
-    public void DeleteSameUser(LinkedList<ScoreHistory> scores, ScoreHistory scoreHistoryToAdd) {
+    public void DeleteSameUser(ScoreHistory scoreHistoryToAdd) {
         LinkedListNode<ScoreHistory> currentNode = scores.First!;
         while (currentNode != null) {
             if (currentNode.Value.UserId == scoreHistoryToAdd.UserId && currentNode.Value.Score < scoreHistoryToAdd.Score)
@@ -48,10 +48,6 @@ public class Rankers {
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
     public bool TryAdd(ScoreHistory scoreHistoryToAdd) {
-        System.Console.WriteLine("게임 점수 목록 업데이트 전:");
-        foreach (var score in scores)
-            Console.WriteLine($"{score.Score} {score.UserId}");
-
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
             return false;
@@ -72,7 +68,7 @@ public class Rankers {
         while (currentNode is not null) {
             if (Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
                 scores.AddBefore(currentNode, scoreHistoryToAdd);
-                DeleteSameUser(scores, scoreHistoryToAdd);
+                DeleteSameUser(scoreHistoryToAdd);
                 // 100명이 초과하면 삭제
                 if (scores.Count > 100)
                     scores.RemoveLast();
