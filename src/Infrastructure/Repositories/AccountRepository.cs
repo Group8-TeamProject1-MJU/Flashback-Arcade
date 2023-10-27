@@ -16,4 +16,8 @@ public class AccountRepository {
     public async Task<IdentityUser> GetByEmailAsync(string email) {
         return (await _dbContext.IdentityDbSet.FirstOrDefaultAsync(user => user.Email == email))!;
     }
+
+    public async Task<string?> GetUserName(string Id) {
+        return (await _dbContext.IdentityDbSet.FirstOrDefaultAsync(user => user.Id == Id))?.UserName;
+    }
 }

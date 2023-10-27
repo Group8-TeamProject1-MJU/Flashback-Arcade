@@ -40,7 +40,7 @@ public class Rankers {
         int pass = 1;
 
         while (currentNode != null) {
-            if (currentNode.Value.UserId == scoreHistoryToAdd.UserId && Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
+            if (currentNode.Value.UserId == scoreHistoryToAdd.UserId) {
                 if ((pass--) <= 0)
                     scores.Remove(currentNode);
             }
@@ -82,8 +82,9 @@ public class Rankers {
             currentNode = currentNode.Next!;
         }
 
-        if(scores.Count < 100){
+        if (scores.Count < 100) {
             scores.AddLast(scoreHistoryToAdd);
+            DeleteSameUser(scoreHistoryToAdd);
             return true;
         }
 

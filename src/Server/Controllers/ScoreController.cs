@@ -25,4 +25,9 @@ public class ScoreController : ControllerBase {
             return Ok();
         else return BadRequest();
     }
+
+    [HttpGet("get-rankers")]
+    public async Task<ActionResult<IEnumerable<string>>> GetRankersAsync(string title) {
+        return Ok(JsonSerializer.Serialize(await _scoreService.GetRankersAsync(title)));
+    }
 }

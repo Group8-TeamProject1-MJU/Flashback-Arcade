@@ -102,6 +102,7 @@ const AppRoutes = [
         path: 'quick-speed-master',
         element: <QuickSpeedMaster />,
         title: 'Qucik Speed Master',
+        categories: ['Arcade'],
         serial_number: '8'
       },
       {

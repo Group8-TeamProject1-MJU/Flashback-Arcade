@@ -11,7 +11,6 @@ import { TotalRankingBoard } from "../../components/TotalRankingBoard";
 
 const gameRoutes = AppRoutes.filter(r => r.path?.includes("/games"))[0].sub_routes;
 
-console.log(gameRoutes);
 export default function Home() {
   const { user, setUser } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState('');

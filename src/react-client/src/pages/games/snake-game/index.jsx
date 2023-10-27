@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Snake } from 'react-snake-lib';
-import ENDPOINTS from '../../../configs/api-endpoints';
+import { GameRankersContext } from '../../../contexts/GameRankersContext';
 
 const KEY_BIND = {
   LEFT: {
@@ -24,6 +24,7 @@ const KEY_BIND = {
 
 export default function SnakeGame() {
   const [score, setScore] = useState(0);
+  const { rankers, setRankers, sendScore } = useContext(GameRankersContext);
 
   const handleButtonClick = (keyBind) => {
     const event = new KeyboardEvent('keydown', {
@@ -115,25 +116,8 @@ export default function SnakeGame() {
 
   function onGameOver() {
     if (score > 0) {
-      fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          score: score,
-          title: "Snake Game"
-        })
-      })
-        .then(response => response.json())  
-        .then(responseFromServer => {
-          console.log(responseFromServer.response);
-        })
-        .catch(error => console.log(error));
+      sendScore(score);
     }
-
-
 
     setScore(0);
   }
