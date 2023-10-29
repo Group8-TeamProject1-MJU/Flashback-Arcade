@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./memory.css";
+import { GameRankersContext } from "../../../contexts/GameRankersContext";
 
 export default function Memory() {
   const [turn, setTurn] = useState(null);
@@ -10,6 +11,8 @@ export default function Memory() {
   const [status, setStatus] = useState("playing");
   const [startbtn,setStartButton] = useState(false);
 
+  const { sendScore } = useContext(GameRankersContext);
+
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
@@ -19,6 +22,8 @@ export default function Memory() {
   const handleClick = async (x) => {
     if (turn != "user" || status != "playing") return;
     if (x != sequence[pos]) {
+      sendScore(level)
+
       setStatus("Wrong !!!");
       await setLevel(1);
       return;
