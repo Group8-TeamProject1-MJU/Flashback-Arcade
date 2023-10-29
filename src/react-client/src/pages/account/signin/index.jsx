@@ -134,7 +134,7 @@ export default function Signin() {
                                 <Button className="m-1" onClick={KakaotalkLogin}>Kakaotalk login</Button>
                             </div>
                             <div className='mt-3 text-danger w-auto'>
-                                {errMsgs.map((msg, idx) => (
+                                {errMsgs && errMsgs.map((msg, idx) => (
                                     <p key={idx}>{msg}</p>
                                 ))}
                             </div>
