@@ -62,7 +62,7 @@ export default function Memory() {
       <div className="fancy">
         <h1 className="h">Memory Game</h1>
         <button
-          className="start-btn"
+          className="start-button"
           onClick={()=>{
             startGame();
             setStartButton(true);
