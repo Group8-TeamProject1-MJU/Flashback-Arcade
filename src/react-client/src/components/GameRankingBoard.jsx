@@ -1,13 +1,24 @@
 import { Col, Container, Row } from "react-bootstrap";
 import AppRoutes from "../utils/AppRoutes";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GameRankersContext } from "../contexts/GameRankersContext";
 
 export function GameRankingBoard() {
     const [page, setPage] = useState(1);
-    const { rankers, game } = useContext(GameRankersContext);
+    const { rankers, game, fetchRankers } = useContext(GameRankersContext);
 
     const rankerToShow = rankers.slice((page - 1) * 10, ((page - 1) * 10) + 10)
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchRankers();
+        }, 5000);
+    
+        return () => {
+          clearInterval(interval);
+        };
+    
+      }, []);
 
     function PrintRest() {
         let elements = [];

@@ -53,7 +53,7 @@ export function GameRankersProvider({ children }) {
     return (
         <GameRankersContext.Provider
             value={{
-                rankers, setRankers, sendScore, game
+                rankers, setRankers, sendScore, game, fetchRankers
             }}
         >
             {children}
