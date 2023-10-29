@@ -4,6 +4,7 @@ namespace Application.Ranking;
 
 public class Rankers {
     public readonly LinkedList<ScoreHistory> scores;
+    public readonly Dictionary<string, int> rankedPlayers;
     public readonly bool descending;
     public readonly Game game;
 
@@ -13,6 +14,7 @@ public class Rankers {
     ) {
         this.descending = descending;
         this.game = game;
+        this.rankedPlayers = new();
         scores = new();
     }
 

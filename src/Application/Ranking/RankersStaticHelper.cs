@@ -52,6 +52,10 @@ public class RankersStaticHelper {
                 }
             }
 
+            var rankedPlayers = RankersStatic.GameRankersArray[i].scores.ToList();
+            for (int j = 0; j < rankedPlayers.Count; ++j)
+                RankersStatic.GameRankersArray[i].rankedPlayers.Add(rankedPlayers[j].UserId, j + 1);
+
             System.Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
             foreach (var s in RankersStatic.GameRankersArray[i].scores)
                 System.Console.WriteLine($"{s.UserId} {s.Score}");

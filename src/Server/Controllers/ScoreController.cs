@@ -30,4 +30,12 @@ public class ScoreController : ControllerBase {
     public async Task<ActionResult<IEnumerable<string>>> GetRankersAsync(string title) {
         return Ok(JsonSerializer.Serialize(await _scoreService.GetRankersAsync(title)));
     }
+
+    [HttpGet("get-ranks")]
+    public async Task<ActionResult<IEnumerable<string>>> GetRanksAsync(string userName) {
+        var result = await _scoreService.GetRanksAsync(userName);
+        if (result is null)
+            return BadRequest();
+        return Ok(JsonSerializer.Serialize(result));
+    }
 }

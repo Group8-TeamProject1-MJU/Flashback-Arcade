@@ -58,10 +58,25 @@ public class ScoreService {
         var scores = RankersStatic.GameRankersArray!.FirstOrDefault(rankers => string.Compare(rankers.game.Title, title) == 0)!.scores.ToList();
         return await Task.WhenAll(scores.Select(async s => {
             return new {
-                UserName = await _accountRepository.GetUserName(s.UserId),
+                UserName = await _accountRepository.GetUserNameAsync(s.UserId),
                 Score = s.Score,
                 Id = s.Id
             };
         }));
+    }
+
+    public async Task<IEnumerable<object>> GetRanksAsync(string userName) {
+        string? id = await _accountService.GetByUserNameAsync(userName);
+        if (string.IsNullOrWhiteSpace(id))
+            return null!;
+
+        return RankersStatic.GameRankersArray!
+            .Select(rankers => {
+                return new {
+                    Title = rankers.game.Title,
+                    Rank = rankers.rankedPlayers.ContainsKey(id) == true ? rankers.rankedPlayers[id] : 0
+                };
+                })
+            .Where(ranker => ranker.Rank is not 0);
     }
 }

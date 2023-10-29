@@ -124,4 +124,8 @@ public class AccountService {
         else
             return true;
     }
+
+    public async Task<string?> GetByUserNameAsync(string userName) {
+        return (await _userManager.FindByNameAsync(userName))?.Id;
+    }
 }
