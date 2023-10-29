@@ -1,6 +1,8 @@
 @page "/reactchat/{username?}"
 
 @using Microsoft.AspNetCore.SignalR.Client
+@using Application.Chatting
+
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
@@ -67,7 +69,8 @@
     {
         if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput)){
             await hubConnection.SendAsync("SendMessage", username, messageInput);
-            messageInput=null;
+            ChattingStatic.GetInNewMessage($"{username}: {messageInput}");
+            messageInput = null;
         }
     }
 
@@ -93,6 +96,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
+        messages = ChattingStatic.messages.ToList();
         if (string.IsNullOrWhiteSpace(username))
         {
             username = GenerateRandomUsername(6);
@@ -109,10 +114,4 @@
             await Send();
         }
     }
-
-
-
-
-
-
 }
