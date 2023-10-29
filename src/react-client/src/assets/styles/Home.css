@@ -55,6 +55,31 @@ body {
   font-size: 1.5rem;
 }
 
+.pagination-button {
+  max-width: 80px;
+  min-width: 80px;
+  max-height: 80px;
+  min-height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  margin: 15px;
+  background: rgba(173, 247, 26, 0.4);
+  color: white;
+  font-family: "Silkscreen", cursive;
+  font-size: 2rem;
+
+  cursor: pointer;
+  border: 10px groove lightblue;
+}
+
+.pagination-button:hover {
+  transform: scale(1.10);
+  background-color: red;
+}
+
 .chat-section {
   border-radius: 30px;
   margin-top: 100px;
