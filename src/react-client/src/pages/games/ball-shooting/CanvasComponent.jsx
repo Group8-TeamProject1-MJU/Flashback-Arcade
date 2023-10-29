@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { gsap } from "gsap";
 import "./BallShooting.css";
+import { GameRankersContext } from "../../../contexts/GameRankersContext";
 
 const CanvasComponent = () => {
   const canvasRef = useRef(null);
+  const { sendScore } = useContext(GameRankersContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -175,6 +177,7 @@ const CanvasComponent = () => {
             cancelAnimationFrame(animateId);
             modalEl.style.display = "flex";
             bigScoreEl.innerHTML = score;
+            sendScore(score);
           }, 0);
         }
         projectiles.forEach((projectile, projectileIndex) => {
@@ -242,6 +245,7 @@ const CanvasComponent = () => {
     });
 
     startGameBtn.addEventListener("click", () => {
+
       init();
       spawnEnemies();
       animate();
