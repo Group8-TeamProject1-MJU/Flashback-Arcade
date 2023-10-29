@@ -67,10 +67,13 @@ public class Rankers {
         while (currentNode is not null) {
             if (Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
                 scores.AddBefore(currentNode, scoreHistoryToAdd);
+                if (!isTotalRankers) {
+                    if (rankedPlayers.ContainsKey(scores.Last!.Value.UserId))
+                        rankedPlayers[scores.Last!.Value.UserId] = scoreHistoryToAdd.Score;
+                    else rankedPlayers.Add(scores.Last!.Value.UserId, scoreHistoryToAdd.Score);
+                }
                 DeleteSameUser(currentNode, scoreHistoryToAdd);
                 if (scores.Count > 100) {
-                    if (!isTotalRankers)
-                        rankedPlayers.Remove(scores.Last!.Value.UserId);
                     scores.RemoveLast();
                 }
 

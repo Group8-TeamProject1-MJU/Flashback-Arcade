@@ -12,7 +12,7 @@ export function GameRankingBoard() {
     useEffect(() => {
         const interval = setInterval(() => {
             fetchRankers();
-        }, 5000);
+        }, 10000);
     
         return () => {
           clearInterval(interval);

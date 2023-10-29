@@ -16,9 +16,13 @@ export function TotalRankingBoard() {
     const [status, setStatus] = useState('유저 랭킹을 조회해보세요!💥');
 
     useEffect(() => {
-        if (userName !== '')
-            getRanks();
-        fetchRankers();
+        const interval = setInterval(() => {
+            fetchRankers();
+        }, 10000);
+    
+        return () => {
+          clearInterval(interval);
+        };
     }, []);
 
     function fetchRankers() {

@@ -47,7 +47,7 @@ export function GameRankersProvider({ children }) {
             })
         })
             .catch(error => console.log(error));
-        fetchRankers();
+        // fetchRankers();
     }
 
     return (

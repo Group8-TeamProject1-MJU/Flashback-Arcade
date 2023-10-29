@@ -140,7 +140,7 @@ public class RankersStaticHelper {
         if (user is null) return false;
 
         var url = $"{_configuration["ClientUrls:ReactUrl"]!}";
-        var body = $"<h3>{user.UserName}님이 {rankers.game.Title}에서 {node.Value.Score}을 기록하여 순위 {rankers.rankedPlayers[node.Value.UserId]}등이 되었습니다!!</h3><br /><a href={url}>여기를 클릭하여 Flashback Arcade로 이동!!</a>";
+        var body = $"<h3>{user.UserName}님이 {rankers.game.Title}에서 {node.Value.Score}점을 기록하여 순위 {rankers.rankedPlayers[node.Value.UserId]}등이 되었습니다!! 축하해주세요!</h3><br /><a href={url}>여기를 클릭하여 Flashback Arcade로 이동!!</a>";
 
         // 랭킹을 기록한 유저에게 알림
         if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트", body) is false)
