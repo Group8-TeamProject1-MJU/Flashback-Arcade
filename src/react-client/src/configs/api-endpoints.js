@@ -13,6 +13,7 @@ const ENDPOINTS = {
 
   POST_API_SCORE_ADD_SCORE: `${API_BASE_URL}/api/score/add-score/`,
   GET_API_SCORE_GET_RANKERS: `${API_BASE_URL}/api/score/get-rankers`,
+  GET_API_SCORE_GET_RANKS: `${API_BASE_URL}/api/score/get-ranks`,
 };
 
 export default ENDPOINTS;
