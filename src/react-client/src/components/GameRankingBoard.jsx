@@ -1,20 +1,22 @@
 import { Col, Container, Row } from "react-bootstrap";
 import AppRoutes from "../utils/AppRoutes";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GameRankersContext } from "../contexts/GameRankersContext";
 
 export function GameRankingBoard() {
-    let rankersCnt = 0;
+    const [page, setPage] = useState(1);
     const { rankers, game } = useContext(GameRankersContext);
+
+    const rankerToShow = rankers.slice((page - 1) * 10, ((page - 1) * 10) + 10)
 
     function PrintRest() {
         let elements = [];
 
-        for (let i = rankersCnt; i < 10; ++i) {
+        for (let i = rankerToShow.length + 1; i <= 10; ++i) {
             elements.push(
                 <Row className="justify-content-between" key={i}>
                     <Col className="board-col">
-                        {i + 1}
+                        {i + (page - 1) * 10}
                     </Col>
                     <Col className="board-col">
                         XXX
@@ -23,10 +25,19 @@ export function GameRankingBoard() {
                         XXX
                     </Col>
                 </Row>
-
             )
         }
         return elements;
+    }
+
+    function OnLeftButtonClicked() {
+        if (page > 1)
+            setPage(page - 1);
+    }
+
+    function OnRightButtonClicked() {
+        if (page < 10)
+            setPage(page + 1);
     }
 
     return (
@@ -51,12 +62,11 @@ export function GameRankingBoard() {
                                 </Col>
                             </Row>
                             {
-                                rankers && rankers.map((ranker, idx) => {
-                                    ++rankersCnt;
+                                rankerToShow && rankerToShow.map((ranker, idx) => {
                                     return (
                                         <Row className="justify-content-between" key={ranker.Id}>
                                             <Col className="board-col">
-                                                {idx + 1}
+                                                {(page - 1) * 10 + ++idx}
                                             </Col>
                                             <Col className="board-col">
                                                 {ranker.UserName}
@@ -70,16 +80,13 @@ export function GameRankingBoard() {
                             }
                             {PrintRest()}
                             <Row className="justify-content-center">
-                                <Col className="pagination-button">
+                                <Col className="pagination-button" onClick={OnLeftButtonClicked}>
                                     &lt;
                                 </Col>
-                                <Col className="pagination-button">
+                                <Col className="pagination-button" onClick={OnRightButtonClicked}>
                                     &gt;
                                 </Col>
                             </Row>
-                        </Container>
-
-                        <Container>
                         </Container>
                     </div>
                 </div>
