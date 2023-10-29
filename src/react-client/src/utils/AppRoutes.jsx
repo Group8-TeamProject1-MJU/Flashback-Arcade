@@ -105,24 +105,24 @@ const AppRoutes = [
         categories: ['Arcade'],
         serial_number: '8'
       },
-      {
-        path: 'gayeong',
-        element: <Gayeong />,
-        title: 'Gayeong',
-        serial_number: '09'
-      },
-      {
-        path: 'yongchan',
-        element: <Yongchan />,
-        title: 'Yongchan',
-        serial_number: '10'
-      },
-      {
-        path: 'woojae',
-        element: <Woojae />,
-        title: 'Woojae',
-        serial_number: '11'
-      }
+      // {
+      //   path: 'gayeong',
+      //   element: <Gayeong />,
+      //   title: 'Gayeong',
+      //   serial_number: '09'
+      // },
+      // {
+      //   path: 'yongchan',
+      //   element: <Yongchan />,
+      //   title: 'Yongchan',
+      //   serial_number: '10'
+      // },
+      // {
+      //   path: 'woojae',
+      //   element: <Woojae />,
+      //   title: 'Woojae',
+      //   serial_number: '11'
+      // }
     ]
   },
   {
