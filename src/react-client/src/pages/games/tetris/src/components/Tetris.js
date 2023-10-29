@@ -115,15 +115,17 @@ const Tetris = () => {
     drop();
   }, dropTime);
 
-  const move = ({ keyCode }) => {
+  const move = (e) => {
+    e.preventDefault();
+
     if (!gameOver) {
-      if (keyCode === 37) {
+      if (e.keyCode === 37) {
         movePlayer(-1);
-      } else if (keyCode === 39) {
+      } else if (e.keyCode === 39) {
         movePlayer(1);
-      } else if (keyCode === 40) {
+      } else if (e.keyCode === 40) {
         dropPlayer();
-      } else if (keyCode === 38) {
+      } else if (e.keyCode === 38) {
         playerRotate(stage, 1);
       }
     }
