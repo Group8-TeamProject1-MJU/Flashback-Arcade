@@ -174,10 +174,10 @@ const CanvasComponent = () => {
         if (dist - enemy.radius - player.radius < 1) {
           // end game
           setTimeout(() => {
+            sendScore(score);
             cancelAnimationFrame(animateId);
             modalEl.style.display = "flex";
             bigScoreEl.innerHTML = score;
-            sendScore(score);
           }, 0);
         }
         projectiles.forEach((projectile, projectileIndex) => {
