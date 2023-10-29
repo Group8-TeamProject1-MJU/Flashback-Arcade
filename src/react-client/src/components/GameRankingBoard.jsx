@@ -19,10 +19,10 @@ export function GameRankingBoard() {
                         {i + (page - 1) * 10}
                     </Col>
                     <Col className="board-col">
-                        XXX
+                        ???
                     </Col>
                     <Col className="board-col">
-                        XXX
+                        ???
                     </Col>
                 </Row>
             )
