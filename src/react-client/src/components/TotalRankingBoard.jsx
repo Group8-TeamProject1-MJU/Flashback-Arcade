@@ -30,9 +30,10 @@ export function TotalRankingBoard() {
             .then(responseFromServer => {
                 console.log(responseFromServer);
                 if (responseFromServer.status !== 400) {
-                    setSearchResult(responseFromServer);
+                    if (responseFromServer.length === 0)
+                        setStatus("랭킹 조회 결과 없음..");
+                    else setSearchResult(responseFromServer);
                 } 
-
                 else {
                     setStatus("존재하지 않는 유저 이름입니다");
                     setSearchResult([]);
