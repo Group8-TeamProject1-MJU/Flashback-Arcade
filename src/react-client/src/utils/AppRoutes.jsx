@@ -103,7 +103,7 @@ const AppRoutes = [
         element: <QuickSpeedMaster />,
         title: 'Qucik Speed Master',
         categories: ['Arcade'],
-        serial_number: '8'
+        serial_number: '08'
       },
       // {
       //   path: 'gayeong',
