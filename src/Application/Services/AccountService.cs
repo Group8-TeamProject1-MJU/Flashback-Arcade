@@ -128,4 +128,8 @@ public class AccountService {
     public async Task<string?> GetByUserNameAsync(string userName) {
         return (await _userManager.FindByNameAsync(userName))?.Id;
     }
+
+    public async Task<IdentityUser?> Get(string id) {
+        return await _userManager.FindByIdAsync(id);
+    }
 }

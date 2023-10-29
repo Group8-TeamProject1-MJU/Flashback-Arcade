@@ -1,18 +1,34 @@
+using Application.Services;
+using Domain.IServices;
 using Domain.Models;
 using Infrastructure.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Ranking;
 
 public class RankersStaticHelper {
     private readonly GameRepository _gameRepository;
     private readonly ScoreRepository _scoreRepository;
+    private readonly EmailService _emailService;
+    private readonly AccountService _accountService;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
     public RankersStaticHelper(
         GameRepository gameRepository,
-        ScoreRepository scoreRepository
+        ScoreRepository scoreRepository,
+        IEmailService emailService,
+        AccountService accountService,
+        IConfiguration configuration,
+        ILogger<RankersStaticHelper> logger
     ) {
         _gameRepository = gameRepository;
         _scoreRepository = scoreRepository;
+        _emailService = (emailService as EmailService)!;
+        _accountService = accountService;
+        _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task InitializeAsync() {
@@ -70,19 +86,59 @@ public class RankersStaticHelper {
         var game = await _gameRepository.GetAsync(scoreHistoryToAdd.GameId);
         var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Id == scoreHistoryToAdd.GameId);
 
-        System.Console.WriteLine($"새로 입력된 스코어의 유저ID: {scoreHistoryToAdd.UserId} 점수: {scoreHistoryToAdd.Score}");
-
-        System.Console.WriteLine("게임 점수 목록 업데이트 전:");
+        _logger.LogInformation($"새로 입력된 스코어의 유저ID: {scoreHistoryToAdd.UserId} 점수: {scoreHistoryToAdd.Score} 게임타이틀: {game.Title}");
+        _logger.LogInformation("게임 점수 목록 업데이트 전:");
         foreach (var score in rankers.scores)
-            Console.WriteLine($"{score.Score} {score.UserId}");
+            _logger.LogInformation($"{score.Score} {score.UserId}");
 
-        bool addedToGameRankers = rankers!.TryAdd(scoreHistoryToAdd);
+        var node = rankers!.TryAdd(scoreHistoryToAdd);
+        bool addedToGameRankers = false;
+        if (node is not null) {
+            addedToGameRankers = true;
+            await NotifyChangesAsync(node, rankers);
+        }
         // bool addedToTotalRankers = RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
 
-        System.Console.WriteLine("게임 점수 목록 업데이트 후:");
+        _logger.LogInformation("게임 점수 목록 업데이트 후:");
         foreach (var score in rankers.scores)
-            Console.WriteLine($"{score.Score} {score.UserId}");
+            _logger.LogInformation($"{score.Score} {score.UserId}");
 
         return addedToGameRankers;
+    }
+
+    public async Task<bool> NotifyChangesAsync(LinkedListNode<ScoreHistory> node, Rankers rankers) {
+        var user = await _accountService.Get(node.Value.UserId);
+        if (user is null) return false;
+
+        var url = $"{_configuration["ClientUrls:ReactUrl"]!}";
+        var body = $"<h3>{user.UserName}님이 {rankers.game.Title}에서 {node.Value.Score}을 기록하여 순위 {rankers.rankedPlayers[node.Value.UserId]}등이 되었습니다!!</h3><br /><a href={url}>여기를 클릭하여 Flashback Arcade로 이동!!</a>";
+
+        // 랭킹을 기록한 유저에게 알림
+        if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트", body) is false)
+            return false;
+
+        // 랭킹 +-5 유저들에게 알림
+        var prev = node.Previous;
+        var next = node.Next;
+        for (int i = 0; i < 5; ++i) {
+            if (prev is null && next is null)
+                break;
+
+            if (prev is not null) {
+                user = await _accountService.Get(prev.Value.UserId);
+                if (user is null) return false;
+                if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트 알림", body) is false)
+                    return false;
+                prev = node.Previous;
+            }
+            if (next is not null) {
+                user = await _accountService.Get(next.Value.UserId);
+                if (user is null) return false;
+                if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트 알림", body) is false)
+                    return false;
+                next = node.Next;
+            }
+        }
+        return true;
     }
 }
