@@ -4,7 +4,7 @@ namespace Application.Ranking;
 
 public class Rankers {
     public readonly LinkedList<ScoreHistory> scores;
-    public readonly Dictionary<string, int> rankedPlayers;
+    public Dictionary<string, int> rankedPlayers;
     public readonly bool descending;
     public readonly Game game;
 
@@ -25,6 +25,7 @@ public class Rankers {
     }
 
     public bool CheckSameGame(ScoreHistory scoreHistoryToAdd) {
+        if (game is null) return true;
         return scoreHistoryToAdd.GameId == game.Id;
     }
 
@@ -47,7 +48,7 @@ public class Rankers {
 
     // _scores에 새로운 랭커 삽입 및 꼴지 제거.
     // 삽입 후 정렬된 상태가 유지되어야 함
-    public LinkedListNode<ScoreHistory>? TryAdd(ScoreHistory scoreHistoryToAdd) {
+    public LinkedListNode<ScoreHistory>? TryAdd(ScoreHistory scoreHistoryToAdd, bool isTotalRankers = false) {
         // 전달된 점수가 다른 종류의 게임 점수이면 리턴
         if (!CheckSameGame(scoreHistoryToAdd))
             return null;
@@ -57,7 +58,8 @@ public class Rankers {
         // scores가 비어있을 때 바로 추가
         if (currentNode is null) {
             scores.AddLast(scoreHistoryToAdd);
-            rankedPlayers.Add(scoreHistoryToAdd.UserId, 1);
+            if (!isTotalRankers)
+                rankedPlayers.Add(scoreHistoryToAdd.UserId, 1);
             return scores.Last;
         }
 
@@ -67,7 +69,8 @@ public class Rankers {
                 scores.AddBefore(currentNode, scoreHistoryToAdd);
                 DeleteSameUser(currentNode, scoreHistoryToAdd);
                 if (scores.Count > 100) {
-                    rankedPlayers.Remove(scores.Last!.Value.UserId);
+                    if (!isTotalRankers)
+                        rankedPlayers.Remove(scores.Last!.Value.UserId);
                     scores.RemoveLast();
                 }
 
@@ -81,7 +84,8 @@ public class Rankers {
 
         if (scores.Count < 100) {
             scores.AddLast(scoreHistoryToAdd);
-            rankedPlayers.Add(scoreHistoryToAdd.UserId, 1);
+            if (!isTotalRankers)
+                rankedPlayers.Add(scoreHistoryToAdd.UserId, 1);
 
             return scores.Last;
         }

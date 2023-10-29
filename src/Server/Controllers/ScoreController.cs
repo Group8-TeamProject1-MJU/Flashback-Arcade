@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Application.Ranking;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,11 @@ public class ScoreController : ControllerBase {
     [HttpGet("get-rankers")]
     public async Task<ActionResult<IEnumerable<string>>> GetRankersAsync(string title) {
         return Ok(JsonSerializer.Serialize(await _scoreService.GetRankersAsync(title)));
+    }
+
+    [HttpGet("get-total-rankers")]
+    public async Task<ActionResult<string>> GetTotalRankersAsync() {
+        return Ok(JsonSerializer.Serialize(await _scoreService.GetTotalRankersAsync()));
     }
 
     [HttpGet("get-ranks")]

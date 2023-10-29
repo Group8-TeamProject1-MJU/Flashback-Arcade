@@ -72,37 +72,66 @@ public class RankersStaticHelper {
             for (int j = 0; j < rankedPlayers.Count; ++j)
                 RankersStatic.GameRankersArray[i].rankedPlayers.Add(rankedPlayers[j].UserId, j + 1);
 
-            System.Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
+            _logger.LogInformation($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
             foreach (var s in RankersStatic.GameRankersArray[i].scores)
-                System.Console.WriteLine($"{s.UserId} {s.Score}");
-            System.Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 종료");
+                _logger.LogInformation($"{s.UserId} {s.Score}");
+            _logger.LogInformation($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 종료");
         }
 
         // 종합 순위 10명 계산
-        // TODO: 게임 랭킹에 오른 유저들만 종합점수를 구하고 종합 순위에 추가한다
+        UpdateTotalRankers();
+    }
+
+    public void UpdateTotalRankers() {
+        var totalRankers = new Dictionary<string, int>();
+        RankersStatic.TotalRankers!.rankedPlayers = totalRankers;
+
+        for (int i = 0; i < RankersStatic.GameRankersArray!.Length; ++i) {
+            var scores = RankersStatic.GameRankersArray[i].scores.ToList();
+            for (int j = 0; j < scores.Count; ++j) {
+                if (totalRankers.ContainsKey(scores[j].UserId)) {
+                    totalRankers[scores[j].UserId] += 100 - j;
+                }
+                else
+                    totalRankers.Add(scores[j].UserId, 100 - j);
+            }
+        }
+
+        foreach (var keyVal in totalRankers) {
+            var score = new ScoreHistory {
+                UserId = keyVal.Key,
+                Score = keyVal.Value
+            };
+            RankersStatic.TotalRankers.TryAdd(score, true);
+        }
     }
 
     public async Task<bool> TryAddAsync(ScoreHistory scoreHistoryToAdd) {
         var game = await _gameRepository.GetAsync(scoreHistoryToAdd.GameId);
         var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Id == scoreHistoryToAdd.GameId);
 
+        // 게임 점수 목록 업데이트 전 프린트
         _logger.LogInformation($"새로 입력된 스코어의 유저ID: {scoreHistoryToAdd.UserId} 점수: {scoreHistoryToAdd.Score} 게임타이틀: {game.Title}");
         _logger.LogInformation("게임 점수 목록 업데이트 전:");
         foreach (var score in rankers.scores)
             _logger.LogInformation($"{score.Score} {score.UserId}");
 
+        // 게임 점수 추가
         var node = rankers!.TryAdd(scoreHistoryToAdd);
         bool addedToGameRankers = false;
         if (node is not null) {
             addedToGameRankers = true;
             await NotifyChangesAsync(node, rankers);
         }
-        // bool addedToTotalRankers = RankersStatic.TotalRankers!.TryAdd(scoreHistoryToAdd);
 
+        // 게임 점수 목록 업데이트 후 프린트
         _logger.LogInformation("게임 점수 목록 업데이트 후:");
         foreach (var score in rankers.scores)
             _logger.LogInformation($"{score.Score} {score.UserId}");
 
+        // 종합 랭킹 업데이트
+        UpdateTotalRankers();
+        
         return addedToGameRankers;
     }
 

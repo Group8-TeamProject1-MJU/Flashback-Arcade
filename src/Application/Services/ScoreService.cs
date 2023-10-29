@@ -65,6 +65,15 @@ public class ScoreService {
         }));
     }
 
+    public async Task<IEnumerable<object>?> GetTotalRankersAsync() {
+        return await Task.WhenAll(RankersStatic.TotalRankers!.scores.Select(async s => {
+            return new {
+                UserName = await _accountRepository.GetUserNameAsync(s.UserId),
+                Score = s.Score
+            };
+        }));
+    }
+
     public async Task<IEnumerable<object>> GetRanksAsync(string userName) {
         string? id = await _accountService.GetByUserNameAsync(userName);
         if (string.IsNullOrWhiteSpace(id))
@@ -76,7 +85,7 @@ public class ScoreService {
                     Title = rankers.game.Title,
                     Rank = rankers.rankedPlayers.ContainsKey(id) == true ? rankers.rankedPlayers[id] : 0
                 };
-                })
+            })
             .Where(ranker => ranker.Rank is not 0);
     }
 }
