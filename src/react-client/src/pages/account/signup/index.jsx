@@ -70,13 +70,13 @@ export default function Signup() {
                 setLoading(false);
                 console.log(responseFromServer);
 
-                var succeeded = responseFromServer.succeeded;
-                if (succeeded) {
+                var Succeeded = responseFromServer.Succeeded;
+                if (Succeeded) {
                     toast("회원가입 인증 이메일이 전송되었습니다.");
                     navigate("/account/signin");
                 }
                 else {
-                    setMsgsFromServer(responseFromServer.errors);
+                    setMsgsFromServer(responseFromServer.Errors);
                 }
             })
             .catch(error => console.log(error));
@@ -148,7 +148,7 @@ export default function Signup() {
                                 {showIdErrorMsg && (<p>아이디는 5자 이상 입력해주세요</p>)}
                                 {showPwdErrorMsg && (<p>비밀번호는 5자 이상 입력해주세요</p>)}
                                 {showPwdConfirmErrorMsg && (<p>비밀번호가 일치하지 않습니다</p>)}
-                                {msgsFromServer.length !== 0 && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
+                                {msgsFromServer !== undefined && msgsFromServer.length > 0 && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
                             </div>
 
                         </Form>

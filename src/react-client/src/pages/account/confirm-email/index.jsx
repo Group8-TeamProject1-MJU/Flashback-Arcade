@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 
 export default function ConfirmEmail() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isConfirmed, setIsConfirmed] = useState('');
+    
     const token = searchParams.get("token");
     const email = searchParams.get("email");
 
