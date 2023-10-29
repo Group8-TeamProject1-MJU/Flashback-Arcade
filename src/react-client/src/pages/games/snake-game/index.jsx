@@ -24,7 +24,7 @@ const KEY_BIND = {
 
 export default function SnakeGame() {
   const [score, setScore] = useState(0);
-  const { rankers, setRankers, sendScore } = useContext(GameRankersContext);
+  const { sendScore } = useContext(GameRankersContext);
 
   const handleButtonClick = (keyBind) => {
     const event = new KeyboardEvent('keydown', {
