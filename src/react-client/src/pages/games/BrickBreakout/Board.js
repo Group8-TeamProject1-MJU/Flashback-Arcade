@@ -49,7 +49,7 @@ export default function Board() {
       if (player.lives === 0) {
         alert("Game Over! Press ok to restart");
         sendScore(player.score);
-        
+
         player.lives = 5;
         player.level = 1;
         player.score = 0;
@@ -103,9 +103,9 @@ export default function Board() {
         }
         height="500"
         width={
-          window.innerWidth < 900
+          window.innerWidth < 1364
             ? window.innerWidth - 20
-            : window.innerWidth - (window.innerWidth * 20) / 100
+            : 1344
         }
       />
       <h3 className="note">NOTE: Move your mouse to move the paddle</h3>
