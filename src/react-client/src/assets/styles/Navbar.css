@@ -23,6 +23,8 @@
 
 /* Css for Home button in Navbar */
 .start-btn {
+  font-family: "Silkscreen", cursive;
+
   text-align: center;
   display: inline-block;
   margin: 5px;
