@@ -68,16 +68,27 @@ public class Rankers {
             if (Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
                 scores.AddBefore(currentNode, scoreHistoryToAdd);
                 if (!isTotalRankers) {
-                    if (rankedPlayers.ContainsKey(scores.Last!.Value.UserId))
-                        rankedPlayers[scores.Last!.Value.UserId] = scoreHistoryToAdd.Score;
-                    else rankedPlayers.Add(scores.Last!.Value.UserId, scoreHistoryToAdd.Score);
+                    var rank = scores.ToList().IndexOf(scoreHistoryToAdd) + 1;
+                    if (rankedPlayers.ContainsKey(scoreHistoryToAdd.UserId))
+                        rankedPlayers[scoreHistoryToAdd.UserId] = rank;
+                    else rankedPlayers.Add(scoreHistoryToAdd.UserId, rank);
                 }
                 DeleteSameUser(currentNode, scoreHistoryToAdd);
                 if (scores.Count > 100) {
                     scores.RemoveLast();
                 }
 
-                return currentNode.Previous;
+                var addedNode = currentNode.Previous;
+
+                if (!isTotalRankers) {
+                    var rank = scores.ToList().IndexOf(currentNode.Value) + 1;
+                    while (currentNode is not null) {
+                        rankedPlayers[currentNode.Value.UserId] = rank++;
+                        currentNode = currentNode.Next!;
+                    }
+                }
+
+                return addedNode;
             }
             if (scoreHistoryToAdd.UserId == currentNode.Value.UserId)
                 return null;
@@ -88,7 +99,7 @@ public class Rankers {
         if (scores.Count < 100) {
             scores.AddLast(scoreHistoryToAdd);
             if (!isTotalRankers)
-                rankedPlayers.Add(scoreHistoryToAdd.UserId, 1);
+                rankedPlayers.Add(scoreHistoryToAdd.UserId, scores.Count);
 
             return scores.Last;
         }
