@@ -25,7 +25,7 @@ public class TestController : ControllerBase {
         ILogger<TestController> logger,
         SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        IEmailService emailService 
+        IEmailService emailService
     ) {
         _logger = logger;
         _signInManager = signInManager;
@@ -52,7 +52,7 @@ public class TestController : ControllerBase {
 
     [HttpPost("mail")]
     public async Task<IActionResult> MailAsync(string body) {
-        await _emailService.SendFromServerAsync("jeheecheon@gmail.com", "Test!!", body);
+        await _emailService.SendFromServerAsync(new List<string> { "jeheecheon@gmail.com" }, "Test!!", body);
 
         return Ok("ok~~");
     }

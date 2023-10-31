@@ -131,7 +131,7 @@ public class RankersStaticHelper {
 
         // 종합 랭킹 업데이트
         UpdateTotalRankers();
-        
+
         return addedToGameRankers;
     }
 
@@ -142,9 +142,8 @@ public class RankersStaticHelper {
         var url = $"{_configuration["ClientUrls:ReactUrl"]!}";
         var body = $"<h3>{user.UserName}님이 {rankers.game.Title}에서 {node.Value.Score}점을 기록하여 순위 {rankers.rankedPlayers[node.Value.UserId]}등이 되었습니다!! 축하해주세요!</h3><br /><a href={url}>여기를 클릭하여 Flashback Arcade로 이동!!</a>";
 
-        // 랭킹을 기록한 유저에게 알림
-        if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트", body) is false)
-            return false;
+        // 랭킹을 기록한 유저 등록
+        var recipients = new List<string>() { user.Email! };
 
         // 랭킹 +-5 유저들에게 알림
         var prev = node.Previous;
@@ -156,18 +155,17 @@ public class RankersStaticHelper {
             if (prev is not null) {
                 user = await _accountService.Get(prev.Value.UserId);
                 if (user is null) return false;
-                if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트 알림", body) is false)
-                    return false;
+                recipients.Add(user.Email!);
                 prev = node.Previous;
             }
             if (next is not null) {
                 user = await _accountService.Get(next.Value.UserId);
                 if (user is null) return false;
-                if (await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 랭킹 업데이트 알림", body) is false)
-                    return false;
+                recipients.Add(user.Email!);
                 next = node.Next;
             }
         }
-        return true;
+
+        return await _emailService.SendFromServerAsync(recipients, "Flashback Arcade 랭킹 업데이트 알림", body);
     }
 }
