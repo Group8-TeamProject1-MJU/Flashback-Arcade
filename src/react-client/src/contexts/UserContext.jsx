@@ -21,10 +21,27 @@ export function UserProvider({ children }) {
                         isAuthenticated: json.isAuthenticated,
                         username: json.username
                     });
+                else
+                    setUser({
+                        isAuthenticated: json.isAuthenticated,
+                        username: generateRandomUsername(6)
+                    });
             })
             .catch(error => console.log(error));
     }, []);
 
+    function generateRandomUsername(length) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const random = Math.floor(Math.random() * chars.length);
+        let result = '익명-';
+
+        for (let i = 0; i < length; i++) {
+            const randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+            result += randomChar;
+        }
+
+        return result;
+    }
 
     return (
         <UserContext.Provider
