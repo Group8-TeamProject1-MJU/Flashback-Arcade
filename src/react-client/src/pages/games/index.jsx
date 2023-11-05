@@ -17,13 +17,15 @@ export default function Games() {
                     <Row>
                         <Col>
                             <div className="chat-section p-0">
-                                <Iframe
-                                    url={`${API_BASE_URL}/reactchat/${user.username}`}
-                                    // width="640px"
-                                    height="375px"
-                                    className="w-100"
-                                    id=""
-                                />
+                                {user.username !== '' && user.username !== undefined && (
+                                    <Iframe
+                                        url={`${API_BASE_URL}/reactchat/${user.username}`}
+                                        // width="640px"
+                                        height="375px"
+                                        className="w-100"
+                                        id=""
+                                    />
+                                )}
                             </div>
                         </Col>
 

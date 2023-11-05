@@ -67,12 +67,14 @@ export default function Home() {
       <TotalRankingBoard />
 
       <div className="chat-section p-0">
-        <Iframe
-          url={`${API_BASE_URL}/reactchat/${user.username}`}
-          height="375px"
-          className="w-100"
-          id=""
-        />
+        { user.username !== '' && user.username !== undefined && (
+          <Iframe
+            url={`${API_BASE_URL}/reactchat/${user.username}`}
+            height="375px"
+            className="w-100"
+            id=""
+          />
+        )}
       </div>
 
       {/* Heading of Cards */}
