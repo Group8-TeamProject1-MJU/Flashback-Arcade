@@ -51,7 +51,7 @@ public class ScoreService {
         bool addedToRankers = await _rankersStaticHelper.TryAddAsync(newScoreHistory);
         bool addedToDB = await _scoreRepository.AddScoreHistory(newScoreHistory);
 
-        return addedToRankers && addedToDB;
+        return addedToDB;
     }
 
     public async Task<IEnumerable<object>> GetRankersAsync(string title) {

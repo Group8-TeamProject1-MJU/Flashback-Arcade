@@ -31,7 +31,7 @@ public class RankersStaticHelper {
         _logger = logger;
     }
 
-    public async Task InitializeAsync() {
+    public void Initialize() {
         var games = _gameRepository.GetAll(); // 모든 종류의 게임
         var scores = _scoreRepository.GetAll(); // 여러 종류의 게임의 스코어들이 한 링크드리스트에 한 리스트 자료형에 섞여 있음
 
@@ -72,10 +72,10 @@ public class RankersStaticHelper {
             for (int j = 0; j < rankedPlayers.Count; ++j)
                 RankersStatic.GameRankersArray[i].rankedPlayers.Add(rankedPlayers[j].UserId, j + 1);
 
-            _logger.LogInformation($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
+            Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 시작");
             foreach (var s in RankersStatic.GameRankersArray[i].scores)
-                _logger.LogInformation($"{s.UserId} {s.Score}");
-            _logger.LogInformation($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 종료");
+                Console.WriteLine($"{s.UserId} {s.Score}");
+            Console.WriteLine($"{RankersStatic.GameRankersArray[i].game.Title} 스코어 리스트 프린트 종료");
         }
 
         // 종합 순위 10명 계산
@@ -111,26 +111,31 @@ public class RankersStaticHelper {
         var rankers = RankersStatic.GameRankersArray?.FirstOrDefault(r => r.game.Id == scoreHistoryToAdd.GameId);
 
         // 게임 점수 목록 업데이트 전 프린트
-        _logger.LogInformation($"새로 입력된 스코어의 유저ID: {scoreHistoryToAdd.UserId} 점수: {scoreHistoryToAdd.Score} 게임타이틀: {game.Title}");
-        _logger.LogInformation("게임 점수 목록 업데이트 전:");
-        foreach (var score in rankers.scores)
-            _logger.LogInformation($"{score.Score} {score.UserId}");
+        Console.WriteLine($"새로 입력된 스코어의 유저ID: {scoreHistoryToAdd.UserId} 점수: {scoreHistoryToAdd.Score} 게임타이틀: {game!.Title}");
+        Console.WriteLine("게임 점수 목록 업데이트 전:");
+        foreach (var score in rankers!.scores)
+            Console.WriteLine($"{score.Score} {score.UserId}");
 
         // 게임 점수 추가
+        RankersStatic.Mutex.WaitOne();
         var node = rankers!.TryAdd(scoreHistoryToAdd);
+        RankersStatic.Mutex.ReleaseMutex();
+
+        // 게임 점수 목록 업데이트 후 프린트
+        Console.WriteLine("게임 점수 목록 업데이트 후:");
+        foreach (var score in rankers.scores)
+            Console.WriteLine($"{score.Score} {score.UserId}");
+
+        // 종합 랭킹 업데이트
+        RankersStatic.Mutex.WaitOne();
+        UpdateTotalRankers();
+        RankersStatic.Mutex.ReleaseMutex();
+
         bool addedToGameRankers = false;
         if (node is not null) {
             addedToGameRankers = true;
             await NotifyChangesAsync(node, rankers);
         }
-
-        // 게임 점수 목록 업데이트 후 프린트
-        _logger.LogInformation("게임 점수 목록 업데이트 후:");
-        foreach (var score in rankers.scores)
-            _logger.LogInformation($"{score.Score} {score.UserId}");
-
-        // 종합 랭킹 업데이트
-        UpdateTotalRankers();
 
         return addedToGameRankers;
     }

@@ -72,16 +72,17 @@ public class Rankers {
             if (Compare(scoreHistoryToAdd.Score, currentNode.Value.Score)) {
                 // 현재 노드 앞에 새 점수 추가
                 scores.AddBefore(currentNode, scoreHistoryToAdd);
+                currentNode = currentNode.Previous!;
 
                 // 동일 유저의 점수가 존재하면 삭제
-                DeleteSameUser(currentNode, scoreHistoryToAdd);
+                DeleteSameUser(currentNode.Next!, scoreHistoryToAdd);
 
                 // 점수가 100개 이상이면 가장 마지막 꼴찌 노드 삭제
                 if (scores.Count > 100)
                     scores.RemoveLast();
 
                 // 방금 추가된 노드 (점수)
-                var addedNode = currentNode.Previous;
+                var addedNode = currentNode;
 
                 // 종합랭킹에 추가 중이 아닌 경우 유저 랭크를 저장하는 HashMap을 업데이트. 종합랭킹은 이 함수에서 HashMap 내용을 업데이트 하지 않음
                 if (!isTotalRankers) {
@@ -89,11 +90,12 @@ public class Rankers {
                     var rank = scores.ToList().IndexOf(scoreHistoryToAdd) + 1;
 
                     // HashMap에 새 점수를 등록한 유저의 랭크를 업데이트
-                    if (rankedPlayers.ContainsKey(scoreHistoryToAdd.UserId))
-                        rankedPlayers[scoreHistoryToAdd.UserId] = rank;
-                    else rankedPlayers.Add(scoreHistoryToAdd.UserId, rank);
+                    if (rankedPlayers.ContainsKey(currentNode.Value.UserId))
+                        rankedPlayers[currentNode.Value.UserId] = rank;
+                    else rankedPlayers.Add(currentNode.Value.UserId, rank);
 
                     // 추가된 점수 밑에 위치하는 랭커들의 정보를 HashMap에서 업데이트
+                    currentNode = currentNode.Next!;
                     while (currentNode is not null) {
                         rankedPlayers[currentNode.Value.UserId] = ++rank;
                         currentNode = currentNode.Next!;
