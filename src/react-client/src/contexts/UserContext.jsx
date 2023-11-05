@@ -32,7 +32,6 @@ export function UserProvider({ children }) {
 
     function generateRandomUsername(length) {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        const random = Math.floor(Math.random() * chars.length);
         let result = '익명-';
 
         for (let i = 0; i < length; i++) {

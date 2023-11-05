@@ -8,51 +8,39 @@
 @implements IAsyncDisposable
 
 <PageTitle>Chat</PageTitle>
-<div style="height: 350px; overflow-x: none" class="container">
-    <div class="row">
-        <div class="col-8">
-            <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
-                <ul id="messagesList">
-                    @foreach (var message in _messages)
-                    {
-                        if (message.StartsWith(userName)) {
-                            <li>@message <button @onclick="()=>OnDeleteButtonClickAsync(message)">삭제</button></li>
-                            
-                        }
-                        else {
-                            <li>@message</li>
-                        }
-                    }
-                </ul>
-            </div>
-
-            <div class="fixed-bottom bg-light p-2">
-                <div class="container">
-                    <form class="row">
-                        <div class="col-auto">
-                            <label for="messageInput">@userName:</label>
-                        </div>
-                        
-                            <div class="col">
-                                <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
-                            </div>
-
-                            <div class="col-auto">
-                                <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
-                                    disabled="@(!_isConnected)">Send</button>
-                            </div>
-                        
-                    </form>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-4">
-            <h5>채팅 접속자 리스트</h5>
-            <div>동접자 수: @_clientsCnt</div>
-            @foreach (var userName in _connectedUserNames) {
-                <li>@userName</li>
+<div style="height: 350px; overflow-x: none" class="">
+    <div>동접자 수: @_clientsCnt</div>
+    <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
+        <ul id="messagesList">
+            @foreach (var message in _messages) {
+                if (message.Contains(userName)) {
+                    <div class="d-flex justify-content-between">
+                        <li>@message </li>
+                        <button class="" @onclick="()=>OnDeleteButtonClickAsync(message)">삭제</button>
+                    </div>
+                }
+                else {
+                    <li>@message</li>
+                }
             }
+        </ul>
+    </div>
+
+    <div class="fixed-bottom bg-light p-2">
+        <div class="container">
+            <form class="row">
+                <div class="col-auto">
+                    <label for="messageInput">@userName:</label>
+                </div>
+                <div class="col">
+                    <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
+                </div>
+
+                <div class="col-auto">
+                    <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
+                        disabled="@(!_isConnected)">Send</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -66,7 +54,6 @@
 
     [Parameter]
     public string? userName { get; set; }
-    private List<string> _connectedUserNames = new();
 
     private bool _isConnected =>
         _hubConnection?.State == HubConnectionState.Connected;
@@ -81,7 +68,6 @@
     public async Task HandleKeyDown(KeyboardEventArgs e) {
         if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_messageInput))
             await Send();
-        
     }
 
     // 메시지를 채팅서버에 전송 함수
@@ -100,8 +86,7 @@
             .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
-        _hubConnection.On<string, string>("ReceiveMessage", (user, message) => {
-            var encodedMsg = $"{user}: {message}";
+        _hubConnection.On<string>("ReceiveMessage", (encodedMsg) => {
             _messages.Add(encodedMsg);
             InvokeAsync(StateHasChanged);
         });
@@ -118,21 +103,6 @@
 
         _hubConnection.On<int>("UpdateConnectedClientsCount", (count) => {
             _clientsCnt = count;
-            InvokeAsync(StateHasChanged);
-        });
-
-        _hubConnection.On<string>("ReceiveNewConnectedUserName", (receivedUserName) => {
-            _connectedUserNames.Add(receivedUserName);
-            InvokeAsync(StateHasChanged);
-        });
-
-        _hubConnection.On<string>("RemoveConnectedUserName", (receivedUserName) => {
-            _connectedUserNames.Remove(receivedUserName);
-            InvokeAsync(StateHasChanged);
-        });
-
-        _hubConnection.On<List<string>>("ReceiveConnectedUserNames", (userNames) => {
-            _connectedUserNames = userNames;
             InvokeAsync(StateHasChanged);
         });
 
