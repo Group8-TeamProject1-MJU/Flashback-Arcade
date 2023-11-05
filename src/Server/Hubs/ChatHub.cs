@@ -1,3 +1,4 @@
+using Application.Chatting;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Server.Hubs;
@@ -20,5 +21,10 @@ public class ChatHub : Hub {
 
     public async Task SendMessage(string user, string message) {
         await Clients.All.SendAsync("ReceiveMessage", user, message);
+    }
+
+    public async Task DeleteMessage(string message) {
+        ChattingStatic.DeleteMessage(message);
+        await Clients.All.SendAsync("DeleteMessage", message);
     }
 }

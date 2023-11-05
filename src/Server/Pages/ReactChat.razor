@@ -9,13 +9,19 @@
 @implements IAsyncDisposable
 
 <PageTitle>Chat</PageTitle>
-<div>@clientsCnt</div>
+<div>동접자 수: @clientsCnt</div>
 <div style="height: 350px; overflow-x: none">
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;">
         <ul id="messagesList">
             @foreach (var message in messages)
             {
-                <li>@message</li>
+                if (message.StartsWith(username)) {
+                    <li>@message <button @onclick="()=>OnDeleteButtonClickAsync(message)">삭제</button></li>
+                    
+                }
+                else {
+                    <li>@message</li>
+                }
             }
         </ul>
     </div>
@@ -66,7 +72,11 @@
 
         hubConnection.On<int>("UpdateConnectedClientsCount", (count) => {
             clientsCnt = count;
-            System.Console.WriteLine(clientsCnt);
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<string>("DeleteMessage", (message) => {
+            messages.RemoveAt(messages.FindIndex((mes) => string.Compare(mes, message) == 0));
             InvokeAsync(StateHasChanged);
         });
 
@@ -111,6 +121,12 @@
         {
             username = GenerateRandomUsername(6);
         }
+    }
+
+    public async Task OnDeleteButtonClickAsync(string message) {
+        System.Console.WriteLine(message);
+        if (hubConnection is not null)
+            await hubConnection.SendAsync("DeleteMessage", message);
     }
 
     public async Task HandleKeyDown(KeyboardEventArgs e)
