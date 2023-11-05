@@ -47,13 +47,9 @@ public class ChatHub : Hub {
     }
 
     public async Task DeleteMessage(string message) {
-        if (_prevMessages.Contains(message)) {
-            var temp = new Queue<string>(_prevMessages.Where(msg => msg != message));
-
-            _prevMessagesMutex.WaitOne();
-            _prevMessages = temp;
-            _prevMessagesMutex.ReleaseMutex();
-        }
+        _prevMessagesMutex.WaitOne();
+        _prevMessages = new Queue<string>(_prevMessages.Where(msg => msg != message));
+        _prevMessagesMutex.ReleaseMutex();
 
         await Clients.All.SendAsync("DeleteMessage", message);
     }
