@@ -1,6 +1,8 @@
 @page "/reactchat/{username?}"
 
 @using Microsoft.AspNetCore.SignalR.Client
+@using Application.Chat
+@using System.Text.Json
 
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
@@ -9,19 +11,20 @@
 
 <PageTitle>Chat</PageTitle>
 <div style="height: 350px; overflow-x: none" class="">
-    <div>동접자 수: @_clientsCnt</div>
+    <div>접속자 수: @_clientsCnt</div>
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
-            @foreach (var message in _messages) {
-                if (message.Contains(userName)) {
-                    <div class="d-flex justify-content-between">
-                        <li>@message </li>
-                        <button class="" @onclick="()=>OnDeleteButtonClickAsync(message)">삭제</button>
-                    </div>
-                }
-                else {
-                    <li>@message</li>
-                }
+            @foreach (var mes in _messages) {
+                <div class="d-flex justify-content-between">
+                    <li>@($"{mes.userName}: {mes.message}") </li>
+                        <span>
+                            @if (mes.userName.StartsWith(userName)) {
+                                <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                            }
+
+                            <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
+                        </span>
+                </div>
             }
         </ul>
     </div>
@@ -48,9 +51,10 @@
 
 @code {
     private HubConnection? _hubConnection;
-    private List<string> _messages = new List<string>();
+    private List<ChatMessage> _messages = new();
     private string? _messageInput;
     private int _clientsCnt;
+    private TimeZoneInfo _localTimeZone = TimeZoneInfo.Local;
 
     [Parameter]
     public string? userName { get; set; }
@@ -59,9 +63,9 @@
         _hubConnection?.State == HubConnectionState.Connected;
 
     // 메시지 삭제 버튼 입력 시 처리 함수
-    public async Task OnDeleteButtonClickAsync(string message) {
+    public async Task OnDeleteButtonClickAsync(ChatMessage message) {
         if (_hubConnection is not null)
-            await _hubConnection.SendAsync("DeleteMessage", message);
+            await _hubConnection.SendAsync("DeleteMessage", JsonSerializer.Serialize(message));
     }
 
     // 채팅창에 키보드 입력 시 처리 함수
@@ -86,18 +90,21 @@
             .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
-        _hubConnection.On<string>("ReceiveMessage", (encodedMsg) => {
-            _messages.Add(encodedMsg);
+        _hubConnection.On<string>("ReceiveMessage", (json) => {
+            var chatMessage = JsonSerializer.Deserialize<ChatMessage>(json);
+            _messages.Add(chatMessage);
             InvokeAsync(StateHasChanged);
         });
 
-        _hubConnection.On<string>("DeleteMessage", (message) => {
-            _messages.RemoveAt(_messages.FindIndex((mes) => string.Compare(mes, message) == 0));
+        _hubConnection.On<string>("DeleteMessage", (json) => {
+            var mesToDelete = JsonSerializer.Deserialize<ChatMessage>(json);
+            _messages.RemoveAt(_messages.FindIndex((mes) => mes.isEqual(mesToDelete)));
             InvokeAsync(StateHasChanged);
         });
 
-        _hubConnection.On<List<string>>("ReceivePrevMessages", (ReceivedPrevMessages) => {
-            _messages = ReceivedPrevMessages;
+        _hubConnection.On<string>("ReceivePrevMessages", (json) => {
+            var prevMessages = JsonSerializer.Deserialize<List<ChatMessage>>(json);
+            _messages = prevMessages;
             InvokeAsync(StateHasChanged);
         });
 
@@ -113,8 +120,6 @@
 
     // 페이지 종료 시 호출 함수. 채팅서버 연결 끊음.
     public async ValueTask DisposeAsync() {
-        await _hubConnection.SendAsync("RemoveConnectedUserName", userName);
-
         if (_hubConnection is not null)
             await _hubConnection.DisposeAsync();
     }
