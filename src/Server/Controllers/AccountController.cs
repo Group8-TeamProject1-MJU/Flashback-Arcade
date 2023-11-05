@@ -287,12 +287,12 @@ public class AccountController : ControllerBase {
 
     [HttpGet("authenticate")]
     public IActionResult AuthenticateAsync() {
-        _logger.LogInformation("authenticate");
+        // _logger.LogInformation("authenticate");
 
         HttpContext.User.Claims.ToList().ForEach(c => {
             _logger.LogInformation($"{c.Type} {c.Value}");
         });
-        System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
+        // System.Console.WriteLine(_signInManager.IsSignedIn(HttpContext.User));
 
         return Ok(JsonSerializer.Serialize(new {
             isAuthenticated = _signInManager.IsSignedIn(HttpContext.User),
