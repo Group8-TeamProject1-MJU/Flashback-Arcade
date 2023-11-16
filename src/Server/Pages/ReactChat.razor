@@ -6,10 +6,13 @@
 
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
 
 @implements IAsyncDisposable
 
 <PageTitle>Chat</PageTitle>
+<button @onclick="()=>TranslateText()">안녕테스트</button>
 <div style="height: 350px; overflow-x: none" class="">
     <div>접속자 수: @_clientsCnt</div>
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
@@ -86,6 +89,8 @@
     // 페이지 초기화 시 호출
     // 메시지들 로딩, SignalR 설정
     protected override async Task OnInitializedAsync() {
+        HttpClient.BaseAddress = new Uri(Configuration["ServerUrl"]!);
+
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
             .Build();
@@ -122,5 +127,16 @@
     public async ValueTask DisposeAsync() {
         if (_hubConnection is not null)
             await _hubConnection.DisposeAsync();
+    }
+
+    public async Task<string> TranslateText() {
+        string textToTransltate = "안녕하세요";
+        System.Console.WriteLine(HttpClient.BaseAddress);
+        var response = await HttpClient.GetAsync($"api/Test/translate?textToTransltate={textToTransltate}");
+        var result = await response.Content.ReadAsStringAsync();
+
+        System.Console.WriteLine(result);
+
+        return result;
     }
 }

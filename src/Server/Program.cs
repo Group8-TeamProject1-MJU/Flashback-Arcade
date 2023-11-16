@@ -18,6 +18,7 @@ string kakaotalkClientId = Environment.GetEnvironmentVariable("KAKAOTALK_CLIENTI
 string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") ?? builder.Configuration["Authentication:Kakaotalk:ClientSecret"]!;
 string naverClientId = Environment.GetEnvironmentVariable("NAVER_CLIENTID") ?? builder.Configuration["Authentication:Naver:ClientId"]!;
 string naverSecret = Environment.GetEnvironmentVariable("NAVER_SECRET") ?? builder.Configuration["Authentication:Naver:ClientSecret"]!;
+
 builder.Services.AddHttpClient();
 
 // Add services to the container.
