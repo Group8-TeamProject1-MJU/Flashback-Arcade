@@ -12,11 +12,12 @@ export default function Games() {
 
     function handleSwitchToAnonymous(e) {
         e.preventDefault();
-
-        setUser({ 
-            ...user,
-            isAnonymous: !user.isAnonymous
-        });
+        
+        if (user.username !== undefined && user.username !== "")
+            setUser({ 
+                ...user,
+                isAnonymous: !user.isAnonymous
+            });
     }
 
     return (
