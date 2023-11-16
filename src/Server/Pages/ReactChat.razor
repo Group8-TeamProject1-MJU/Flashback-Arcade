@@ -13,42 +13,24 @@
 
 <PageTitle>Chat</PageTitle>
 
-<label for="translateFrom">From:</label>
-<select id="translateFrom" @bind="translateFrom">
-    <option value="ko">한국어</option>
-    <option value="en" selected>영어</option>
-    <option value="ja">일본어</option>
-    <option value="zh-CN">중국어 간체</option>
-    <option value="zh-TW">중국어 번체</option>
-    <option value="vi">베트남어</option>
-    <option value="id">인도네시아어</option>
-    <option value="th">태국어</option>
-    <option value="de">독일어</option>
-    <option value="ru">러시아어</option>
-    <option value="es">스페인어</option>
-    <option value="it">이탈리아어</option>
-    <option value="fr">프랑스어</option>
-</select>
-
-<label for="translateTo">To:</label>
-<select id="translateTo" @bind="translateTo">
-    <option value="ko" selected>한국어</option>  
-    <option value="en">영어</option>
-    <option value="ja">일본어</option>
-    <option value="zh-CN">중국어 간체</option>
-    <option value="zh-TW">중국어 번체</option>
-    <option value="vi">베트남어</option>
-    <option value="id">인도네시아어</option>
-    <option value="th">태국어</option>
-    <option value="de">독일어</option>
-    <option value="ru">러시아어</option>
-    <option value="es">스페인어</option>
-    <option value="it">이탈리아어</option>
-    <option value="fr">프랑스어</option>
-</select>
-
 <div style="height: 350px; overflow-x: none" class="">
     <div>접속자 수: @_clientsCnt</div>
+    <select id="translateTo" @bind="translateTo">
+        <option value="ko" selected>한국어</option>  
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+        <option value="zh-CN">중국어 간체</option>
+        <option value="zh-TW">중국어 번체</option>
+        <option value="vi">베트남어</option>
+        <option value="id">인도네시아어</option>
+        <option value="th">태국어</option>
+        <option value="de">독일어</option>
+        <option value="ru">러시아어</option>
+        <option value="es">스페인어</option>
+        <option value="it">이탈리아어</option>
+        <option value="fr">프랑스어</option>
+    </select>
+    <label for="translateTo">로 번역하기</label>
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
             @foreach (var mes in _messages) {
@@ -112,7 +94,6 @@
     private bool _isConnected =>
         _hubConnection?.State == HubConnectionState.Connected;
 
-    private string translateFrom = "en";
     private string translateTo = "ko";
 
     // 메시지 삭제 버튼 입력 시 처리 함수
@@ -186,13 +167,15 @@
 
     public async Task ShowTranslatedMessage(ChatMessageWithTranslation chatMessage) {
         chatMessage.showTranslatedText = true;
-        if (string.IsNullOrWhiteSpace(chatMessage.translation))
+        @* if (string.IsNullOrWhiteSpace(chatMessage.translation)) *@
             await TranslateMessage(chatMessage);
         InvokeAsync(StateHasChanged);
     }
 
     public async Task TranslateMessage(ChatMessageWithTranslation chatMessage) {
-        var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateFrom={translateFrom}&translateTo={translateTo}");
-        chatMessage.translation = await response.Content.ReadAsStringAsync();
+        var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateTo={translateTo}");
+        if (response.IsSuccessStatusCode) {
+            chatMessage.translation = await response.Content.ReadAsStringAsync();
+        }
     }
 }
