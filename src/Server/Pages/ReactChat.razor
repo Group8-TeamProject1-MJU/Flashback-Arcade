@@ -12,21 +12,68 @@
 @implements IAsyncDisposable
 
 <PageTitle>Chat</PageTitle>
-<button @onclick="()=>TranslateText()">안녕테스트</button>
+
+<label for="translateFrom">From:</label>
+<select id="translateFrom" @bind="translateFrom">
+    <option value="ko">한국어</option>
+    <option value="en" selected>영어</option>
+    <option value="ja">일본어</option>
+    <option value="zh-CN">중국어 간체</option>
+    <option value="zh-TW">중국어 번체</option>
+    <option value="vi">베트남어</option>
+    <option value="id">인도네시아어</option>
+    <option value="th">태국어</option>
+    <option value="de">독일어</option>
+    <option value="ru">러시아어</option>
+    <option value="es">스페인어</option>
+    <option value="it">이탈리아어</option>
+    <option value="fr">프랑스어</option>
+</select>
+
+<label for="translateTo">To:</label>
+<select id="translateTo" @bind="translateTo">
+    <option value="ko" selected>한국어</option>  
+    <option value="en">영어</option>
+    <option value="ja">일본어</option>
+    <option value="zh-CN">중국어 간체</option>
+    <option value="zh-TW">중국어 번체</option>
+    <option value="vi">베트남어</option>
+    <option value="id">인도네시아어</option>
+    <option value="th">태국어</option>
+    <option value="de">독일어</option>
+    <option value="ru">러시아어</option>
+    <option value="es">스페인어</option>
+    <option value="it">이탈리아어</option>
+    <option value="fr">프랑스어</option>
+</select>
+
 <div style="height: 350px; overflow-x: none" class="">
     <div>접속자 수: @_clientsCnt</div>
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
-                    <li>@($"{mes.userName}: {mes.message}") </li>
-                        <span>
-                            @if (mes.userName.StartsWith(userName)) {
-                                <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
-                            }
+                    @if (mes.showTranslatedText) {
+                        <li>@($"{mes.userName}: {mes.translation}") </li>
+                    }
+                    else {
+                        <li>@($"{mes.userName}: {mes.message}") </li>
+                    }
 
-                            <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
-                        </span>
+                    <span>
+                        @if (mes.showTranslatedText) {
+                            <button @onclick="()=>ShowOriginalMessage(mes)">원본보기</button>
+                        }
+                        else {
+                            <button @onclick="()=>ShowTranslatedMessage(mes)">번역하기</button>
+                        }
+
+                        @if (mes.userName.StartsWith(userName)) {
+                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                        }
+
+                        <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
+                    </span>
                 </div>
             }
         </ul>
@@ -54,7 +101,7 @@
 
 @code {
     private HubConnection? _hubConnection;
-    private List<ChatMessage> _messages = new();
+    private List<ChatMessageWithTranslation> _messages = new();
     private string? _messageInput;
     private int _clientsCnt;
     private TimeZoneInfo _localTimeZone = TimeZoneInfo.Local;
@@ -64,6 +111,9 @@
 
     private bool _isConnected =>
         _hubConnection?.State == HubConnectionState.Connected;
+
+    private string translateFrom = "en";
+    private string translateTo = "ko";
 
     // 메시지 삭제 버튼 입력 시 처리 함수
     public async Task OnDeleteButtonClickAsync(ChatMessage message) {
@@ -97,7 +147,7 @@
 
         _hubConnection.On<string>("ReceiveMessage", (json) => {
             var chatMessage = JsonSerializer.Deserialize<ChatMessage>(json);
-            _messages.Add(chatMessage);
+            _messages.Add(new ChatMessageWithTranslation(chatMessage));
             InvokeAsync(StateHasChanged);
         });
 
@@ -109,7 +159,7 @@
 
         _hubConnection.On<string>("ReceivePrevMessages", (json) => {
             var prevMessages = JsonSerializer.Deserialize<List<ChatMessage>>(json);
-            _messages = prevMessages;
+            _messages = prevMessages.Select((mes) => new ChatMessageWithTranslation(mes)).ToList();
             InvokeAsync(StateHasChanged);
         });
 
@@ -129,14 +179,20 @@
             await _hubConnection.DisposeAsync();
     }
 
-    public async Task<string> TranslateText() {
-        string textToTransltate = "안녕하세요";
-        System.Console.WriteLine(HttpClient.BaseAddress);
-        var response = await HttpClient.GetAsync($"api/Test/translate?textToTransltate={textToTransltate}");
-        var result = await response.Content.ReadAsStringAsync();
+    public async Task ShowOriginalMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = false;
+        InvokeAsync(StateHasChanged);
+    }
 
-        System.Console.WriteLine(result);
+    public async Task ShowTranslatedMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = true;
+        if (string.IsNullOrWhiteSpace(chatMessage.translation))
+            await TranslateMessage(chatMessage);
+        InvokeAsync(StateHasChanged);
+    }
 
-        return result;
+    public async Task TranslateMessage(ChatMessageWithTranslation chatMessage) {
+        var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateFrom={translateFrom}&translateTo={translateTo}");
+        chatMessage.translation = await response.Content.ReadAsStringAsync();
     }
 }
