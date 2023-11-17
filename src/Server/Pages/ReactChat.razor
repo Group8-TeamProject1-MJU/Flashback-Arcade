@@ -166,16 +166,19 @@
     }
 
     public async Task ShowTranslatedMessage(ChatMessageWithTranslation chatMessage) {
-        chatMessage.showTranslatedText = true;
-        @* if (string.IsNullOrWhiteSpace(chatMessage.translation)) *@
-            await TranslateMessage(chatMessage);
+        chatMessage.showTranslatedText = await TranslateMessage(chatMessage);
         InvokeAsync(StateHasChanged);
     }
 
-    public async Task TranslateMessage(ChatMessageWithTranslation chatMessage) {
+    public async Task<bool> TranslateMessage(ChatMessageWithTranslation chatMessage) {
         var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateTo={translateTo}");
         if (response.IsSuccessStatusCode) {
-            chatMessage.translation = await response.Content.ReadAsStringAsync();
+            string translatedMsg = await response.Content.ReadAsStringAsync();
+            if (translatedMsg.CompareTo(chatMessage.message) != 0) {
+                chatMessage.translation = translatedMsg;
+                return true;
+            }
         }
+        return false;
     }
 }
