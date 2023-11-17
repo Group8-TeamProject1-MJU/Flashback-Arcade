@@ -90,8 +90,8 @@ public class ChatController : ControllerBase {
 
         // 네이버 파파고 api 주소 및 헤더, 바디 세팅\
         string url = "https://openapi.naver.com/v1/papago/detectLangs";
-        httpClient.DefaultRequestHeaders.Add("X-Naver-Client-Id", _configuration["Authentication:Naver:ClientId"]);
-        httpClient.DefaultRequestHeaders.Add("X-Naver-Client-Secret", _configuration["Authentication:Naver:ClientSecret"]);
+        httpClient.DefaultRequestHeaders.Add("X-Naver-Client-Id",  Environment.GetEnvironmentVariable("NAVER_CLIENTID") ?? _configuration["Authentication:Naver:ClientId"]);
+        httpClient.DefaultRequestHeaders.Add("X-Naver-Client-Secret", Environment.GetEnvironmentVariable("NAVER_SECRET") ?? _configuration["Authentication:Naver:ClientSecret"]);
         var content = new StringContent($"query={text}", Encoding.UTF8, "application/x-www-form-urlencoded");
 
         // api 요청
