@@ -28,7 +28,7 @@ builder.Services.AddScoped<GameRepository>();
 builder.Services.AddScoped<RankersStaticHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<TrieChat>();
-
+builder.Services.AddScoped<SpamFilter>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(corsOpts => {

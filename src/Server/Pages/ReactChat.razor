@@ -4,10 +4,12 @@
 @using Application.Chat
 @using System.Text.Json
 
-@inject NavigationManager Navigation
-@inject TrieChat _trieChat
 @inject HttpClient HttpClient
 @inject IConfiguration Configuration
+
+@inject NavigationManager _navigation
+@inject TrieChat _trieChat
+@inject SpamFilter _spamFilter
 
 @implements IAsyncDisposable
 
@@ -123,7 +125,7 @@
         HttpClient.BaseAddress = new Uri(Configuration["ServerUrl"]!);
 
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
+            .WithUrl(_navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
         _hubConnection.On<string>("ReceiveMessage", (json) => {
