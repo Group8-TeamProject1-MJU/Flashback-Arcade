@@ -4,8 +4,8 @@
 @using Application.Chat
 @using System.Text.Json
 
-@inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
+@inject NavigationManager _navigation
+@inject SpamFilter _spamFilter
 
 @implements IAsyncDisposable
 
@@ -87,7 +87,7 @@
     // 메시지들 로딩, SignalR 설정
     protected override async Task OnInitializedAsync() {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
+            .WithUrl(_navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
         _hubConnection.On<string>("ReceiveMessage", (json) => {

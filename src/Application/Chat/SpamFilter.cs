@@ -1,4 +1,4 @@
-class SpamFilter {
+public class SpamFilter {
     private const int N = 5;            // n times 
     private const int mt = 1000;        // in t milliseconds
     private LinkedList<MsgTime> msgs = new LinkedList<MsgTime>();
