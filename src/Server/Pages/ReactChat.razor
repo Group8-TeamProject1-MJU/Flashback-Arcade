@@ -6,6 +6,8 @@
 
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
 
 @implements IAsyncDisposable
 
@@ -14,12 +16,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
 <PageTitle>Chat</PageTitle>
+
 <div style="height: 350px; overflow-x: none" class="">
+
     <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:10px;" >Concurrent Users: @_clientsCnt</div>
+
+    <div>접속자 수: @_clientsCnt</div>
+    <select id="translateTo" @bind="translateTo">
+        <option value="ko" selected>한국어</option>  
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+        <option value="zh-CN">중국어 간체</option>
+        <option value="zh-TW">중국어 번체</option>
+        <option value="vi">베트남어</option>
+        <option value="id">인도네시아어</option>
+        <option value="th">태국어</option>
+        <option value="de">독일어</option>
+        <option value="ru">러시아어</option>
+        <option value="es">스페인어</option>
+        <option value="it">이탈리아어</option>
+        <option value="fr">프랑스어</option>
+    </select>
+    <label for="translateTo">로 번역하기</label>
+
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
+<<<<<<< HEAD
                     <li>@($"{mes.userName}: {mes.message}") </li>
                         <span>
                     
@@ -29,6 +53,29 @@
                                 <button class="btn-outline-secondary" @onclick="()=>OnDeleteButtonClickAsync(mes) " style="margin: 5px;">Delete</button>
                             }
                         </span>
+=======
+                    @if (mes.showTranslatedText) {
+                        <li>@($"{mes.userName}: {mes.translation}") </li>
+                    }
+                    else {
+                        <li>@($"{mes.userName}: {mes.message}") </li>
+                    }
+
+                    <span>
+                        @if (mes.showTranslatedText) {
+                            <button @onclick="()=>ShowOriginalMessage(mes)">원본보기</button>
+                        }
+                        else {
+                            <button @onclick="()=>ShowTranslatedMessage(mes)">번역하기</button>
+                        }
+
+                        @if (mes.userName.StartsWith(userName)) {
+                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                        }
+
+                        <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
+                    </span>
+>>>>>>> origin/Jehee
                 </div>
             }
         </ul>
@@ -56,7 +103,7 @@
 
 @code {
     private HubConnection? _hubConnection;
-    private List<ChatMessage> _messages = new();
+    private List<ChatMessageWithTranslation> _messages = new();
     private string? _messageInput;
     private int _clientsCnt;
     private TimeZoneInfo _localTimeZone = TimeZoneInfo.Local;
@@ -66,6 +113,8 @@
 
     private bool _isConnected =>
         _hubConnection?.State == HubConnectionState.Connected;
+
+    private string translateTo = "ko";
 
     // 메시지 삭제 버튼 입력 시 처리 함수
     public async Task OnDeleteButtonClickAsync(ChatMessage message) {
@@ -91,13 +140,15 @@
     // 페이지 초기화 시 호출
     // 메시지들 로딩, SignalR 설정
     protected override async Task OnInitializedAsync() {
+        HttpClient.BaseAddress = new Uri(Configuration["ServerUrl"]!);
+
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
         _hubConnection.On<string>("ReceiveMessage", (json) => {
             var chatMessage = JsonSerializer.Deserialize<ChatMessage>(json);
-            _messages.Add(chatMessage);
+            _messages.Add(new ChatMessageWithTranslation(chatMessage));
             InvokeAsync(StateHasChanged);
         });
 
@@ -109,7 +160,7 @@
 
         _hubConnection.On<string>("ReceivePrevMessages", (json) => {
             var prevMessages = JsonSerializer.Deserialize<List<ChatMessage>>(json);
-            _messages = prevMessages;
+            _messages = prevMessages.Select((mes) => new ChatMessageWithTranslation(mes)).ToList();
             InvokeAsync(StateHasChanged);
         });
 
@@ -127,5 +178,27 @@
     public async ValueTask DisposeAsync() {
         if (_hubConnection is not null)
             await _hubConnection.DisposeAsync();
+    }
+
+    public async Task ShowOriginalMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = false;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task ShowTranslatedMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = await TranslateMessage(chatMessage);
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task<bool> TranslateMessage(ChatMessageWithTranslation chatMessage) {
+        var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateTo={translateTo}");
+        if (response.IsSuccessStatusCode) {
+            string translatedMsg = await response.Content.ReadAsStringAsync();
+            if (translatedMsg.CompareTo(chatMessage.message) != 0) {
+                chatMessage.translation = translatedMsg;
+                return true;
+            }
+        }
+        return false;
     }
 }

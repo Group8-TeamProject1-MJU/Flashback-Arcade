@@ -12,7 +12,7 @@ import { TotalRankingBoard } from "../../components/TotalRankingBoard";
 const gameRoutes = AppRoutes.filter(r => r.path?.includes("/games"))[0].sub_routes;
 
 export default function Home() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, getChatUserName } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [tag, setTag] = useState('');
   const [selectedTag, setSelectedTag] = useState(null);
@@ -58,6 +58,16 @@ export default function Home() {
     setFilteredAppRoutes(filtered);
   }
 
+  function handleSwitchToAnonymous(e) {
+    e.preventDefault();
+
+    if (user.username !== undefined && user.username !== "")
+      setUser({ 
+        ...user,
+        isAnonymous: !user.isAnonymous
+      });
+  }
+
   return (
     <>
       <div className="container_landing">
@@ -67,21 +77,21 @@ export default function Home() {
       <TotalRankingBoard />
 
       <div className="chat-section p-0">
-        { user.username !== '' && user.username !== undefined && (
+        { user !== undefined && (
           <Iframe
-            url={`${API_BASE_URL}/reactchat/${user.username}`}
+            url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
             height="375px"
             className="w-100"
             id=""
           />
         )}
+        <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
       </div>
 
       {/* Heading of Cards */}
       <div className="header_homepage">
         <h1> Game on!!</h1>
       </div>
-
 
       <div className="search-section">
         <input

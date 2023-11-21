@@ -8,7 +8,17 @@ import { GameRankingBoard } from "../../components/GameRankingBoard";
 import { GameRankersProvider } from "../../contexts/GameRankersContext";
 
 export default function Games() {
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, getChatUserName } = useContext(UserContext);
+
+    function handleSwitchToAnonymous(e) {
+        e.preventDefault();
+        
+        if (user.username !== undefined && user.username !== "")
+            setUser({ 
+                ...user,
+                isAnonymous: !user.isAnonymous
+            });
+    }
 
     return (
         <>
@@ -17,15 +27,16 @@ export default function Games() {
                     <Row>
                         <Col>
                             <div className="chat-section p-0">
-                                {user.username !== '' && user.username !== undefined && (
+                                { user !== undefined && (
                                     <Iframe
-                                        url={`${API_BASE_URL}/reactchat/${user.username}`}
+                                        url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
                                         // width="640px"
                                         height="375px"
                                         className="w-100"
                                         id=""
                                     />
                                 )}
+                                <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
                             </div>
                         </Col>
 
