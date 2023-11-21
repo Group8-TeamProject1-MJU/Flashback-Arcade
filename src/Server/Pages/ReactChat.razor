@@ -9,9 +9,13 @@
 
 @implements IAsyncDisposable
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 <PageTitle>Chat</PageTitle>
 <div style="height: 350px; overflow-x: none" class="">
-    <div>접속자 수: @_clientsCnt</div>
+    <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; " >Concurrent Users: @_clientsCnt</div>
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
             @foreach (var mes in _messages) {
@@ -19,10 +23,10 @@
                     <li>@($"{mes.userName}: {mes.message}") </li>
                         <span>
                             @if (mes.userName.StartsWith(userName)) {
-                                <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                                <button class="btn-outline-secondary" @onclick="()=>OnDeleteButtonClickAsync(mes) ">삭제</button>
                             }
 
-                            <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
+                            <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.' MM'.' dd'' - HH':' mm':' ss'')")</span>
                         </span>
                 </div>
             }
@@ -40,8 +44,8 @@
                 </div>
 
                 <div class="col-auto">
-                    <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
-                        disabled="@(!_isConnected)">Send</button>
+                    <button @onclick:preventDefault class="btn btn-primary bg-success" @onclick="Send"
+                        disabled="@(!_isConnected)" >Send</button>
                 </div>
             </form>
         </div>
