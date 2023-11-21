@@ -112,9 +112,15 @@
 
     // 메시지를 채팅서버에 전송 함수
     private async Task Send() {
+        SpamFilter sf = new SpamFilter();
         // 채팅서버와 연결되어 있고 입력된 메시지가 비어있지 않으면 전송
         if (_hubConnection is not null && !string.IsNullOrWhiteSpace(_messageInput)) {
-            await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
+            
+            if ( sf.IsSpam(_messageInput) ) {  // 
+                _messages.Add(new ChatMessage("[시스템 메시지]: 도배를 금지합니다", DateTime.Now, "system msg"));
+            } else 
+                 await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
+
             _messageInput = null; // 메시지 input value 비우기
         }
     }
