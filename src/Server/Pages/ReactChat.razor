@@ -117,11 +117,13 @@
             
             if (_spamFilter.IsSpam(_messageInput) ) {  // 
                 _messages.Add((ChatMessageWithTranslation)(new ChatMessage("[시스템 메시지]: 도배를 금지합니다", DateTime.UtcNow, "system msg")));
+                InvokeAsync(StateHasChanged);
                 return;
             } 
             
             if (_trieChat.FilterChat(_messageInput)){
                 _messages.Add((ChatMessageWithTranslation)(new ChatMessage("[시스템 메시지]: 욕설을 금지합니다", DateTime.UtcNow, "system msg")));
+                InvokeAsync(StateHasChanged);
                 return;
             }
             await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
