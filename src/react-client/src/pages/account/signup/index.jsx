@@ -33,28 +33,26 @@ export default function Signup() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        setLoading(true);
 
-        console.log('입력된 아이디:', formData.id);
-        console.log('입력된 이메일:', formData.email);
-        console.log('입력된 비밀번호:', formData.password);
-        console.log('입력된 비밀번호확인:', formData.passwordConfirm);
-
-        if (formData.id.length < 5)
+        if (formData.id.length < 5) {
             setShowIdErrorMsg(true);
-        else
-            setShowIdErrorMsg(false);
-        if (formData.password.length < 5)
-            setShowPwdErrorMsg(true);
-        else
-            setShowPwdErrorMsg(false);
-        if (formData.password !== formData.passwordConfirm)
-            setShowPwdComfirmErrorMsg(true);
-        else
-            setShowPwdComfirmErrorMsg(false);
-
-        if (showIdErrorMsg || showPwdConfirmErrorMsg || showPwdErrorMsg)
             return;
+        }
+        else setShowIdErrorMsg(false);
+
+        if (formData.password.length < 5) {
+            setShowPwdErrorMsg(true);
+            return;
+        }
+        else setShowPwdErrorMsg(false);
+
+        if (formData.password !== formData.passwordConfirm) {
+            setShowPwdComfirmErrorMsg(true);
+            return;
+        }
+        else setShowPwdComfirmErrorMsg(false);
+
+        setLoading(true);
 
         fetch(ENDPOINTS.POST_API_ACCOUNT_SIGNUP, {
             method: 'POST',
@@ -69,16 +67,15 @@ export default function Signup() {
         })
             .then(response => response.json())
             .then(responseFromServer => {
-                console.log(responseFromServer.Errors);
-                console.log(responseFromServer.Succeeded);
+                setLoading(false);
+                console.log(responseFromServer);
 
-                var succeeded = responseFromServer.Succeeded;
-                if (succeeded) {
+                var Succeeded = responseFromServer.Succeeded;
+                if (Succeeded) {
                     toast("회원가입 인증 이메일이 전송되었습니다.");
                     navigate("/account/signin");
                 }
                 else {
-                    setLoading(false);
                     setMsgsFromServer(responseFromServer.Errors);
                 }
             })
@@ -147,12 +144,11 @@ export default function Signup() {
                                 회원가입
                             </Button>
 
-
                             <div className='mt-3 text-danger w-auto'>
                                 {showIdErrorMsg && (<p>아이디는 5자 이상 입력해주세요</p>)}
                                 {showPwdErrorMsg && (<p>비밀번호는 5자 이상 입력해주세요</p>)}
                                 {showPwdConfirmErrorMsg && (<p>비밀번호가 일치하지 않습니다</p>)}
-                                {msgsFromServer !== "" && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
+                                {msgsFromServer !== undefined && msgsFromServer.length > 0 && msgsFromServer.map((msg, idx) => (<p key={idx}>{msg}</p>))}
                             </div>
 
                         </Form>

@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 
 export default function ConfirmEmail() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isConfirmed, setIsConfirmed] = useState('');
+
     const token = searchParams.get("token");
     const email = searchParams.get("email");
 
@@ -42,10 +44,17 @@ export default function ConfirmEmail() {
 
     return (
         <>
-            { msg &&
+            {msg &&
                 (
                     <div>
-                        {msg}
+                        {
+                            <h2 style={{
+                                color: "gold",
+                                margin: "150px 0 50px"
+                            }}>
+                                {msg}
+                            </h2>
+                        }
                         <Button as={Link} to="/account/signin">로그인 페이지로 이동</Button>
                     </div>
                 )

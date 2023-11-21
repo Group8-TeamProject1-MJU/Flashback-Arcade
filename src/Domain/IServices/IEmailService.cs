@@ -1,5 +1,5 @@
 namespace Domain.IServices;
 
 public interface IEmailService {
-    Task<bool> SendFromServerAsync(string to, string subject, string body);
+    Task<bool> SendFromServerAsync(List<string> recipients, string subject, string body);
 }

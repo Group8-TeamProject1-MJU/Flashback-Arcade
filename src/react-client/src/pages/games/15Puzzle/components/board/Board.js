@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Board.css";
 import Tile from "../tile/Tile";
 import Overlay from "../overlay/Overlay";
 import NewGame from "../new-game/NewGame";
 import Winner from "../winner/Winner";
+import { GameRankersContext } from "../../../../../contexts/GameRankersContext";
 
 const Board = () => {
   const shuffle = () =>
@@ -16,7 +17,26 @@ const Board = () => {
   const [numbers, setNumbers] = useState([]);
   const [animating, setAnimating] = useState(false);
 
-  const reset = () => setNumbers(shuffle());
+  const [timer, setTimer] = useState(0); // 타이머 상태 추가
+
+  const { sendScore } = useContext(GameRankersContext);
+
+  const reset = () => {
+    sendScore(timer);
+    setTimer(0);
+    setNumbers(shuffle());
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(timer + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+
+  }, [timer]);
 
   const moveTile = (tile) => {
     const i16 = numbers.find((n) => n.value === 16).index;
@@ -53,7 +73,9 @@ const Board = () => {
     };
   });
 
-  useEffect(reset, []);
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <div className="fifpuzzle-game">

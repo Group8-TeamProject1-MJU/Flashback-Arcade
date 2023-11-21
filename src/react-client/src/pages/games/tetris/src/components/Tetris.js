@@ -13,6 +13,8 @@ import { useGameStatus } from '../hooks/useGameStatus';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
+import AppRoutes from '../../../../../utils/AppRoutes';
+import ENDPOINTS from '../../../../../configs/api-endpoints';
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
@@ -23,6 +25,14 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
+
+  const url = window.location.href;
+  const path = new URL(url).pathname; // URL의 경로 부분 추출
+
+  // '/games/' 다음의 문자열을 추출
+  const gamePath = path.substring(path.lastIndexOf('/') + 1);
+  const gameRoutes = AppRoutes.find(r => r.path === '/games').sub_routes;
+  const game = gameRoutes.find(r => r.path === gamePath);
 
   console.log('re-render');
 
@@ -68,6 +78,25 @@ const Tetris = () => {
         console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
+
+        if (score > 0) {
+          fetch(ENDPOINTS.POST_API_SCORE_ADD_SCORE, {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              score: score,
+              title: game.title
+            })
+          })
+            .then(response => response.json())
+            .then(responseFromServer => {
+              console.log(responseFromServer.response);
+            })
+            .catch(error => console.log(error));
+        }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
@@ -86,15 +115,17 @@ const Tetris = () => {
     drop();
   }, dropTime);
 
-  const move = ({ keyCode }) => {
+  const move = (e) => {
+    e.preventDefault();
+
     if (!gameOver) {
-      if (keyCode === 37) {
+      if (e.keyCode === 37) {
         movePlayer(-1);
-      } else if (keyCode === 39) {
+      } else if (e.keyCode === 39) {
         movePlayer(1);
-      } else if (keyCode === 40) {
+      } else if (e.keyCode === 40) {
         dropPlayer();
-      } else if (keyCode === 38) {
+      } else if (e.keyCode === 38) {
         playerRotate(stage, 1);
       }
     }

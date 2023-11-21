@@ -1,18 +1,62 @@
 @page "/reactchat/{username?}"
 
 @using Microsoft.AspNetCore.SignalR.Client
+@using Application.Chat
+@using System.Text.Json
+
 @inject NavigationManager Navigation
 @inject TrieChat _trieChat
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
 
 @implements IAsyncDisposable
 
-<PageTitle>Index</PageTitle>
-<div style="height: 350px; overflow-x: none">
-    <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;">
+<PageTitle>Chat</PageTitle>
+
+<div style="height: 350px; overflow-x: none" class="">
+    <div>접속자 수: @_clientsCnt</div>
+    <select id="translateTo" @bind="translateTo">
+        <option value="ko" selected>한국어</option>  
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+        <option value="zh-CN">중국어 간체</option>
+        <option value="zh-TW">중국어 번체</option>
+        <option value="vi">베트남어</option>
+        <option value="id">인도네시아어</option>
+        <option value="th">태국어</option>
+        <option value="de">독일어</option>
+        <option value="ru">러시아어</option>
+        <option value="es">스페인어</option>
+        <option value="it">이탈리아어</option>
+        <option value="fr">프랑스어</option>
+    </select>
+    <label for="translateTo">로 번역하기</label>
+    <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
-            @foreach (var message in messages)
-            {
-                <li>@message</li>
+            @foreach (var mes in _messages) {
+                <div class="d-flex justify-content-between">
+                    @if (mes.showTranslatedText) {
+                        <li>@($"{mes.userName}: {mes.translation}") </li>
+                    }
+                    else {
+                        <li>@($"{mes.userName}: {mes.message}") </li>
+                    }
+
+                    <span>
+                        @if (mes.showTranslatedText) {
+                            <button @onclick="()=>ShowOriginalMessage(mes)">원본보기</button>
+                        }
+                        else {
+                            <button @onclick="()=>ShowTranslatedMessage(mes)">번역하기</button>
+                        }
+
+                        @if (mes.userName.StartsWith(userName)) {
+                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                        }
+
+                        <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
+                    </span>
+                </div>
             }
         </ul>
     </div>
@@ -21,18 +65,16 @@
         <div class="container">
             <form class="row">
                 <div class="col-auto">
-                    <label for="messageInput">@username:</label>
+                    <label for="messageInput">@userName:</label>
                 </div>
-                
-                    <div class="col">
-                        <input id="messageInput" class="form-control" @bind="messageInput" size="50" />
-                    </div>
+                <div class="col">
+                    <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
+                </div>
 
-                    <div class="col-auto">
-                        <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
-                            disabled="@(!IsConnected)">Send</button>
-                    </div>
-                
+                <div class="col-auto">
+                    <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
+                        disabled="@(!_isConnected)">Send</button>
+                </div>
             </form>
         </div>
     </div>
@@ -40,79 +82,103 @@
 
 
 @code {
-    private HubConnection? hubConnection;
-    private List<string> messages = new List<string>();
-    private string? messageInput;
+    private HubConnection? _hubConnection;
+    private List<ChatMessageWithTranslation> _messages = new();
+    private string? _messageInput;
+    private int _clientsCnt;
+    private TimeZoneInfo _localTimeZone = TimeZoneInfo.Local;
 
     [Parameter]
-    public string? username { get; set; }
+    public string? userName { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        hubConnection = new HubConnectionBuilder()
-        .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
-        .Build();
+    private bool _isConnected =>
+        _hubConnection?.State == HubConnectionState.Connected;
 
-        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-        {
-            var encodedMsg = $"{user}: {message}";
-            messages.Add(encodedMsg);
+    private string translateTo = "ko";
+
+    // 메시지 삭제 버튼 입력 시 처리 함수
+    public async Task OnDeleteButtonClickAsync(ChatMessage message) {
+        if (_hubConnection is not null)
+            await _hubConnection.SendAsync("DeleteMessage", JsonSerializer.Serialize(message));
+    }
+
+    // 채팅창에 키보드 입력 시 처리 함수
+    public async Task HandleKeyDown(KeyboardEventArgs e) {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_messageInput))
+            await Send();
+    }
+
+    // 메시지를 채팅서버에 전송 함수
+    private async Task Send() {
+        // 채팅서버와 연결되어 있고 입력된 메시지가 비어있지 않으면 전송
+        if (_hubConnection is not null && !string.IsNullOrWhiteSpace(_messageInput)) {
+            await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
+            _messageInput = null; // 메시지 input value 비우기
+        }
+    }
+
+    // 페이지 초기화 시 호출
+    // 메시지들 로딩, SignalR 설정
+    protected override async Task OnInitializedAsync() {
+        HttpClient.BaseAddress = new Uri(Configuration["ServerUrl"]!);
+
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
+            .Build();
+
+        _hubConnection.On<string>("ReceiveMessage", (json) => {
+            var chatMessage = JsonSerializer.Deserialize<ChatMessage>(json);
+            _messages.Add(new ChatMessageWithTranslation(chatMessage));
             InvokeAsync(StateHasChanged);
         });
 
-        await hubConnection.StartAsync();
+        _hubConnection.On<string>("DeleteMessage", (json) => {
+            var mesToDelete = JsonSerializer.Deserialize<ChatMessage>(json);
+            _messages.RemoveAt(_messages.FindIndex((mes) => mes.isEqual(mesToDelete)));
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<string>("ReceivePrevMessages", (json) => {
+            var prevMessages = JsonSerializer.Deserialize<List<ChatMessage>>(json);
+            _messages = prevMessages.Select((mes) => new ChatMessageWithTranslation(mes)).ToList();
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<int>("UpdateConnectedClientsCount", (count) => {
+            _clientsCnt = count;
+            InvokeAsync(StateHasChanged);
+        });
+
+        await _hubConnection.StartAsync();
+
+        await _hubConnection.SendAsync("AddConnectedUserName", userName);
     }
 
-    private async Task Send()
-    {
-        if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput)){
-            await hubConnection.SendAsync("SendMessage", username, messageInput);
-            messageInput=null;
+    // 페이지 종료 시 호출 함수. 채팅서버 연결 끊음.
+    public async ValueTask DisposeAsync() {
+        if (_hubConnection is not null)
+            await _hubConnection.DisposeAsync();
+    }
+
+    public async Task ShowOriginalMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = false;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task ShowTranslatedMessage(ChatMessageWithTranslation chatMessage) {
+        chatMessage.showTranslatedText = await TranslateMessage(chatMessage);
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task<bool> TranslateMessage(ChatMessageWithTranslation chatMessage) {
+        var response = await HttpClient.GetAsync($"api/Chat/translate?textToTransltate={chatMessage.message}&translateTo={translateTo}");
+        if (response.IsSuccessStatusCode) {
+            string translatedMsg = await response.Content.ReadAsStringAsync();
+            if (translatedMsg.CompareTo(chatMessage.message) != 0) {
+                chatMessage.translation = translatedMsg;
+                return true;
+            }
         }
+        return false;
     }
-
-    public bool IsConnected =>
-    hubConnection?.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
-    }
-
-    static string GenerateRandomUsername(int length)
-    {
-        Random random = new Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        return "익명-" + new string(Enumerable.Repeat(chars, length)
-        .Select(s => s[random.Next(s.Length)]).ToArray());
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (string.IsNullOrWhiteSpace(username))
-        {
-            username = GenerateRandomUsername(6);
-        }
-    }
-
-    public async Task HandleKeyDown(KeyboardEventArgs e)
-    {
-        Console.WriteLine("HandleKeyDown 메서드 호출됨.");
-        Console.WriteLine(messageInput);
-        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(messageInput))
-        {
-
-            await Send();
-        }
-    }
-
-
-
-
-
-
 }

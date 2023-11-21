@@ -26,14 +26,16 @@ public class EmailService : IEmailService {
         _password = Environment.GetEnvironmentVariable("EMAIL_PASSWORD") ?? _configuration["Email:Password"]!;
     }
 
-    public async Task<bool> SendFromServerAsync(string to, string subject, string body) {
-        if (string.IsNullOrWhiteSpace(to) || string.IsNullOrWhiteSpace(subject)
-            || string.IsNullOrWhiteSpace(body))
+    public async Task<bool> SendFromServerAsync(List<string> recipients, string subject, string body) {
+        if (recipients == null || recipients.Count == 0 || string.IsNullOrWhiteSpace(subject) || string.IsNullOrWhiteSpace(body))
             return false;
 
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_from));
-        email.To.Add(MailboxAddress.Parse(to));
+
+        foreach (var to in recipients)
+            email.To.Add(MailboxAddress.Parse(to));
+
         email.Subject = subject;
         email.Body = new TextPart(TextFormat.Html) { Text = body };
 

@@ -46,7 +46,12 @@ namespace Infrastructure.DbContexts {
                     Id = 7,
                     Title = "Mine Sweeper",
                     Descending = false
-                },
+                },                
+                new Game {
+                    Id = 8,
+                    Title = "Qucik Speed Master",
+                    Descending = false
+                }
             };
 
             modelBuilder.Entity<Game>().HasData(gamesToSeed);

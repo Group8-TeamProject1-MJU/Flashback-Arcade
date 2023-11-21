@@ -116,12 +116,20 @@ public class AccountService {
         var url = $"{_configuration["ClientUrls:ReactUrl"]!}/account/confirm-email?token={token}&email={user.Email}";
         var body = $"<h3>아래 링크를 눌러 이메일 인증을 완료해주세요</h3><br /><a href={url}>인증페이지로 이동</a>";
 
-        var isSent = await _emailService.SendFromServerAsync(user.Email!, "Flashback Arcade 회원가입을 완료해주세요", body);
+        var isSent = await _emailService.SendFromServerAsync(new List<string> { user.Email! }, "Flashback Arcade 회원가입을 완료해주세요", body);
         if (!isSent) {
             _logger.LogInformation("Failed to send an email...");
             return false;
         }
         else
             return true;
+    }
+
+    public async Task<string?> GetByUserNameAsync(string userName) {
+        return (await _userManager.FindByNameAsync(userName))?.Id;
+    }
+
+    public async Task<IdentityUser?> Get(string id) {
+        return await _userManager.FindByIdAsync(id);
     }
 }

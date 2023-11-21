@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import "./BrickBreakout.css";
 import { BallMovement } from "./BallMovement";
 import data from "./BBdata";
@@ -10,11 +10,14 @@ import PaddleHit from "./util/PaddleHit";
 import PlayerStats from "./PlayerStats";
 import AllBroke from "./util/AllBroke";
 import ResetBall from "./util/ResetBall";
+import { GameRankersContext } from "../../../contexts/GameRankersContext";
 
 let bricks = [];
 let { ballObj, paddleProps, brickObj, player } = data;
 export default function Board() {
   const canvasRef = useRef(null);
+  const { sendScore } = useContext(GameRankersContext);
+
 
   useEffect(() => {
     const render = () => {
@@ -45,6 +48,7 @@ export default function Board() {
 
       if (player.lives === 0) {
         alert("Game Over! Press ok to restart");
+        sendScore(player.score);
 
         player.lives = 5;
         player.level = 1;
@@ -99,9 +103,9 @@ export default function Board() {
         }
         height="500"
         width={
-          window.innerWidth < 900
+          window.innerWidth < 1364
             ? window.innerWidth - 20
-            : window.innerWidth - (window.innerWidth * 20) / 100
+            : 1344
         }
       />
       <h3 className="note">NOTE: Move your mouse to move the paddle</h3>

@@ -55,6 +55,31 @@ body {
   font-size: 1.5rem;
 }
 
+.pagination-button {
+  max-width: 80px;
+  min-width: 80px;
+  max-height: 80px;
+  min-height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  margin: 15px;
+  background: rgba(173, 247, 26, 0.4);
+  color: white;
+  font-family: "Silkscreen", cursive;
+  font-size: 2rem;
+
+  cursor: pointer;
+  border: 10px groove lightblue;
+}
+
+.pagination-button:hover {
+  transform: scale(1.10);
+  background-color: red;
+}
+
 .chat-section {
   border-radius: 30px;
   margin-top: 100px;
@@ -94,6 +119,11 @@ body {
   }
 }
 
+.cutting-line {
+  border: 5px dashed white;
+  margin: 25px 20px 20px 20px;
+}
+
 .search-section {
   position: relative;
   height: 50px;
@@ -107,6 +137,7 @@ body {
 
 /* Search input  */
 .search-input {
+  height: 50px;
   border-radius: 10px;
   background: none;
   border: 2px solid purple;
@@ -115,6 +146,7 @@ body {
   font-size: 23px;
 }
 
+
 ::placeholder {
   color: white;
 }
@@ -122,13 +154,42 @@ body {
 .search-icon {
   position: absolute;
   right: 75px;
-  top: -13px;
+  top: -3px;
   width: 60px;
   height: 100%;
   text-align: center;
   line-height: 50px;
   color: white;
   font-size: 20px;
+}
+
+.user-search-section {
+  position: relative;
+  height: 50px;
+  max-width: 450px;
+  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 18px 25px rgba(0, 0, 0, 0.25);
+}
+
+.user-search-icon {
+  position: absolute;
+  right: -35px;
+  top: -3px;
+  width: 60px;
+  height: 100%;
+  text-align: center;
+  line-height: 50px;
+  color: white;
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.user-lookup-board {
+  margin-bottom: 20px;
 }
 
 input.search-input:hover {
