@@ -6,7 +6,9 @@ export const UserContext = createContext(null);
 export function UserProvider({ children }) {
     const [user, setUser] = useState({
         isAuthenticated: false,
-        username: ""
+        username: "",
+        anonymousName: generateRandomUsername(6),
+        isAnonymous: true
     });
 
     useEffect(() => {
@@ -18,17 +20,20 @@ export function UserProvider({ children }) {
             .then(json => {
                 if (json.isAuthenticated)
                     setUser({
+                        ...user,
                         isAuthenticated: json.isAuthenticated,
-                        username: json.username
-                    });
-                else
-                    setUser({
-                        isAuthenticated: json.isAuthenticated,
-                        username: generateRandomUsername(6)
+                        username: json.username, 
+                        isAnonymous: false
                     });
             })
             .catch(error => console.log(error));
     }, []);
+
+    function getChatUserName() {
+        if (user.isAnonymous)
+            return user.anonymousName;
+        return user.username;
+    }
 
     function generateRandomUsername(length) {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -45,7 +50,7 @@ export function UserProvider({ children }) {
     return (
         <UserContext.Provider
             value={{
-                user, setUser
+                user, setUser, getChatUserName
             }}
         >
             {children}

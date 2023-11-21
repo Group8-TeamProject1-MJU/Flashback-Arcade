@@ -63,8 +63,10 @@ export default function Signin() {
                 var succeeded = responseFromServer.Succeeded;
                 if (succeeded) {
                     setUser({
+                        ...user,
                         isAuthenticated: true,
-                        username: formData.id
+                        username: formData.id,
+                        isAnonymous: false
                     });
                     navigate("/");
                 }

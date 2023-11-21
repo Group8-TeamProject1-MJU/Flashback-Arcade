@@ -17,6 +17,8 @@ string googleSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET") ?? bui
 string kakaotalkClientId = Environment.GetEnvironmentVariable("KAKAOTALK_CLIENTID") ?? builder.Configuration["Authentication:Kakaotalk:ClientId"]!;
 string kakaotalkSecret = Environment.GetEnvironmentVariable("KAKAOTALK_SECRET") ?? builder.Configuration["Authentication:Kakaotalk:ClientSecret"]!;
 
+builder.Services.AddHttpClient();
+
 // Add services to the container.
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRepository>();
@@ -25,6 +27,7 @@ builder.Services.AddScoped<ScoreRepository>();
 builder.Services.AddScoped<GameRepository>();
 builder.Services.AddScoped<RankersStaticHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<TrieChat>();
 builder.Services.AddScoped<SpamFilter>();
 builder.Services.AddHttpContextAccessor();
 
