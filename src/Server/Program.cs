@@ -25,6 +25,7 @@ builder.Services.AddScoped<ScoreRepository>();
 builder.Services.AddScoped<GameRepository>();
 builder.Services.AddScoped<RankersStaticHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<TrieChat>();
 
 builder.Services.AddHttpContextAccessor();
 
