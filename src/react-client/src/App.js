@@ -23,10 +23,13 @@ function App() {
     // 1초 단위로 실행되는 interval 생성
     const intervalId = setInterval(() => {
       setPlaytime((prevPlaytime) => {
+        if(setPlaytime==0){
+          return prevPlaytime+1;
+        }
         toast(`${prevPlaytime + 1}시간이 경과되었습니다.`)
         return prevPlaytime + 1;
       });
-    }, 1000); // 1초
+    }, 3600000); // 1시간
 
     // 리엑트 컴포넌트가 언마운트될 때 interval 정리
     return () => clearInterval(intervalId);
