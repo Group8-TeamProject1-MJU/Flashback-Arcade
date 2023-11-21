@@ -8,6 +8,8 @@ import CustomPacmanLoader from './components/PacmanLoader';
 
 function App() {
   const [loading, setLoading] = useState(false);
+  const [playtime, setPlaytime] = useState(0);
+
   useEffect(() => {
     if (process.env.NODE_ENV !== 'development') {
       setLoading(true);
@@ -16,10 +18,25 @@ function App() {
       }, 3000);
     }
 
+    setPlaytime(0);
+
+    // 1초 단위로 실행되는 interval 생성
+    const intervalId = setInterval(() => {
+      setPlaytime((prevPlaytime) => {
+        toast(`${prevPlaytime + 1}시간이 경과되었습니다.`)
+        return prevPlaytime + 1;
+      });
+    }, 1000); // 1초
+
+    // 리엑트 컴포넌트가 언마운트될 때 interval 정리
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
     <UserProvider>
+      <div>
+      <p color="white">{playtime !== null ? `Total Playtime: ${playtime}` : 'Loading playtime...'}</p>
+    </div>
       {loading ? (
         <div className="loading-animation">
           <CustomPacmanLoader className="" />
@@ -42,6 +59,8 @@ function App() {
       )}
     </UserProvider>
   );
+
+
 }
 
 export default App;
