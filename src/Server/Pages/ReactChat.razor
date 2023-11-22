@@ -13,9 +13,16 @@
 
 @implements IAsyncDisposable
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 <PageTitle>Chat</PageTitle>
 
 <div style="height: 350px; overflow-x: none" class="">
+
+    <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:10px;" >Concurrent Users: @_clientsCnt</div>
+
     <div>접속자 수: @_clientsCnt</div>
     <select id="translateTo" @bind="translateTo">
         <option value="ko" selected>한국어</option>  
@@ -33,10 +40,22 @@
         <option value="fr">프랑스어</option>
     </select>
     <label for="translateTo">로 번역하기</label>
+
     <div style="max-height: 300px; overflow-y: scroll; display: flex; flex-direction: column-reverse;" class="row">
         <ul id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
+<<<<<<< HEAD
+                    <li>@($"{mes.userName}: {mes.message}") </li>
+                        <span>
+                    
+                            <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.' MM'.' dd'' - HH':' mm':' ss'')")</span>
+                            
+                            @if (mes.userName.StartsWith(userName)) {
+                                <button class="btn-outline-secondary" @onclick="()=>OnDeleteButtonClickAsync(mes) " style="margin: 5px;">Delete</button>
+                            }
+                        </span>
+=======
                     @if (mes.showTranslatedText) {
                         <li>@($"{mes.userName}: {mes.translation}") </li>
                     }
@@ -58,6 +77,7 @@
 
                         <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
                     </span>
+>>>>>>> origin/Jehee
                 </div>
             }
         </ul>
@@ -74,8 +94,8 @@
                 </div>
 
                 <div class="col-auto">
-                    <button @onclick:preventDefault class="btn btn-primary" @onclick="Send"
-                        disabled="@(!_isConnected)">Send</button>
+                    <button @onclick:preventDefault class="btn btn-primary bg-success" @onclick="Send"
+                        disabled="@(!_isConnected)" >Send</button>
                 </div>
             </form>
         </div>
