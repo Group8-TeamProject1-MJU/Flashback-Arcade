@@ -9,10 +9,18 @@ public class ChatMessage {
 
     public string userName { get; set; } = string.Empty;
 
-    public ChatMessage (string msg, DateTime time, string name) {
+    public ChatMessage() { }
+
+    public ChatMessage(string msg, DateTime time, string name) {
         message = msg;
         sentTime = time;
         userName = name;
+    }
+
+    public ChatMessage(ChatMessage chatMessage) {
+        this.message = chatMessage.message;
+        this.sentTime = chatMessage.sentTime;
+        this.userName = chatMessage.userName;
     }
 
     public bool isEqual(ChatMessage mesToCompare) {
