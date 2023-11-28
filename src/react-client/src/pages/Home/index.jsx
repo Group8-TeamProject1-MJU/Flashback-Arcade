@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../../configs/api-endpoints";
 import { UserContext } from "../../contexts/UserContext";
 import { TotalRankingBoard } from "../../components/TotalRankingBoard";
 
+
 const gameRoutes = AppRoutes.filter(r => r.path?.includes("/games"))[0].sub_routes;
 
 export default function Home() {
