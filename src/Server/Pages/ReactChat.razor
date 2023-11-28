@@ -57,18 +57,18 @@
                         <span>@($"{mes.message}")</span>
                     }
                 </div>
-                    <span>
+                    <span style="font-family: 'Bebas Neue', sans-serif;">
                         <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.'MM'.'dd'' - HH':'mm':'ss'') ")</span>
 
                         @if (mes.showTranslatedText) {
-                            <button @onclick="()=>ShowOriginalMessage(mes)">original</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">original</button>
                         }
                         else {
-                            <button @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
                         }
 
                         @if (mes.userName.StartsWith(userName)) {
-                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
                         }
                     </span>
                 </div>
@@ -87,8 +87,8 @@
                 </div>
 
                 <div class="col-auto">
-                    <button @onclick:preventDefault class="btn btn-primary bg-success" @onclick="Send"
-                        disabled="@(!_isConnected)" >Send</button>
+                    <button  @onclick:preventDefault   @onclick="Send"
+                        disabled="@(!_isConnected)" class="btn btn-dark" >Send</button>
                 </div>
             </form>
         </div>
