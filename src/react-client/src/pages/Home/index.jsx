@@ -80,7 +80,7 @@ export default function Home() {
         { user !== undefined && (
           <Iframe
             url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
-            height="375px"
+            height="480px"
             className="w-100"
             id=""
           />
