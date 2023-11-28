@@ -81,13 +81,13 @@ export default function Home() {
         { user !== undefined && (
           <Iframe
             url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
-            height="375px"
+            height="480px"
             className="w-100"
             id=""
           />
         )}
-        <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
       </div>
+      <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
 
       {/* Heading of Cards */}
       <div className="header_homepage">

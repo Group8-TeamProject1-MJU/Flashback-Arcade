@@ -31,13 +31,13 @@ export default function Games() {
                                     <Iframe
                                         url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
                                         // width="640px"
-                                        height="375px"
+                                        height="480px"
                                         className="w-100"
                                         id=""
                                     />
                                 )}
-                                <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
                             </div>
+                            <button onClick={handleSwitchToAnonymous}>익명 on/off</button>
                         </Col>
 
                         <Col>
