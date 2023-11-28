@@ -44,7 +44,10 @@
         <div id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
-                    @if (mes.showTranslatedText) {
+                    @if (mes.userName.CompareTo("[시스템 메시지]") == 0) {
+                        <span style="color: red;">@($"{mes.userName}: {mes.message}") </span>
+                    }
+                    else if(mes.showTranslatedText) {
                         <span>@($"{mes.userName}: {mes.translation}") </span>
                     }
                     else {
@@ -58,7 +61,6 @@
                         else {
                             <button @onclick="()=>ShowTranslatedMessage(mes)">번역하기</button>
                         }
-
                         @if (mes.userName.StartsWith(userName)) {
                             <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
                         }
