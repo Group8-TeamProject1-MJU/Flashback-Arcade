@@ -4,10 +4,12 @@
 @using Application.Chat
 @using System.Text.Json
 
-@inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
 @inject HttpClient HttpClient
 @inject IConfiguration Configuration
+
+@inject NavigationManager _navigation
+@inject TrieChat _trieChat
+@inject SpamFilter _spamFilter
 
 @implements IAsyncDisposable
 
@@ -132,6 +134,18 @@
     private async Task Send() {
         // 채팅서버와 연결되어 있고 입력된 메시지가 비어있지 않으면 전송
         if (_hubConnection is not null && !string.IsNullOrWhiteSpace(_messageInput)) {
+            
+            if (_spamFilter.IsSpam(_messageInput) ) {  // 
+                _messages.Add((ChatMessageWithTranslation)(new ChatMessage("[시스템 메시지]: 도배를 금지합니다", DateTime.UtcNow, "system msg")));
+                InvokeAsync(StateHasChanged);
+                return;
+            } 
+            
+            if (_trieChat.FilterChat(_messageInput)){
+                _messages.Add((ChatMessageWithTranslation)(new ChatMessage("[시스템 메시지]: 욕설을 금지합니다", DateTime.UtcNow, "system msg")));
+                InvokeAsync(StateHasChanged);
+                return;
+            }
             await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
             _messageInput = null; // 메시지 input value 비우기
         }
@@ -143,7 +157,7 @@
         HttpClient.BaseAddress = new Uri(Configuration["ServerUrl"]!);
 
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/chathub"))
+            .WithUrl(_navigation.ToAbsoluteUri("/chathub"))
             .Build();
 
         _hubConnection.On<string>("ReceiveMessage", (json) => {
