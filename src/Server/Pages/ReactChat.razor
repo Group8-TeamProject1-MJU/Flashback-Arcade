@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using Application.Chat
 @using System.Text.Json
+@using System.Diagnostics
 
 @inject HttpClient HttpClient
 @inject IConfiguration Configuration
@@ -96,6 +97,8 @@
     private string? _messageInput;
     private int _clientsCnt;
     private TimeZoneInfo _localTimeZone = TimeZoneInfo.Local;
+    private Stopwatch watch = new Stopwatch();
+    private const int Nsec = 5;
 
     [Parameter]
     public string? userName { get; set; }
@@ -121,17 +124,27 @@
     private async Task Send() {
         // 채팅서버와 연결되어 있고 입력된 메시지가 비어있지 않으면 전송
         if (_hubConnection is not null && !string.IsNullOrWhiteSpace(_messageInput)) {
-            if (_spamFilter.IsSpam(_messageInput) ) {  // 
-                _messages.Add(new ChatMessageWithTranslation("도배를 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
+            if (_spamFilter.IsSpam(_messageInput) ) {    // 도배 시 Nsec동안 채팅금지
+                _messages.Add(new ChatMessageWithTranslation("도배하셨습니다. "+ Nsec +"초간 채팅을 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
+                InvokeAsync(StateHasChanged);
+
+                watch = new Stopwatch();
+                watch.Start();
+                return;
+            } else if (0 < watch.Elapsed.TotalSeconds && watch.Elapsed.TotalSeconds < Nsec) {   // 채팅금지된 상태: 남은 시간 알려줌
+                _messages.Add(new ChatMessageWithTranslation( Math.Round(Nsec-watch.Elapsed.TotalSeconds, 2) + "초간 채팅을 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
                 InvokeAsync(StateHasChanged);
                 return;
-            } 
-            
+            } else {            // 채팅금지 종료
+                watch.Stop();
+            }
+            // ----------------------------------------------------------------
             if (_trieChat.FilterChat(_messageInput)){
                 _messages.Add(new ChatMessageWithTranslation("욕설을 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
                 InvokeAsync(StateHasChanged);
                 return;
             }
+
             await _hubConnection.SendAsync("SendMessage", userName, _messageInput); // 전송
             _messageInput = null; // 메시지 input value 비우기
         }

@@ -28,7 +28,7 @@ public class SpamFilter {
             }
             msgs.RemoveFirst();
         }
-
+ 
         int interval = (msgs.Last.Value.Dt - msgs.First.Value.Dt).Seconds * 1000 
                         + (msgs.Last.Value.Dt - msgs.First.Value.Dt).Milliseconds;
         Console.WriteLine("interval time: " + interval / 1000.0);
