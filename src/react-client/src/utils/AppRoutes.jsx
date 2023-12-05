@@ -64,13 +64,6 @@ const AppRoutes = [
         serial_number: '02'
       },
       {
-        path: 'ball-shooting',
-        element: <BallShooting />,
-        title: 'Ball Shooting',
-        categories: ['Shooting'],
-        serial_number: '03'
-      },
-      {
         path: 'memory',
         element: <Memory />,
         title: 'Memory',
