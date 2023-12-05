@@ -70,7 +70,7 @@ export default function SnakeGame() {
         />
       </Container>
 
-      <Container className="text-center mt-3">
+      {/* <Container className="text-center mt-3">
         <Row>
           <Col>
             <Button className="btn-primary" onClick={(e) => {
@@ -101,7 +101,7 @@ export default function SnakeGame() {
             }}>↓</Button>
           </Col>
         </Row>
-      </Container>
+      </Container> */}
 
       <Container className='text-center p-0 text-warning fs-5'>
         <p>🔥게임 이용 방법</p>
