@@ -4,6 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import LoadLoginSession from "../../utils/Account";
 import { API_BASE_URL } from "../../configs/api-endpoints";
 import { toast } from 'react-toastify';
+import { SigninModalContext } from "../../contexts/SigninModalContext";
 
 export default function NotFound() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +12,7 @@ export default function NotFound() {
   const { user, setUser } = useContext(UserContext);
   const [show, setShow] = useState(false);
   const stay = searchParams.get("stay");
+  const { setIsOpen, isOpen } = useContext(SigninModalContext);
 
   useEffect(() => {
     // LoadLoginSession();
@@ -26,23 +28,24 @@ export default function NotFound() {
     //         });
     //     })
     //     .catch(error => console.log(error));
-    if (stay !== "stay") {
-      if (!user.isAuthenticated) {
-        // alert("접근 권한이 없습니다!😒 로그인을 해주세요");
-        // toast("접근 권한이 없습니다!😒 로그인을 해주세요");
-        navigate("/account/signin");
-      }
-      else
-        navigate("/");
+
+    if (!user.isAuthenticated) {
+      // alert("접근 권한이 없습니다!😒 로그인을 해주세요");
+      // toast("접근 권한이 없습니다!😒 로그인을 해주세요");
+      setIsOpen(true);
     }
-    else {
-      setShow(true);
-    }
+
+    navigate("/");
+
+
   }, [])
 
   return <>
     {show && (
-      <h1>Not Found Page</h1>
+      <div className="header_notfound">
+        <h1>Not Found Page</h1>
+        <h1>404 ERROR...</h1>
+      </div>
     )}
   </>
 }

@@ -125,7 +125,7 @@ export default function Home() {
             <div className="card" key={idx}>
               <div className="content">
                 {/* Addition of Flip card feature */}
-                <div className="flip-card">
+              <div className="flip-card">
                   <div className="flip-card-inner">
                     <div className="flip-card-front w-100">
                       <div>

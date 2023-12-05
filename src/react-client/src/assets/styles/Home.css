@@ -27,7 +27,7 @@ body {
   border-radius: 30px;
 }
 
-.board-section {
+.board-section, .signin-mordal-section {
   border-radius: 30px;
   margin-top: 100px;
   margin-bottom: 20px;
@@ -297,8 +297,6 @@ input.search-input:hover {
     format("woff2");
 }
 
-/* Heading in Homepage Game on!! */
-
 .header_homepage {
   width: 80%;
   border: 5px;
@@ -315,7 +313,13 @@ input.search-input:hover {
   margin-bottom: 65px;
 }
 
-.header_homepage h1 {
+.header_notfound {
+  color: #222;
+  font-family: "Silkscreen", cursive;
+  font-size: 3.5rem;
+}
+
+.header_homepage h1, .header_signin, .header_notfound h1 {
   font-size: 3.5rem;
   width: 100%;
   color: white;

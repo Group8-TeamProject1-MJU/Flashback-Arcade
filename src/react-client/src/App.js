@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import MusicButton from './components/MusicButton';
 import { Suspense, useEffect, useState } from 'react';
 import CustomPacmanLoader from './components/PacmanLoader';
+import { SigninModalProvider } from './contexts/SigninModalContext';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -37,26 +38,28 @@ function App() {
 
   return (
     <UserProvider>
-      {loading ? (
-        <div className="loading-animation">
-          <CustomPacmanLoader className="" />
-          <p className="loader1" style={{ color: "#f1e702" }}>Welcome to Flashback Arcade🔥</p>
-        </div>
-      ) : (
-        <Suspense
-          fallback={
-            <div className="loading-animation">
-              <CustomPacmanLoader />
-            </div>
-          }
-        >
-          <MainLayout>
-            <AuthRoutes />
-            <ToastContainer />
-            <MusicButton />
-          </MainLayout>
-        </Suspense>
-      )}
+      <SigninModalProvider>
+        {loading ? (
+          <div className="loading-animation">
+            <CustomPacmanLoader className="" />
+            <p className="loader1" style={{ color: "#f1e702" }}>Welcome to Flashback Arcade🔥</p>
+          </div>
+        ) : (
+          <Suspense
+            fallback={
+              <div className="loading-animation">
+                <CustomPacmanLoader />
+              </div>
+            }
+          >
+            <MainLayout>
+              <AuthRoutes />
+              <ToastContainer />
+              <MusicButton />
+            </MainLayout>
+          </Suspense>
+        )}
+      </SigninModalProvider>
     </UserProvider>
   );
 
