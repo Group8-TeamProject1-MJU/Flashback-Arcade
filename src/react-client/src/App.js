@@ -23,8 +23,8 @@ function App() {
     // 1초 단위로 실행되는 interval 생성
     const intervalId = setInterval(() => {
       setPlaytime((prevPlaytime) => {
-        if(setPlaytime==0){
-          return prevPlaytime+1;
+        if (setPlaytime == 0) {
+          return prevPlaytime + 1;
         }
         toast(`${prevPlaytime + 1}시간이 경과되었습니다.`)
         return prevPlaytime + 1;
@@ -37,9 +37,6 @@ function App() {
 
   return (
     <UserProvider>
-      <div>
-      <p color="white">{playtime !== null ? `Total Playtime: ${playtime}` : 'Loading playtime...'}</p>
-    </div>
       {loading ? (
         <div className="loading-animation">
           <CustomPacmanLoader className="" />
