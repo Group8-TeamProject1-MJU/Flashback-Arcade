@@ -24,6 +24,9 @@
 <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 1px solid black; border-radius: 10px; padding: 10px;" >
     Concurrent Users: @_clientsCnt
 </div>
+
+<label style="font-family: 'Bebas Neue', sans-serif; font-size:25px; for="translateTo">  translation</label>
+
 <select id="translateTo" @bind="translateTo">
     <option value="ko" selected>한국어</option>  
     <option value="en">영어</option>
@@ -39,7 +42,7 @@
     <option value="it">이탈리아어</option>
     <option value="fr">프랑스어</option>
 </select>
-<label for="translateTo">로 번역하기</label>
+
 
 <div style="height: 350px; overflow-x: hidden">
     <div style="max-height: 300px; overflow-y: hidden; display: flex; flex-direction: column-reverse;" class="row">
@@ -49,7 +52,8 @@
                     <span>
                     @if (mes.userName.CompareTo("[시스템 메시지]") == 0) {
                         <span style="color: red; font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
-                        <span style="color: red;">@($"{mes.message}")</span>                    }
+                        <span style="color: red;">@($"{mes.message}")</span>                    
+                    }
                     else if(mes.showTranslatedText) {
                         <span style="font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
                         <span>@($"{mes.translation}")</span>
@@ -59,17 +63,17 @@
                         <span>@($"{mes.message}")</span>
                     }
                     </span>
-                    <span>
+                    <span style="font-family: 'Bebas Neue', sans-serif;">
                         <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.'MM'.'dd'' - HH':'mm':'ss'') ")</span>
 
                         @if (mes.showTranslatedText) {
-                            <button @onclick="()=>ShowOriginalMessage(mes)">original</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">original</button>
                         }
                         else {
-                            <button @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
                         }
                         @if (mes.userName.StartsWith(userName)) {
-                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
                         }
                     </span>
                 </div>
@@ -88,8 +92,8 @@
                 </div>
 
                 <div class="col-auto">
-                    <button @onclick:preventDefault class="btn btn-primary bg-success" @onclick="Send"
-                        disabled="@(!_isConnected)" >Send</button>
+                    <button  @onclick:preventDefault   @onclick="Send"
+                        disabled="@(!_isConnected)" class="btn btn-dark" >Send</button>
                 </div>
             </form>
         </div>
