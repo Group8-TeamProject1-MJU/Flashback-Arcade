@@ -68,7 +68,11 @@
                         <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.'MM'.'dd'' - HH':'mm':'ss'') ")</span>
 
                         @if (mes.showTranslatedText) {
-                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">original</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">
+                                <p style="font-size: 17px;">
+                                    original
+                                </p>
+                            </button>
                         }
                         else {
                             <button type="button" style="margin-left:5px; height: 33px;" class="btn btn-outline-light btn-sm flex justify-content-center" @onclick="()=>ShowTranslatedMessage(mes)">
