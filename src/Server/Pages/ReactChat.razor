@@ -91,9 +91,9 @@
                     <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
                 </div>
 
-                <div class="col-auto">
+                <div class="col-auto" style="font-family: 'Bebas Neue', sans-serif;">
                     <button  @onclick:preventDefault   @onclick="Send"
-                        disabled="@(!_isConnected)" class="btn btn-dark" >Send</button>
+                        disabled="@(!_isConnected)" class="btn btn-dark" style="width: 60px; height:40px" ><p style="font-size: 20px;">Send</p></button>
                 </div>
             </form>
         </div>
