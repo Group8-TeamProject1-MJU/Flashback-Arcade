@@ -84,6 +84,9 @@ export default function Home() {
             height="480px"
             className="w-100"
             id=""
+            styles={{
+              borderRadius: '30px'
+            }}
           />
         )}
       </div>

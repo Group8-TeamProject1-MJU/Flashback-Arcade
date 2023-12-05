@@ -12,9 +12,9 @@ export default function Games() {
 
     function handleSwitchToAnonymous(e) {
         e.preventDefault();
-        
+
         if (user.username !== undefined && user.username !== "")
-            setUser({ 
+            setUser({
                 ...user,
                 isAnonymous: !user.isAnonymous
             });
@@ -27,13 +27,16 @@ export default function Games() {
                     <Row>
                         <Col>
                             <div className="chat-section p-0">
-                                { user !== undefined && (
+                                {user !== undefined && (
                                     <Iframe
                                         url={`${API_BASE_URL}/reactchat/${getChatUserName()}`}
                                         // width="640px"
                                         height="480px"
                                         className="w-100"
                                         id=""
+                                        styles={{
+                                            borderRadius: '30px'
+                                        }}
                                     />
                                 )}
                             </div>

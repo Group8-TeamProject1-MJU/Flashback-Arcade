@@ -3,7 +3,7 @@ html, body {
     background: linear-gradient(to right, #012746, #261b05); /* 그라데이션 색상 */
     color: white; /* 텍스트 색상 */
     overflow-x: hidden;
-    
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
 html::-webkit-scrollbar {

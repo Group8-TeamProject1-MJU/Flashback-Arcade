@@ -4,18 +4,22 @@
     margin: 2em auto;
     text-align: center;
     user-select: none;
-    }
+}
+
 .score{
     color: antiquewhite;
     background-color:plum;
     font-weight: bold;
 }
+
 #screen.waiting {
     background-color: rgb(166, 194, 243);
 }
+
 #screen.ready {
     background-color: rgb(217, 133, 133);
 }
+
 #screen.now {
     background-color: rgb(217, 255, 167);
 }

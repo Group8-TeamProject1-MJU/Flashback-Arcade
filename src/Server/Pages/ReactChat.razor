@@ -26,7 +26,7 @@
     Concurrent Users: @_clientsCnt
 </div>
 
-<label style="font-family: 'Bebas Neue', sans-serif; font-size:25px; for="translateTo">  translation</label>
+<label style="font-family: 'Bebas Neue', sans-serif; font-size:25px; for="translateTo" class="p-3">  translation</label>
 
 <select id="translateTo" @bind="translateTo">
     <option value="ko" selected>한국어</option>  
@@ -44,10 +44,9 @@
     <option value="fr">프랑스어</option>
 </select>
 
-
-<div style="height: 350px; overflow-x: hidden">
-    <div style="max-height: 300px; overflow-y: hidden; display: flex; flex-direction: column-reverse;" class="row">
-        <div id="messagesList">
+<div style="height: 350px; overflow-x: hidden" class="p-3">
+    <div style="max-height: 300px; display: flex; flex-direction: column-reverse; overflow-y: scroll;" class="row">
+        <div id="messagesList" style="">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
                     <span>

@@ -90,6 +90,8 @@ body {
   margin-bottom: 20px;
   box-shadow: 15px 15px 10px #bbb068;
   min-width: 420px;
+  z-index: 99;
+  height: 480px;
 }
 
 /* text */
