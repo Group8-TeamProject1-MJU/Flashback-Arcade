@@ -87,7 +87,7 @@ export default function Home() {
           />
         )}
       </div>
-      <button type="button" class="btn btn-outline-light btn-lg" onClick={handleSwitchToAnonymous}>익명 on/off</button>
+      <button type="button" style={{margin:10}} class="btn btn-outline-light btn-lg" onClick={handleSwitchToAnonymous}>익명 on/off</button>
 
       {/* Heading of Cards */}
       <div className="header_homepage">
