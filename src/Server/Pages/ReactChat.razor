@@ -132,7 +132,7 @@
                 watch.Start();
                 return;
             } else if (0 < watch.Elapsed.TotalSeconds && watch.Elapsed.TotalSeconds < Nsec) {   // 채팅금지된 상태: 남은 시간 알려줌
-                _messages.Add(new ChatMessageWithTranslation( Math.Round(Nsec-watch.Elapsed.TotalSeconds, 2) + "초간 채팅을 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
+                _messages.Add(new ChatMessageWithTranslation( Math.Round(Nsec-watch.Elapsed.TotalSeconds, 0) + "초간 채팅을 금지합니다", DateTime.UtcNow, "[시스템 메시지]"));
                 InvokeAsync(StateHasChanged);
                 return;
             } else {            // 채팅금지 종료
