@@ -16,12 +16,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <PageTitle>Chat</PageTitle>
 
-
-<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:10px;" >Concurrent Users: @_clientsCnt</div>
-<div>접속자 수: @_clientsCnt</div>
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 1px solid black; border-radius: 10px; padding: 10px;" >
+    Concurrent Users: @_clientsCnt
+</div>
 <select id="translateTo" @bind="translateTo">
     <option value="ko" selected>한국어</option>  
     <option value="en">영어</option>
@@ -39,31 +41,34 @@
 </select>
 <label for="translateTo">로 번역하기</label>
 
-<div style="height: 350px; overflow-x: none">
-    <div style="max-height: 300px; overflow-y: hidden; display: flex; flex-direction: column-reverse;">
+<div style="height: 350px; overflow-x: hidden">
+    <div style="max-height: 300px; overflow-y: hidden; display: flex; flex-direction: column-reverse;" class="row">
         <div id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
-                    @if (mes.showTranslatedText) {
-                        <span>@($"{mes.userName}: {mes.translation}") </span>
+                    @if (mes.userName.CompareTo("[시스템 메시지]") == 0) {
+                        <span style="color: red; font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
+                        <span style="color: red;">@($"{mes.translation}")</span>                    }
+                    else if(mes.showTranslatedText) {
+                        <span style="font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
+                        <span>@($"{mes.translation}")</span>
                     }
                     else {
-                        <span>@($"{mes.userName}: {mes.message}") </span>
+                        <span style="font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
+                        <span>@($"{mes.translation}")</span>
                     }
-
                     <span>
+                        <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.'MM'.'dd'' - HH':'mm':'ss'') ")</span>
+
                         @if (mes.showTranslatedText) {
-                            <button @onclick="()=>ShowOriginalMessage(mes)">원본보기</button>
+                            <button @onclick="()=>ShowOriginalMessage(mes)">original</button>
                         }
                         else {
-                            <button @onclick="()=>ShowTranslatedMessage(mes)">번역하기</button>
+                            <button @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
                         }
-
                         @if (mes.userName.StartsWith(userName)) {
-                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">삭제</button>
+                            <button class="" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
                         }
-
-                        <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'년' MM'월' dd'일' - HH'시' mm'분' ss'초')")</span>
                     </span>
                 </div>
             }
@@ -73,8 +78,8 @@
     <div class="fixed-bottom bg-light p-2">
         <div class="container">
             <form class="row">
-                <div class="col-auto">
-                    <label for="messageInput">@userName:</label>
+                <div class="col-auto" style="color: black;">
+                    <label for="messageInput" style="font-family:'VT323', monospace; font-size:30px">@userName:</label>
                 </div>
                 <div class="col">
                     <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
