@@ -22,7 +22,8 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <PageTitle>Chat</PageTitle>
 
-<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 2px solid rgba(249, 249, 127, 0.559); border-radius: 10px; padding: 10px;" >
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 2px solid rgba(249, 249, 127, 0.559); border-radius: 10px; padding: 10px;" 
+    class="mt-2">
     Concurrent Users: @_clientsCnt
 </div>
 
@@ -45,7 +46,7 @@
 </select>
 
 <div style="height: 295px; overflow-x: hidden" class="p-3">
-    <div style="max-height: 260px; display: flex; flex-direction: column-reverse; overflow-y: scroll;" class="row">
+    <div style="max-height: 244px; display: flex; flex-direction: column-reverse; overflow-y: scroll;" class="row">
         <div id="messagesList" style="">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
@@ -70,10 +71,18 @@
                             <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">original</button>
                         }
                         else {
-                            <button type="button" style="margin-left:5px;" class="btn btn-outline-light btn-sm" @onclick="()=>ShowTranslatedMessage(mes)">translate</button>
+                            <button type="button" style="margin-left:5px; height: 33px;" class="btn btn-outline-light btn-sm flex justify-content-center" @onclick="()=>ShowTranslatedMessage(mes)">
+                                <p style="font-size: 17px;">
+                                    translate
+                                </p>
+                            </button>
                         }
                         @if (mes.userName.StartsWith(userName)) {
-                            <button type="button" style="margin: 5px;" class="btn btn-outline-light btn-sm" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>
+                            <button type="button" style="margin: 5px; height: 33px;" class="btn btn-outline-light btn-sm flex justify-content-center" @onclick="()=>OnDeleteButtonClickAsync(mes)">
+                                <p style="font-size: 17px;">
+                                    delete
+                                </p>
+                            </button>
                         }
                     </span>
                 </div>
