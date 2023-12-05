@@ -22,7 +22,7 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <PageTitle>Chat</PageTitle>
 
-<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 1px solid black; border-radius: 10px; padding: 10px;" >
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; margin:5px; border: 2px solid rgba(249, 249, 127, 0.559); border-radius: 10px; padding: 10px;" >
     Concurrent Users: @_clientsCnt
 </div>
 
@@ -91,9 +91,9 @@
                     <input id="messageInput" class="form-control" @bind="_messageInput" size="50" />
                 </div>
 
-                <div class="col-auto">
+                <div class="col-auto" style="font-family: 'Bebas Neue', sans-serif;">
                     <button  @onclick:preventDefault   @onclick="Send"
-                        disabled="@(!_isConnected)" class="btn btn-dark" >Send</button>
+                        disabled="@(!_isConnected)" class="btn btn-dark" style="width: 60px; height:40px" ><p style="font-size: 20px;">Send</p></button>
                 </div>
             </form>
         </div>
