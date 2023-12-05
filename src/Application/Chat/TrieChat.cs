@@ -59,6 +59,7 @@ public class TrieChat
         AddWord("쌍놈");
         AddWord("쌔끼");
         AddWord("새끼");
+        AddWord("시발");
     }
 
     // 단어 추가
