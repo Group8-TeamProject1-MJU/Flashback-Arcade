@@ -46,17 +46,19 @@
         <div id="messagesList">
             @foreach (var mes in _messages) {
                 <div class="d-flex justify-content-between">
+                    <span>
                     @if (mes.userName.CompareTo("[시스템 메시지]") == 0) {
                         <span style="color: red; font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
-                        <span style="color: red;">@($"{mes.translation}")</span>                    }
+                        <span style="color: red;">@($"{mes.message}")</span>                    }
                     else if(mes.showTranslatedText) {
                         <span style="font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
                         <span>@($"{mes.translation}")</span>
                     }
                     else {
                         <span style="font-family: 'VT323', monospace; font-size:20px">@($"{mes.userName}:")</span>
-                        <span>@($"{mes.translation}")</span>
+                        <span>@($"{mes.message}")</span>
                     }
+                    </span>
                     <span>
                         <span>@TimeZoneInfo.ConvertTimeFromUtc(mes.sentTime, _localTimeZone).ToString("(yyyy'.'MM'.'dd'' - HH':'mm':'ss'') ")</span>
 
