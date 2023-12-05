@@ -70,7 +70,7 @@
                             <button type="button" class="btn btn-outline-light btn-sm" @onclick="()=>ShowOriginalMessage(mes)">original</button>
                         }
                         else {
-                            <button type="button" style="margin-left:5px;" class="btn btn-outline-light btn-sm" @onclick="()=>ShowTranslatedMessage(mes)">translation</button>
+                            <button type="button" style="margin-left:5px;" class="btn btn-outline-light btn-sm" @onclick="()=>ShowTranslatedMessage(mes)">translate</button>
                         }
                         @if (mes.userName.StartsWith(userName)) {
                             <button type="button" style="margin: 5px;" class="btn btn-outline-light btn-sm" @onclick="()=>OnDeleteButtonClickAsync(mes)">delete</button>

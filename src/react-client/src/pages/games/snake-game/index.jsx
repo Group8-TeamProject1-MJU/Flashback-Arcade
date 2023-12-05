@@ -67,7 +67,6 @@ export default function SnakeGame() {
             backgroundColor: "#4f4d4d"
           }}
           startGameText="화면을 눌러 시작! 🪱"
-          class=""
         />
       </Container>
 
