@@ -27,10 +27,10 @@ function App() {
         if (setPlaytime == 0) {
           return prevPlaytime + 1;
         }
-        toast(`${prevPlaytime + 1}시간이 경과되었습니다.`)
+        toast(`${prevPlaytime + 1}분이 경과되었습니다.`)
         return prevPlaytime + 1;
       });
-    }, 3600000); // 1시간
+    }, 60000); // 1시간
 
     // 리엑트 컴포넌트가 언마운트될 때 interval 정리
     return () => clearInterval(intervalId);
